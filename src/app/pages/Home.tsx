@@ -4,6 +4,10 @@ import {
   SEO,
   SITE_NAME,
   DEFAULT_OG_IMAGE,
+  DEFAULT_OG_IMAGE_ALT,
+  DEFAULT_OG_IMAGE_HEIGHT,
+  DEFAULT_OG_IMAGE_TYPE,
+  DEFAULT_OG_IMAGE_WIDTH,
   buildLocalBusinessJsonLd,
   buildFAQJsonLd,
   buildBreadcrumbJsonLd,
@@ -62,7 +66,11 @@ export function Home() {
         <meta property="og:description" content={SEO.home.description} />
         <meta property="og:url" content={SEO.home.canonical} />
         <meta property="og:image" content={ogImageUrl} />
-        <meta property="og:image:alt" content="Dr. Haitham Sharshar — HS Clinic Cairo" />
+        <meta property="og:image:secure_url" content={ogImageUrl} />
+        <meta property="og:image:type" content={DEFAULT_OG_IMAGE_TYPE} />
+        <meta property="og:image:width" content={String(DEFAULT_OG_IMAGE_WIDTH)} />
+        <meta property="og:image:height" content={String(DEFAULT_OG_IMAGE_HEIGHT)} />
+        <meta property="og:image:alt" content={DEFAULT_OG_IMAGE_ALT} />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content={SITE_NAME} />
         <meta property="og:locale" content="en_EG" />
@@ -71,6 +79,7 @@ export function Home() {
         <meta name="twitter:title" content={SEO.home.title} />
         <meta name="twitter:description" content={SEO.home.description} />
         <meta name="twitter:image" content={ogImageUrl} />
+        <meta name="twitter:image:alt" content={DEFAULT_OG_IMAGE_ALT} />
         {/* JSON-LD Structured Data */}
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
         {/* JSON-LD WebSite schema for sitelinks search box */}

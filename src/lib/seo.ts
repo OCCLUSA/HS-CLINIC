@@ -5,7 +5,12 @@
 
 export const SITE_URL = 'https://drhaithamsharshar.com';
 export const SITE_NAME = 'Dr. Haitham Sharshar | HS Clinic';
-export const DEFAULT_OG_IMAGE = `${SITE_URL}/images/og-default.webp`;
+export const DEFAULT_OG_IMAGE = `${SITE_URL}/images/og-clinic.jpg`;
+export const DEFAULT_OG_IMAGE_TYPE = 'image/jpeg';
+export const DEFAULT_OG_IMAGE_WIDTH = 1200;
+export const DEFAULT_OG_IMAGE_HEIGHT = 630;
+export const DEFAULT_OG_IMAGE_ALT =
+  'Dr. Haitham Sharshar Dental Clinic in Cairo with digital dentistry technology';
 
 export const SEO = {
   home: {

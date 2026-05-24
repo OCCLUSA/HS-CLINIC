@@ -51,6 +51,35 @@ async function fetchDynamicRoutes() {
   }
 }
 
+function sanitizePrerenderedHtml(html) {
+  const originalLength = html.length;
+  let sanitized = html.replace(/<script>try\{[\s\S]*?console-ninja[\s\S]*?<\/script>/gi, '');
+  sanitized = sanitized.replace(/<script>try\{[\s\S]*?wallabyjs[\s\S]*?<\/script>/gi, '');
+
+  const removedBytes = originalLength - sanitized.length;
+  if (removedBytes > 0) {
+    console.log(`   ├─ Removed ${removedBytes} bytes of local dev instrumentation`);
+  }
+
+  return sanitized;
+}
+
+function warnIfCrawlerMetadataIsLate(route, html) {
+  const crawlerScanWindow = html.slice(0, 64 * 1024);
+  const checks = [
+    ['title', /<title>[^<]+<\/title>/i],
+    ['description', /<meta[^>]+name=["']description["']/i],
+    ['og:image', /<meta[^>]+property=["']og:image["']/i],
+    ['twitter:image', /<meta[^>]+name=["']twitter:image["']/i],
+  ];
+
+  for (const [label, pattern] of checks) {
+    if (!pattern.test(crawlerScanWindow)) {
+      console.warn(`   ⚠️ WARNING: ${route} ${label} is missing from the first 64 KB.`);
+    }
+  }
+}
+
 async function run() {
   console.log('🚀 Starting Pre-render process...');
 
@@ -115,6 +144,7 @@ async function run() {
 
       // Get the fully serialized DOM HTML
       let html = await page.content();
+      html = sanitizePrerenderedHtml(html);
 
       // Quality gate: warn if essential SEO elements are missing
       if (!html.includes('<title>') || !html.includes('<title></title>') === false) {
@@ -125,6 +155,7 @@ async function run() {
       if (!/<h1[\s>]/i.test(html)) {
         console.warn(`   ⚠️ WARNING: ${route} has no <h1> tag.`);
       }
+      warnIfCrawlerMetadataIsLate(route, html);
 
       // Clean up injected Playwright/Vite preview scripts if needed, though they are usually harmless
 
