@@ -16,13 +16,13 @@ export const SEO = {
   home: {
     title: 'Dr. Haitham Sharshar | Dental Implants & Smile Design Cairo',
     description:
-      'Leading dental clinic in Cairo specializing in digital occlusion, TMJ treatment, cosmetic dentistry, and dental implants.',
+      'Dental clinic in Cairo offering digital occlusion review, TMJ screening, cosmetic dentistry, and dental implants.',
     canonical: SITE_URL + '/',
   },
   about: {
     title: 'About Dr. Haitham Sharshar | Board-Certified Prosthodontist | Cairo',
     description:
-      'Dr. Haitham Sharshar is a board-certified prosthodontist and pioneer in digital dental occlusion with over 15 years of experience in Cairo, Egypt.',
+      'Dr. Haitham Sharshar is a board-certified prosthodontist using digital dental occlusion records with over 15 years of experience in Cairo, Egypt.',
     canonical: SITE_URL + '/about',
   },
   services: {
@@ -34,14 +34,50 @@ export const SEO = {
   technology: {
     title: 'Technology | CBCT, T-Scan, EMG & Digital Smile Design | HS Clinic',
     description:
-      'State-of-the-art dental technology at HS Clinic Cairo: CBCT 3D imaging, T-Scan occlusal analysis, EMG diagnostics, and CAD/CAM digital dentistry.',
+      'Digital dental technology at HS Clinic Cairo: CBCT 3D imaging, T-Scan occlusal analysis, EMG records, and CAD/CAM digital dentistry.',
     canonical: SITE_URL + '/technology',
   },
   dentalTourism: {
-    title: 'Dental Tourism in Cairo | Save Up to 90% | HS Clinic Egypt',
+    title: 'Dental Tourism in Cairo | Case Review & Travel Planning | HS Clinic Egypt',
     description:
-      'Premium dental implants and cosmetic dentistry in Cairo, Egypt. Save 70-90% vs USA/UK prices. German technology, 5-star experience, free virtual consultation.',
+      'Records-first dental tourism planning in Cairo for implants, smile design, crowns, veneers, and full arch care with clinician-reviewed treatment steps.',
     canonical: SITE_URL + '/dental-tourism',
+  },
+  dentalTourismGulf: {
+    title: 'Dental Tourism in Cairo for Gulf Patients | HS Clinic Egypt',
+    description:
+      'Records-first dental tourism planning in Cairo for Gulf patients considering implants, smile design, crowns, veneers, full arch care, or bite screening.',
+    canonical: SITE_URL + '/dental-tourism/gulf',
+  },
+  dentalTourismSaudi: {
+    title: 'Dental Treatment in Cairo for Saudi Patients | HS Clinic Egypt',
+    description:
+      'Dental tourism planning for Saudi patients travelling to Cairo for implants, crowns, veneers, smile design, full arch rehabilitation, or bite screening.',
+    canonical: SITE_URL + '/dental-tourism/saudi-arabia',
+  },
+  dentalTourismUae: {
+    title: 'Dental Treatment in Cairo for UAE Patients | HS Clinic Egypt',
+    description:
+      'Plan dental care in Cairo from the UAE with records review, clinic visit timing, WhatsApp coordination, and clinician-reviewed treatment steps.',
+    canonical: SITE_URL + '/dental-tourism/uae',
+  },
+  dentalTourismEurope: {
+    title: 'Dental Tourism in Cairo for Europe Patients | HS Clinic Egypt',
+    description:
+      'Practical dental tourism guidance for Europe patients considering Cairo for implants, crowns, veneers, full arch care, smile design, or bite screening.',
+    canonical: SITE_URL + '/dental-tourism/europe',
+  },
+  dentalTourismUk: {
+    title: 'Dental Treatment in Cairo for UK Patients | HS Clinic Egypt',
+    description:
+      'Dental tourism planning for UK patients considering implants, crowns, veneers, full arch rehabilitation, or bite related care in Cairo.',
+    canonical: SITE_URL + '/dental-tourism/uk',
+  },
+  dentalTourismGermany: {
+    title: 'Dental Treatment in Cairo for Germany Patients | HS Clinic Egypt',
+    description:
+      'Records-first dental tourism planning for Germany patients considering implants, crowns, veneers, full arch care, or digital bite assessment in Cairo.',
+    canonical: SITE_URL + '/dental-tourism/germany',
   },
   contact: {
     title: 'Contact HS Clinic | Book Your Appointment in Cairo, Egypt',
@@ -52,7 +88,7 @@ export const SEO = {
   digitalSmileDesign: {
     title: 'Digital Smile Design | Luxarian Scientific DSD | HS Clinic Cairo',
     description:
-      'Experience luxury scientific Digital Smile Design at HS Clinic Cairo. Golden proportion analysis, 3D mockups, and precision planning for your perfect smile transformation.',
+      'Experience Digital Smile Design at HS Clinic Cairo with golden proportion references, 3D mockups, and clinician-reviewed smile planning.',
     canonical: SITE_URL + '/digital-smile-design',
   },
   gallery: {
@@ -64,32 +100,56 @@ export const SEO = {
   dentalImplants: {
     title: 'Dental Implants in Cairo | CBCT-Guided Surgery | Dr. Haitham Sharshar',
     description:
-      'Digitally guided dental implant surgery in Cairo, Egypt. CBCT 3D-planned single implants, All-on-4, and full-arch rehabilitation by Dr. Haitham Sharshar. Save 70-90% vs USA/UK.',
+      'Digitally guided dental implant surgery in Cairo, Egypt. CBCT 3D-planned single implants, All-on-4, and full-arch rehabilitation by Dr. Haitham Sharshar.',
     canonical: SITE_URL + '/services/dental-implants',
   },
   tmdTreatment: {
     title: 'TMJ/TMD Treatment Cairo | Jaw Tracking & EMG | Dr. Haitham Sharshar',
     description:
-      "The Middle East's most advanced TMD/TMJ neuromuscular treatment. Jaw tracking (Zebris), EMG, TENS, Occlusense, and Neurobite therapy by Dr. Haitham Sharshar in Cairo.",
+      'TMJ/TMD screening and bite review in Cairo using jaw tracking (Zebris), EMG records, TENS relaxation records, Occlusense, and Neurobite planning.',
     canonical: SITE_URL + '/services/tmj-tmd-treatment',
   },
   clearAligners: {
     title: 'Clear Aligners Cairo | Digital Orthodontics | HS Clinic',
     description:
-      'Invisible clear aligner therapy with full digital integration at HS Clinic Cairo. 3D treatment planning, occlusal optimization, and predictable results by Dr. Haitham Sharshar.',
+      'Clear aligner therapy with digital integration at HS Clinic Cairo. 3D treatment planning, occlusal review, and clinician-led tooth movement planning by Dr. Haitham Sharshar.',
     canonical: SITE_URL + '/services/clear-aligners',
   },
   fullArchRehab: {
     title: 'Full Arch Rehabilitation Cairo | Implant-Supported Prosthetics | HS Clinic',
     description:
-      'Complete full-arch rehabilitation combining dental implants, prosthetics, and digital occlusal analysis. All-on-4 and full mouth reconstruction in Cairo by Dr. Haitham Sharshar.',
+      'Full-arch rehabilitation combining dental implants, prosthetics, CBCT-guided records, and digital occlusal review in Cairo by Dr. Haitham Sharshar.',
     canonical: SITE_URL + '/services/full-arch-rehabilitation',
   },
   tourismProgram: {
-    title: 'Dental Tourism Program | VIP Concierge & Treatment Plans | HS Clinic Cairo',
+    title: 'Dental Tourism Program | Case Review & Travel Planning | HS Clinic Cairo',
     description:
-      'Complete dental tourism program: VIP airport transfers, luxury accommodation, treatment timelines, and concierge support. Full-service dental travel packages in Cairo, Egypt.',
+      'Dental tourism program in Cairo with records review, treatment timelines, airport transfer coordination, accommodation guidance, and clinician-led planning.',
     canonical: SITE_URL + '/dental-tourism/program',
+  },
+  guarantee: {
+    title: 'Treatment Coverage Terms | HS Clinic Cairo',
+    description:
+      'Review HS Clinic treatment coverage terms for implants, crowns, veneers, full arch prosthetics, aligners, and splint appliances in Cairo.',
+    canonical: SITE_URL + '/guarantee',
+  },
+  privacyPolicy: {
+    title: 'Privacy Policy | HS Clinic Cairo',
+    description:
+      'Learn how HS Clinic handles website contact details, consultation information, cookies, and patient privacy requests.',
+    canonical: SITE_URL + '/privacy-policy',
+  },
+  termsOfService: {
+    title: 'Terms of Service | HS Clinic Cairo',
+    description:
+      'Read the HS Clinic website terms covering online information, preliminary consultations, treatment consent, pricing estimates, and dental tourism coordination.',
+    canonical: SITE_URL + '/terms-of-service',
+  },
+  medicalDisclaimer: {
+    title: 'Medical Disclaimer | HS Clinic Cairo',
+    description:
+      'HS Clinic website content is educational and does not replace a licensed dental examination, diagnosis, treatment plan, or emergency care.',
+    canonical: SITE_URL + '/medical-disclaimer',
   },
 } as const;
 
@@ -118,22 +178,22 @@ export const HOMEPAGE_FAQS = [
   {
     question: 'What dental services does HS Clinic in Cairo offer?',
     answer:
-      'HS Clinic offers dental implants, cosmetic dentistry, TMJ/TMD treatment, digital smile design, full-arch rehabilitation, clear aligners, and Hollywood smile makeovers. All treatments use AI-driven diagnostics and CBCT 3D imaging.',
+      'HS Clinic offers dental implants, cosmetic dentistry, TMJ/TMD screening, digital smile design, full-arch rehabilitation, clear aligners, and smile makeovers using digital records and clinician review.',
   },
   {
-    question: 'How much do dental implants cost in Egypt compared to the US?',
+    question: 'How does dental implant pricing work for international patients?',
     answer:
-      'Dental implants in Egypt typically cost 70-90% less than in the US or UK, while using the same premium materials (Straumann, Nobel Biocare). A single implant at HS Clinic starts from $400-600 compared to $3,000-5,000 in the US.',
+      'Dental implant pricing depends on CBCT findings, bone volume, number of implants, materials, prosthetic design, and visit timing. HS Clinic provides a case-specific estimate after record review.',
   },
   {
     question: 'Does HS Clinic offer dental tourism packages?',
     answer:
-      'Yes. Our dental tourism program includes VIP airport transfers, luxury accommodation arrangements, dedicated treatment coordinators, and comprehensive treatment plans — all designed for international patients visiting Cairo, Egypt.',
+      'Yes. The dental tourism program can include airport transfer coordination, accommodation guidance, a dedicated coordinator, and clinician-reviewed treatment timelines for patients visiting Cairo, Egypt.',
   },
   {
     question: 'What is digital occlusion and why does it matter?',
     answer:
-      'Digital occlusion uses T-Scan sensors, EMG muscle analysis, and CBCT imaging to precisely measure how your teeth come together. This data-driven approach ensures dental work like implants, crowns, and veneers are functionally perfect — not just aesthetically pleasing.',
+      'Digital occlusion uses T-Scan sensors, muscle screening, and CBCT imaging to review how your teeth come together. These records support clinician-led planning for implants, crowns, and veneers.',
   },
   {
     question: 'How do I book an appointment with Dr. Haitham Sharshar?',
@@ -216,7 +276,7 @@ export const LOCAL_BUSINESS_JSONLD = {
   name: 'HS Clinic - Dr. Haitham Sharshar',
   alternateName: 'HS Dental Clinic Cairo',
   description:
-    "The Middle East's premier digital dentistry center specializing in digital occlusion correction, TMJ/TMD neuromuscular treatment, guided dental implant surgery, Digital Smile Design, and clear aligner therapy. Led by Dr. Haitham Sharshar with 15+ years of clinical experience using jaw tracking, EMG, TENS, and Occlusense diagnostics.",
+    'Digital dentistry clinic in Cairo offering digital occlusion review, TMJ/TMD screening, guided dental implant planning, Digital Smile Design, and clear aligner therapy. Led by Dr. Haitham Sharshar with 15+ years of clinical experience using jaw tracking, EMG, TENS, and Occlusense records.',
   url: SITE_URL,
   telephone: '+201101010599',
   address: {
@@ -233,7 +293,7 @@ export const LOCAL_BUSINESS_JSONLD = {
     longitude: 31.3139,
   },
   image: DEFAULT_OG_IMAGE,
-  priceRange: '$$',
+  priceRange: 'Case-specific',
   currenciesAccepted: 'EGP, USD, EUR, GBP',
   paymentAccepted: 'Cash, Credit Card, Bank Transfer',
   openingHoursSpecification: [
@@ -270,19 +330,19 @@ export const LOCAL_BUSINESS_JSONLD = {
       '@type': 'MedicalProcedure',
       name: 'Digitally Guided Dental Implant Surgery',
       description:
-        'Full digital guided implant placement using CBCT 3D imaging, digital surgical guides, and precision-planned prosthetic outcomes.',
+        'Guided implant planning using CBCT 3D imaging, digital surgical guides, and clinician-reviewed prosthetic steps.',
     },
     {
       '@type': 'MedicalProcedure',
       name: 'TMJ/TMD Neuromuscular Treatment',
       description:
-        'Advanced temporomandibular joint disorder treatment using jaw tracking, EMG, TENS, Occlusense pressure sensors, and Neurobite occlusal splints.',
+        'TMJ/TMD screening and splint planning using jaw tracking, EMG records, TENS relaxation records, Occlusense pressure sensors, and Neurobite occlusal splints.',
     },
     {
       '@type': 'MedicalProcedure',
       name: 'Digital Smile Design (DSD)',
       description:
-        'Full digital workflow with pre-simulation before intervention, golden proportion analysis, 3D mockups, and predictable aesthetic outcomes.',
+        'Digital workflow with pre-simulation before intervention, golden proportion references, 3D mockups, and clinician-reviewed aesthetic planning.',
     },
     {
       '@type': 'MedicalProcedure',
@@ -335,7 +395,7 @@ export const ORGANIZATION_JSONLD = {
   },
   image: DEFAULT_OG_IMAGE,
   description:
-    "The Middle East's premier digital dentistry center led by Dr. Haitham Sharshar — specializing in digital occlusion, TMJ/TMD treatment, dental implants, and cosmetic dentistry in Cairo, Egypt.",
+    'Digital dentistry clinic led by Dr. Haitham Sharshar, offering digital occlusion review, TMJ/TMD screening, dental implants, and cosmetic dentistry in Cairo, Egypt.',
   telephone: '+201101010599',
   address: {
     '@type': 'PostalAddress',
@@ -377,7 +437,7 @@ export const DOCTOR_JSONLD = {
   url: SITE_URL + '/about',
   image: DEFAULT_OG_IMAGE,
   description:
-    "Digital Dentistry Consultant and Perio Implantologist with over 15 years of clinical and academic expertise. The Middle East's leading authority in digital occlusion, TMJ/TMD neuromuscular treatment, and Digital Smile Design. Official JMA-Optic+ Digital Occlusion System Certified Trainer for Zebris Co. (Germany) and Official exocad Certified ICTP Trainer for the Middle East. Pioneer of jaw tracking, EMG, and Occlusense-based bite diagnostics in Cairo, Egypt.",
+    'Digital Dentistry Consultant and Perio Implantologist with over 15 years of clinical and academic expertise. Official JMA-Optic+ Digital Occlusion System Certified Trainer for Zebris Co. (Germany) and Official exocad Certified ICTP Trainer for the Middle East, using jaw tracking, EMG, and Occlusense records for clinician-led bite review in Cairo, Egypt.',
   knowsAbout: [
     'Digital Dental Occlusion',
     'Temporomandibular Joint Disorders (TMD)',
@@ -571,7 +631,7 @@ export const TECHNOLOGY_JSONLD = {
   url: SITE_URL + '/technology',
   medicalSpecialty: ['Dentistry', 'Prosthodontics'],
   description:
-    'Cutting-edge dental diagnostic technology at HS Clinic Cairo: CBCT 3D imaging, T-Scan occlusal analysis, jaw tracking (JT-3D), EMG electromyography, TENS neuromuscular therapy, Occlusense digital pressure mapping, Neurobite occlusal splints, and CAD/CAM digital dentistry.',
+    'Digital dental record technology at HS Clinic Cairo: CBCT 3D imaging, T-Scan occlusal analysis, jaw tracking (JT-3D), EMG electromyography, TENS relaxation records, Occlusense digital pressure mapping, Neurobite occlusal splints, and CAD/CAM digital dentistry.',
   availableService: [
     {
       '@type': 'MedicalProcedure',
@@ -591,14 +651,14 @@ export const TECHNOLOGY_JSONLD = {
       '@type': 'MedicalProcedure',
       name: 'EMG Electromyography Diagnostics',
       description:
-        'Surface electromyography measuring electrical activity of masticatory muscles (masseter, temporalis) to diagnose muscle dysfunction and hyperactivity in TMD patients.',
+        'Surface electromyography measuring electrical activity of masticatory muscles (masseter, temporalis) to support clinician review of muscle activity patterns in TMD screening.',
       bodyLocation: 'Masticatory muscles',
     },
     {
       '@type': 'MedicalProcedure',
       name: 'Jaw Tracking (JT-3D)',
       description:
-        'Three-dimensional digital mandibular tracking recording jaw movement patterns, range of motion, velocity, and trajectory deviations for TMJ dysfunction diagnosis.',
+        'Three-dimensional digital mandibular tracking recording jaw movement patterns, range of motion, velocity, and trajectory deviations for clinician-led TMJ review.',
       bodyLocation: 'Mandible and temporomandibular joint',
     },
     {
@@ -619,14 +679,14 @@ export const TECHNOLOGY_JSONLD = {
       '@type': 'MedicalProcedure',
       name: 'Neurobite Occlusal Splint Therapy',
       description:
-        'Advanced neuromuscular occlusal splint (Neurobite) designed from EMG and jaw tracking data to treat TMD, bruxism, and occlusal dysfunction.',
+        'Neuromuscular occlusal splint (Neurobite) designed from EMG and jaw tracking records to support clinician-led TMD, bruxism, and occlusal review.',
       bodyLocation: 'Dental arches and temporomandibular joint',
     },
     {
       '@type': 'MedicalProcedure',
       name: 'CAD/CAM Digital Dentistry',
       description:
-        'Computer-aided design and manufacturing for same-day restorations, crowns, veneers, and prosthetics with sub-millimeter accuracy.',
+        'Computer-aided design and manufacturing for case-dependent restorations, crowns, veneers, and prosthetics supported by digital records.',
       bodyLocation: 'Teeth',
     },
   ],
@@ -639,7 +699,7 @@ export const DSD_JSONLD = {
   name: 'Luxarian Scientific Digital Smile Design',
   url: SITE_URL + '/digital-smile-design',
   description:
-    'A precision cosmetic planning procedure using golden proportion analysis, 3D mockups, and digital facial mapping to design the perfect smile.',
+    'A cosmetic planning procedure using golden proportion references, 3D mockups, and digital facial mapping to support clinician-reviewed smile design.',
   procedureType: 'http://schema.org/NoninvasiveProcedure',
   howPerformed:
     'Video analysis → 2D blueprint design → 3D mockup → final try-in with golden proportion verification.',
@@ -659,7 +719,7 @@ export const DENTAL_IMPLANTS_JSONLD = {
   name: 'Digitally Guided Dental Implant Surgery',
   url: SITE_URL + '/services',
   description:
-    'Full digital guided dental implant placement at HS Clinic Cairo. CBCT 3D imaging, digital surgical guide fabrication, and precision-planned prosthetic integration for single implants, All-on-4, and full-arch rehabilitation.',
+    'Guided dental implant planning at HS Clinic Cairo. CBCT 3D imaging, digital surgical guide fabrication, and clinician-reviewed prosthetic integration for single implants, All-on-4, and full-arch rehabilitation.',
   procedureType: 'http://schema.org/SurgicalProcedure',
   howPerformed:
     'CBCT 3D scan → digital implant planning → surgical guide 3D printing → guided implant placement → immediate or delayed prosthetic loading.',
@@ -679,7 +739,7 @@ export const TMD_TREATMENT_JSONLD = {
   alternateName: 'Temporomandibular Joint Disorder Treatment',
   url: SITE_URL + '/services',
   description:
-    'The most advanced TMD/TMJ treatment protocol in the Middle East. Dr. Haitham Sharshar uses a comprehensive neuromuscular diagnostic approach combining jaw tracking (JT-3D), surface EMG electromyography, TENS transcutaneous electrical nerve stimulation, Occlusense digital pressure mapping, and custom Neurobite occlusal splint therapy to diagnose and treat temporomandibular joint disorders, chronic jaw pain, bruxism, and occlusal dysfunction.',
+    'TMJ/TMD screening and bite review workflow in Cairo. Dr. Haitham Sharshar uses jaw tracking (JT-3D), surface EMG electromyography, TENS relaxation records, Occlusense digital pressure mapping, and custom Neurobite splint planning as clinician-reviewed decision support for jaw pain, bruxism, and occlusal concerns.',
   procedureType: 'http://schema.org/NoninvasiveProcedure',
   howPerformed:
     'Step 1: Jaw tracking (JT-3D) records mandibular movement patterns → Step 2: Surface EMG measures masticatory muscle activity → Step 3: TENS relaxes muscles to neuromuscular rest position → Step 4: Occlusense maps bite force distribution → Step 5: Custom Neurobite occlusal splint fabricated from collected data → Step 6: Progressive occlusal adjustment and monitoring.',
@@ -700,7 +760,7 @@ export const TMD_TREATMENT_JSONLD = {
       '@type': 'MedicalDevice',
       name: 'Surface EMG (Electromyography)',
       description:
-        'Non-invasive electromyography system measuring electrical activity of masseter and temporalis muscles for TMD diagnosis.',
+        'Non-invasive electromyography system measuring electrical activity of masseter and temporalis muscles for TMD screening review.',
     },
     {
       '@type': 'MedicalDevice',
@@ -718,7 +778,7 @@ export const TMD_TREATMENT_JSONLD = {
       '@type': 'MedicalDevice',
       name: 'Neurobite Occlusal Splint',
       description:
-        'Custom-designed neuromuscular occlusal splint fabricated from patient-specific EMG and jaw tracking data for TMJ therapy and bruxism treatment.',
+        'Custom-designed neuromuscular occlusal splint fabricated from patient-specific EMG and jaw tracking records to support TMJ therapy and bruxism care.',
     },
   ],
 };
@@ -751,7 +811,7 @@ export const DENTAL_TOURISM_JSONLD = {
   name: 'HS Clinic Dental Tourism Program — Cairo, Egypt',
   url: SITE_URL + '/dental-tourism',
   description:
-    'Premium dental tourism in Cairo, Egypt. Save 70-90% vs USA/UK prices on dental implants, cosmetic dentistry, and full-arch rehabilitation. German-standard technology, VIP concierge service, free virtual consultation. Led by Dr. Haitham Sharshar.',
+    'Dental tourism planning in Cairo, Egypt for implants, cosmetic dentistry, and full-arch rehabilitation with records review, travel coordination, and clinician-led treatment planning. Led by Dr. Haitham Sharshar.',
   medicalSpecialty: 'Dentistry',
   areaServed: [
     { '@type': 'Country', name: 'United States' },
@@ -768,7 +828,7 @@ export const DENTAL_TOURISM_JSONLD = {
       '@type': 'MedicalProcedure',
       name: 'Dental Implants for International Patients',
       description:
-        'Digitally guided dental implant surgery with travel logistics support and VIP concierge.',
+        'Digitally guided dental implant surgery with travel coordination and clinician-reviewed planning.',
     },
     {
       '@type': 'MedicalProcedure',
@@ -785,24 +845,19 @@ export const DENTAL_TOURISM_JSONLD = {
   ],
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
-    name: 'Dental Tourism Packages',
+    name: 'Dental Tourism Planning Options',
     itemListElement: [
       {
         '@type': 'Offer',
-        name: 'Dental Implant Package',
+        name: 'Dental Implant Case Review',
         description:
-          'Single dental implant with abutment and crown, including consultation and follow-up.',
-        priceCurrency: 'USD',
-        price: '450',
-        priceValidUntil: '2027-12-31',
+          'Records review for single implant planning, visit timing, prosthetic needs, and follow-up steps.',
       },
       {
         '@type': 'Offer',
-        name: 'All-on-4 Full Arch Package',
-        description: 'Full arch rehabilitation with 4 implants and fixed prosthesis.',
-        priceCurrency: 'USD',
-        price: '5500',
-        priceValidUntil: '2027-12-31',
+        name: 'Full-Arch Rehabilitation Case Review',
+        description:
+          'Records review for full arch rehabilitation planning, expected visits, temporary teeth eligibility, and final prosthetic steps.',
       },
     ],
   },
@@ -825,7 +880,7 @@ export const WEBSITE_JSONLD = {
     'query-input': 'required name=search_term_string',
   },
   description:
-    "Official website of HS Clinic — Dr. Haitham Sharshar. The Middle East's leading center for digital occlusion, TMD treatment, dental implants, and Digital Smile Design in Cairo, Egypt.",
+    'Official website of HS Clinic - Dr. Haitham Sharshar. Digital occlusion review, TMD screening, dental implants, and Digital Smile Design in Cairo, Egypt.',
 };
 
 /** JSON-LD: Gallery page — ImageGallery with ItemList */

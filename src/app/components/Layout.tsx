@@ -261,7 +261,7 @@ export function Layout() {
               />
             </div>
             <p className="mb-6 max-w-sm font-light text-gray-400">
-              Pioneering the future of digital dentistry in the Middle East. Precision, technology,
+              Digital dentistry in the Middle East, combining precision, technology,
               and art combined.
             </p>
             {settings.socialLinks.length > 0 && (
@@ -351,11 +351,11 @@ export function Layout() {
               Medical Disclaimer
             </Link>
             <Link to="/guarantee" className="hover:text-gold-400 text-gray-500 transition-colors">
-              Guarantee
+              Coverage Terms
             </Link>
           </div>
           <p className="text-center font-mono text-xs text-gray-500">
-            &copy; {new Date().getFullYear()} Dr. Haitham Sharshar. SYSTEM: ONLINE.
+            &copy; {new Date().getFullYear()} Dr. Haitham Sharshar. Cairo dental clinic.
           </p>
         </div>
       </footer>

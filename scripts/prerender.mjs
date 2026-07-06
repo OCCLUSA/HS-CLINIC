@@ -21,6 +21,12 @@ const staticRoutes = [
   '/technology',
   '/digital-smile-design',
   '/dental-tourism',
+  '/dental-tourism/gulf',
+  '/dental-tourism/saudi-arabia',
+  '/dental-tourism/uae',
+  '/dental-tourism/europe',
+  '/dental-tourism/uk',
+  '/dental-tourism/germany',
   '/dental-tourism/program',
   '/gallery',
   '/contact',
@@ -30,6 +36,7 @@ const staticRoutes = [
   '/services/full-arch-rehabilitation',
   '/guarantee',
   '/privacy-policy',
+  '/terms-of-service',
   '/medical-disclaimer',
 ];
 

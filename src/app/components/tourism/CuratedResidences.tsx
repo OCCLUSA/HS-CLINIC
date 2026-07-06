@@ -32,7 +32,7 @@ const DEFAULT_RESIDENCES = [
     subtitle: 'First Residence, Giza',
     stars: 5,
     description:
-      'Iconic luxury overlooking the Pyramids. Complimentary airport transfers for our patients.',
+      'Pyramid-area accommodation option that can be coordinated with airport transfer planning.',
     features: ['Pyramid Views', 'Private Balcony', 'Fine Dining'],
   },
   {
@@ -95,8 +95,8 @@ export function CuratedResidences({ residences }: CuratedResidencesProps) {
             transition={{ delay: 0.2 }}
             className="mx-auto max-w-2xl text-lg text-gray-400"
           >
-            We partner with Cairo&apos;s finest luxury hotels to ensure your stay is as exceptional
-            as your treatment.
+            We help coordinate selected Cairo hotel options so your stay is as organized as your
+            treatment.
           </motion.p>
         </div>
 
@@ -175,7 +175,7 @@ export function CuratedResidences({ residences }: CuratedResidencesProps) {
           viewport={{ once: true }}
           className="mt-10 text-center text-sm text-gray-500"
         >
-          Special rates available exclusively for HS Clinic patients. Ask during your consultation.
+          Accommodation options and transfer timing can be discussed during your case review.
         </motion.p>
       </div>
     </section>

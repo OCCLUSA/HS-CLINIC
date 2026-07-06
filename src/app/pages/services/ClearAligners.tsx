@@ -6,7 +6,6 @@ import { ChevronRight, ArrowRight, CheckCircle2 } from 'lucide-react';
 import {
   SEO,
   SITE_NAME,
-  SITE_URL,
   DEFAULT_OG_IMAGE,
   CLEAR_ALIGNERS_JSONLD,
   buildBreadcrumbJsonLd,
@@ -17,9 +16,9 @@ import { urlFor } from '@/lib/sanityClient';
 import { MedicallyReviewedBadge } from '@/app/components/MedicallyReviewedBadge';
 
 const breadcrumbs = buildBreadcrumbJsonLd([
-  { name: 'Home', url: SITE_URL + '/' },
-  { name: 'Services', url: SITE_URL + '/services' },
-  { name: 'Clear Aligners', url: SITE_URL + '/services/clear-aligners' },
+  { name: 'Home', path: '/' },
+  { name: 'Services', path: '/services' },
+  { name: 'Clear Aligners', path: '/services/clear-aligners' },
 ]);
 
 export default function ClearAligners() {
@@ -151,15 +150,15 @@ export default function ClearAligners() {
           <p>
             Most clear aligner treatments focus solely on tooth alignment — making teeth straight.
             Dr. Sharshar goes further by integrating digital occlusal analysis into every aligner
-            case. Using T-Scan digital bite analysis and jaw tracking, he ensures that your final
-            tooth positions create a functionally optimized bite, reducing the risk of TMJ problems,
-            premature tooth wear, and orthodontic relapse.
+            case. T-Scan digital bite analysis and jaw tracking support review of final tooth
+            positions, bite function, tooth wear risk, and jaw comfort during clinician-led
+            planning.
           </p>
           <p>
             As an Official exocad Certified ICTP Trainer for the Middle East, Dr. Sharshar maintains
-            elite quality control standards in every digital dentistry workflow. Each aligner tray
-            is designed and verified within a fully digital pipeline, ensuring sub-millimeter
-            accuracy in tooth movement and predictable treatment outcomes.
+            quality control standards in every digital dentistry workflow. Each aligner tray is
+            designed and reviewed within a digital pipeline to support controlled tooth movement and
+            treatment planning.
           </p>
         </div>
       </section>
@@ -207,7 +206,7 @@ export default function ClearAligners() {
             <h3 className="font-semibold text-white transition-colors group-hover:text-amber-400">
               TMJ/TMD Treatment
             </h3>
-            <p className="mt-2 text-sm text-gray-400">Ensure your bite is functionally optimized</p>
+            <p className="mt-2 text-sm text-gray-400">Review bite function during planning</p>
           </Link>
           <Link
             to="/services/dental-implants"

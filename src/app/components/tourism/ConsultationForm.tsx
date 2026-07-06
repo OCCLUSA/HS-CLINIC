@@ -66,13 +66,14 @@ export function ConsultationForm() {
           {/* Right: Form */}
           <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }}>
             <h2 className="text-gold-400 mb-3 font-mono text-sm tracking-[0.3em] uppercase">
-              FREE VIRTUAL CONSULTATION
+              VIRTUAL CASE REVIEW
             </h2>
             <h3 className="mb-2 font-serif text-3xl text-white md:text-4xl">
               Start Your Journey Today
             </h3>
             <p className="mb-8 text-sm text-gray-400">
-              Send us your case details and receive a personalized treatment plan within 24 hours.
+              Send your case details so the clinic can review your records and explain next planning
+              steps.
             </p>
 
             {status === 'sent' ? (
@@ -89,7 +90,7 @@ export function ConsultationForm() {
               <form
                 onSubmit={handleSubmit}
                 className="space-y-4"
-                aria-label="Free virtual consultation request"
+                aria-label="Virtual case review request"
                 name="consultation"
                 method="POST"
                 data-netlify="true"
@@ -233,7 +234,7 @@ export function ConsultationForm() {
                   ) : (
                     <Send className="h-5 w-5" />
                   )}
-                  {status === 'sending' ? 'Sending…' : 'Get Free Treatment Plan'}
+                  {status === 'sending' ? 'Sending…' : 'Send Case Details'}
                 </button>
               </form>
             )}

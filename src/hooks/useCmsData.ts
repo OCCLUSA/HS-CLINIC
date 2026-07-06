@@ -36,10 +36,10 @@ export { useSanityImage };
    ================================================================ */
 
 const DEFAULT_HERO = {
-  title: 'Architect Your Perfect Occlusion',
+  title: 'Plan Your Confident Smile',
   subtitle:
-    'Advanced bio-digital algorithms for TMJ analysis and smile reconstruction. Experience the future of dentistry with 0.01mm precision.',
-  ctaText: 'INITIATE CONSULTATION',
+    'Dental implants, smile design, crowns, and bite care planned with digital records, clinical examination, and clinician review.',
+  ctaText: 'Book a Consultation',
   ctaLink: '/contact',
 };
 
@@ -111,7 +111,8 @@ const DEFAULT_SERVICES: CmsService[] = [
   {
     _id: 'default-6',
     title: 'Digital Planning',
-    description: 'AI-assisted treatment simulation for predictable, non-invasive outcomes.',
+    description:
+      'AI-assisted treatment simulation used as planning support before clinician review.',
     icon: 'BrainCircuit',
   },
 ];
@@ -137,6 +138,19 @@ export function useServices() {
   return { services, loading, error };
 }
 
+/** Fetch a single service document by slug for the dynamic service detail page */
+export function useServiceBySlug(slug: string) {
+  const { data, loading, error } = useSanityQuery<SanityService[]>(
+    `*[_type == "service" && slug.current == $slug][0...1] {
+      _id, title, description, icon, image, imageAlt,
+      "slug": slug.current
+    }`,
+    { slug }
+  );
+  const service = data?.[0] ?? null;
+  return { service, loading, error };
+}
+
 /* ================================================================
    TESTIMONIALS
    ================================================================ */
@@ -151,32 +165,7 @@ export interface CmsTestimonial {
   image?: SanityImage;
 }
 
-const DEFAULT_TESTIMONIALS: CmsTestimonial[] = [
-  {
-    _id: 'default-t1',
-    name: 'Sarah Jenkins',
-    country: 'United Kingdom',
-    countryFlag: '🇬🇧',
-    text: 'Dr. Sharshar transformed not just my smile, but my confidence. The entire team was professional, and the clinic feels like a 5-star hotel.',
-    stars: 5,
-  },
-  {
-    _id: 'default-t2',
-    name: 'Michael Ross',
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    text: 'The dental tourism package was seamless. I was picked up from the airport and treated like royalty. The results are beyond my expectations.',
-    stars: 5,
-  },
-  {
-    _id: 'default-t3',
-    name: 'Elena Silva',
-    country: 'Brazil',
-    countryFlag: '🇧🇷',
-    text: "Incredible attention to detail. Dr. Haitham is truly an artist. The veneers look so natural, nobody believes they aren't my real teeth.",
-    stars: 5,
-  },
-];
+const DEFAULT_TESTIMONIALS: CmsTestimonial[] = [];
 
 export function useTestimonials() {
   const { data, loading, error } = useSanityQuery<SanityTestimonial[]>(
@@ -261,46 +250,46 @@ const DEFAULT_PRICING: CmsPricing[] = [
   {
     _id: 'dp1',
     treatment: 'Single Implant',
-    egyptPrice: '$350–600',
-    usaPrice: '$3,000–5,000',
-    ukPrice: '$2,500–4,000',
-    turkeyPrice: '$800–1,500',
-    hungaryPrice: '$900–1,800',
-    uaePrice: '$2,000–3,500',
-    saving: 'Up to 90%',
+    egyptPrice: 'Case estimate after records review',
+    usaPrice: 'Use your local quote for comparison',
+    ukPrice: 'Use your local quote for comparison',
+    turkeyPrice: 'Local quote varies',
+    hungaryPrice: 'Local quote varies',
+    uaePrice: 'Local quote varies',
+    saving: 'Case-by-case review',
   },
   {
     _id: 'dp2',
     treatment: 'All-on-4',
-    egyptPrice: '$3,500–5,000',
-    usaPrice: '$20,000–30,000',
-    ukPrice: '$15,000–25,000',
-    turkeyPrice: '$6,000–10,000',
-    hungaryPrice: '$7,000–12,000',
-    uaePrice: '$12,000–18,000',
-    saving: 'Up to 85%',
+    egyptPrice: 'Case estimate after records review',
+    usaPrice: 'Use your local quote for comparison',
+    ukPrice: 'Use your local quote for comparison',
+    turkeyPrice: 'Local quote varies',
+    hungaryPrice: 'Local quote varies',
+    uaePrice: 'Local quote varies',
+    saving: 'Case-by-case review',
   },
   {
     _id: 'dp3',
     treatment: 'Veneer (per tooth)',
-    egyptPrice: '$150–300',
-    usaPrice: '$1,000–2,500',
-    ukPrice: '$800–1,500',
-    turkeyPrice: '$250–500',
-    hungaryPrice: '$300–600',
-    uaePrice: '$600–1,200',
-    saving: 'Up to 88%',
+    egyptPrice: 'Case estimate after records review',
+    usaPrice: 'Use your local quote for comparison',
+    ukPrice: 'Use your local quote for comparison',
+    turkeyPrice: 'Local quote varies',
+    hungaryPrice: 'Local quote varies',
+    uaePrice: 'Local quote varies',
+    saving: 'Case-by-case review',
   },
   {
     _id: 'dp4',
     treatment: 'Bone Graft',
-    egyptPrice: '$200–400',
-    usaPrice: '$2,000–3,000',
-    ukPrice: '$1,500–2,500',
-    turkeyPrice: '$400–800',
-    hungaryPrice: '$500–1,000',
-    uaePrice: '$1,200–2,000',
-    saving: 'Up to 87%',
+    egyptPrice: 'Case estimate after records review',
+    usaPrice: 'Use your local quote for comparison',
+    ukPrice: 'Use your local quote for comparison',
+    turkeyPrice: 'Local quote varies',
+    hungaryPrice: 'Local quote varies',
+    uaePrice: 'Local quote varies',
+    saving: 'Case-by-case review',
   },
 ];
 
@@ -343,25 +332,25 @@ const DEFAULT_FAQS: CmsFaq[] = [
     _id: 'df1',
     question: 'Is dental treatment in Egypt safe?',
     answer:
-      'Absolutely. Our clinic uses German and Swiss implant systems, FDA-approved materials, and follows international sterilization protocols. Dr. Sharshar is DSD-certified and has 20+ years of experience.',
+      'HS Clinic follows strict sterilization and infection-control protocols. Materials, implant systems, and procedure steps are reviewed with each patient before treatment.',
   },
   {
     _id: 'df2',
-    question: 'How much can I save compared to the US or UK?',
+    question: 'How are treatment costs compared before travel?',
     answer:
-      'Patients typically save 70–90% on major procedures like implants, veneers, and full-mouth rehabilitation while receiving the same quality materials and care.',
+      'Costs are reviewed case by case after dental records, CBCT needs, materials, travel timing, and visit sequence are clear.',
   },
   {
     _id: 'df3',
     question: 'What is included in the dental tourism package?',
     answer:
-      'Our packages include airport pick-up, luxury accommodation assistance, all clinical procedures, post-operative care, and a dedicated patient coordinator throughout your stay.',
+      'The travel plan can include airport transfer coordination, accommodation guidance, clinical appointments, post-operative instructions, and a dedicated patient coordinator.',
   },
   {
     _id: 'df4',
     question: 'How long do I need to stay in Cairo?',
     answer:
-      'Most treatments require 5–10 days. We provide a detailed timeline during your free virtual consultation so you can plan your trip with confidence.',
+      'Visit length depends on the procedure, healing needs, and whether final prosthetics require a second visit. A timeline is provided after record review.',
   },
 ];
 
@@ -492,7 +481,12 @@ const DEFAULT_ABOUT_SETTINGS = {
     { value: '5K+', label: 'Cases Logged' },
     { value: '100%', label: 'Digital Workflow' },
   ],
-  certifications: ['DSD CERTIFIED', 'T-SCAN MASTER'],
+  certifications: [
+    'DSD CERTIFIED',
+    'T-SCAN MASTER',
+    'Official JMA-Optic+ Digital Occlusion System Certified Trainer — Zebris Medical GmbH',
+    'Official exocad Certified ICTP Trainer for the Middle East',
+  ],
 };
 
 export function useAboutSettings() {
@@ -578,40 +572,41 @@ export function useTechnologySettings() {
 const DEFAULT_HOMEPAGE_SETTINGS = {
   features: [
     {
-      title: 'AI Diagnostics',
-      description: 'Advanced machine learning protocols to map your perfect bite pattern.',
+      title: 'Digital Records Review',
+      description: 'Photos, scans, and bite records help the clinician understand your case.',
       iconName: 'BrainCircuit',
     },
     {
-      title: '3D Jaw Tracking',
-      description: 'Real-time kinetic analysis of mandibular movement in 6 degrees of freedom.',
+      title: 'Jaw Movement Review',
+      description: 'Movement records support bite and TMJ screening during clinician review.',
       iconName: 'Orbit',
     },
     {
-      title: 'EMG Biofeedback',
-      description: 'neuromuscular monitoring to ensure muscle harmony and release tension.',
+      title: 'Muscle Activity Screening',
+      description: 'Muscle readings can support the examination when jaw tension is a concern.',
       iconName: 'Activity',
     },
     {
-      title: 'Micro-Analysis',
-      description: 'Sub-millimeter precision for occlusal contact points and force distribution.',
+      title: 'Bite Contact Review',
+      description: 'Digital bite records help review contact balance before treatment planning.',
       iconName: 'Microscope',
     },
     {
-      title: 'Total Protection',
-      description: 'Comprehensive TMJ health preservation using digital splint therapy.',
+      title: 'TMJ Screening Support',
+      description: 'TMJ findings are reviewed as screening information, not an AI-only diagnosis.',
       iconName: 'ShieldCheck',
     },
     {
-      title: 'Laser Precision',
-      description: 'Non-invasive adjustments using state-of-the-art dental laser systems.',
+      title: 'Planned Dental Visits',
+      description:
+        'Treatment timing is discussed clearly before implants, crowns, or smile design.',
       iconName: 'Zap',
     },
   ],
-  ctaTitle: 'Ready to Upgrade?',
+  ctaTitle: 'Ready to plan your visit?',
   ctaSubtitle:
-    'Your smile deserves the precision of the future. Initialize your transformation today.',
-  ctaButtonText: 'START SYSTEM ENGINE',
+    'Start with a consultation. The clinic reviews your concern, records, and timing before treatment decisions are made.',
+  ctaButtonText: 'Book a consultation',
 };
 
 export function useHomepageSettings() {
@@ -691,17 +686,17 @@ const DEFAULT_DSD_SETTINGS = {
     { title: '3D Mockup', description: 'Hyper-fashion, tooth and scanner.', iconName: 'Box' },
     {
       title: 'Final Try-in',
-      description: 'Perfects mirror to perfect your smile.',
+      description: 'Review the planned smile with the clinician before final treatment steps.',
       iconName: 'Smile',
     },
   ],
   goldenTitle: 'Golden\nProportion',
   goldenDescription:
-    "Every smile we design follows the timeless principles of the Golden Ratio — the same mathematical harmony found in nature's most beautiful structures. Precision down to 0.01mm.",
+    'Golden Ratio planning is used as a visual reference, then adjusted through clinician review, facial photos, bite records, and patient preferences.',
   goldenStats: [
     { value: '1.618', label: 'Ratio' },
-    { value: '0.01mm', label: 'Precision' },
-    { value: '98.7%', label: 'Symmetry' },
+    { value: 'Photo', label: 'Review' },
+    { value: 'Bite', label: 'Records' },
   ],
   goldenImageAlt: 'Golden proportion dental analysis overlay',
   goldenCtaText: 'Start Your Design',
@@ -710,7 +705,7 @@ const DEFAULT_DSD_SETTINGS = {
       number: '1',
       title: 'DIGITAL CAPTURE & ANALYSIS',
       description:
-        'We utilize advanced 3D imaging to map your unique facial structure and dental anatomy with micron-level accuracy.',
+        'We use facial photos, scans, and bite records to support clinician-led smile planning.',
       iconName: 'ScanLine',
     },
     {
@@ -769,38 +764,38 @@ export function useDsdSettings() {
 // ─── Tourism Page Settings ────────────────────────────────────────
 const DEFAULT_TOURISM = {
   heroTagline: 'DENTAL TOURISM // CAIRO, EGYPT',
-  heroTitle: 'World-Class Implants.',
+  heroTitle: 'Planned Implant Care.',
   heroTitleAccent: 'A Majestic Journey.',
   heroSubtitle:
-    'Your new smile awaits in the cradle of civilization. Premium German technology, unbeatable value, unforgettable experience.',
-  heroCtaText: 'Start Your Journey — Free Quote',
+    'Plan dental treatment in Cairo with records review, digital planning, travel coordination, and clinician-led treatment steps.',
+  heroCtaText: 'Request Case Review',
   timelineSteps: [
     {
       step: '01',
       title: 'Virtual Consultation',
       description:
-        'Share your smile photos. Get a free personalized treatment plan and cost estimate from Dr. Sharshar — all from your home.',
+        'Share dental records and photos so Dr. Sharshar can review your case and outline next clinical steps before travel.',
       iconName: 'Video',
     },
     {
       step: '02',
-      title: 'VIP Arrival & Tourism',
+      title: 'Arrival & Travel Coordination',
       description:
-        'We handle airport transfers, recommend 5-star hotels, and plan your Cairo experience — Pyramids, Nile cruises, Khan el-Khalili.',
+        'We help coordinate airport transfers, accommodation options, and Cairo activities around your treatment schedule.',
       iconName: 'Plane',
     },
     {
       step: '03',
       title: 'The Procedure at HS Clinic',
       description:
-        'Premium German implants placed with digital precision. Same-day results. Pain-free protocols. International safety standards.',
+        'Implant and restorative steps are planned from CBCT records, clinical examination, bite review, and case-dependent healing needs.',
       iconName: 'Shield',
     },
     {
       step: '04',
       title: 'Fly Home with Confidence',
       description:
-        'Complete aftercare guide, lifetime warranty on implants, and a video follow-up schedule. Your new smile travels with you.',
+        'You receive aftercare instructions, written coverage conditions where applicable, and a follow-up schedule for review after travel.',
       iconName: 'BookOpen',
     },
   ],
@@ -808,19 +803,19 @@ const DEFAULT_TOURISM = {
   fusionTitle: 'Precision Engineering in a Timeless City',
   vipFeatures: [
     {
-      title: 'Private Terminal Access',
+      title: 'Airport Greeting',
       description:
-        'Your concierge awaits tarmac-side. Skip the lines — step off the plane and into luxury.',
+        'A coordinator can meet you after arrival and guide the transfer plan to your hotel or clinic visit.',
       iconName: 'Plane',
     },
     {
-      title: 'Luxury Transfer',
+      title: 'Comfort Transfer',
       description:
-        'Chauffeured in a premium vehicle from the airport directly to your 5-star accommodation.',
+        'Coordinated vehicle transfer from the airport to your accommodation or first planned appointment.',
       iconName: 'Car',
     },
     {
-      title: 'Personal Concierge (24/7)',
+      title: 'Personal Coordinator',
       description:
         'Dedicated multilingual coordinator handles everything — scheduling, translations, and local guidance.',
       iconName: 'Clock',
@@ -846,26 +841,26 @@ const DEFAULT_TOURISM = {
   ],
   vipStats: [
     { value: '500+', label: 'INTERNATIONAL PATIENTS' },
-    { value: '24/7', label: 'CONCIERGE ACCESS' },
+    { value: 'WhatsApp', label: 'COORDINATION CHANNEL' },
     { value: '15+', label: 'COUNTRIES SERVED' },
   ],
   whyClinicReasons: [
     {
       title: 'Fully Digital Workflow',
       description:
-        '3D-guided surgery, digital occlusion analysis & in-house 3D printing for 0.01mm precision.',
+        '3D-guided surgery, digital bite review, in-house planning, and 3D printing support clinician-led treatment planning.',
       iconName: 'Cpu',
     },
     {
-      title: 'International Sterilization',
+      title: 'Sterilization Protocols',
       description:
-        'Strict infection control protocols exceeding WHO standards. Near-zero infection risk.',
+        'Strict infection control protocols are followed and discussed clearly before treatment.',
       iconName: 'Shield',
     },
     {
-      title: 'Lifetime Implant Warranty',
+      title: 'Written Coverage Terms',
       description:
-        'Written lifetime guarantee on all German/Swiss implant systems (Straumann, Nobel Biocare).',
+        'Written coverage conditions are reviewed for eligible implant and prosthetic components before treatment.',
       iconName: 'Award',
     },
     {
@@ -874,15 +869,15 @@ const DEFAULT_TOURISM = {
       iconName: 'Globe',
     },
     {
-      title: 'Neuro-Occlusion Specialist',
+      title: 'Digital Bite Planning',
       description:
-        "Dr. Sharshar's MSc in Perio-Implantology + EMG jaw-tracking ensures functional perfection.",
+        'Bite records, muscle screening, and jaw movement review can support clinician-led planning.',
       iconName: 'HeartPulse',
     },
     {
-      title: 'VIP Travel Concierge',
+      title: 'Travel Coordination',
       description:
-        'Airport pickup, 5-star hotel booking, clinic transfers & curated Cairo sightseeing tours.',
+        'Airport transfer coordination, accommodation guidance, clinic visits, and optional Cairo sightseeing support.',
       iconName: 'Plane',
     },
   ],
@@ -899,7 +894,7 @@ const DEFAULT_TOURISM = {
       subtitle: 'First Residence, Giza',
       stars: 5,
       description:
-        'Iconic luxury overlooking the Pyramids. Complimentary airport transfers for our patients.',
+        'Pyramid-area accommodation option that can be coordinated with airport transfer planning.',
       features: ['Pyramid Views', 'Private Balcony', 'Fine Dining'],
     },
     {
@@ -918,7 +913,7 @@ const DEFAULT_TOURISM = {
       features: ['Historic Palace', 'Garden Oasis', 'Pyramid Gate'],
     },
   ],
-  bottomCtaText: 'Book Free Consultation',
+  bottomCtaText: 'Request Case Review',
 };
 
 export function useTourismSettings() {
@@ -1030,22 +1025,68 @@ export interface ServicePillarData {
   seoDescription?: string;
 }
 
+const PATIENT_PROMISE_PATTERNS = [
+  /\bworld[-\s]class\b/i,
+  /\bpermanent teeth\b/i,
+  /\bfree consultation\b/i,
+  /\bexact planned\b/i,
+  /\blifetime\b/i,
+  /\bzero guesswork\b/i,
+  /\bperfectly\b/i,
+  /\belite\b/i,
+  /\bpremium\b/i,
+  /\bunmatched\b/i,
+  /\bhighly competitive\b/i,
+  /\bsuperior technology\b/i,
+  /\bsame[-\s]day\b/i,
+  /\bmost advanced\b/i,
+  /\bmost comprehensive\b/i,
+  /\bonly facility\b/i,
+  /\bdefinitive diagnosis\b/i,
+  /\bpredictable results\b/i,
+  /\bsafest\b/i,
+  /\bno additional cost\b/i,
+  /[$€£]\s?\d/,
+  /\b\d+\s?%\s?(saving|savings|off|less|cheaper|lower)\b/i,
+  /\b(60|70)[–-](70|85|90)\b/,
+];
+
+export function hasPatientUnsafeCopy(value: unknown): boolean {
+  if (typeof value === 'string') {
+    return PATIENT_PROMISE_PATTERNS.some((pattern) => pattern.test(value));
+  }
+
+  if (Array.isArray(value)) {
+    return value.some((item) => hasPatientUnsafeCopy(item));
+  }
+
+  if (value && typeof value === 'object') {
+    return Object.values(value).some((item) => hasPatientUnsafeCopy(item));
+  }
+
+  return false;
+}
+
+function safeCmsValue<T>(candidate: T | null | undefined, fallback: T): T {
+  if (candidate == null || hasPatientUnsafeCopy(candidate)) return fallback;
+  return candidate;
+}
 const PILLAR_DEFAULTS: Record<string, ServicePillarData> = {
   'dental-implants': {
     heroTagline: '',
     heroTitle: 'Digitally Guided Dental Implant Surgery in Cairo',
     heroSubtitle:
-      'Dr. Haitham Sharshar performs digitally guided dental implant surgery using CBCT 3D imaging, computer-designed surgical guides, and precision-planned prosthetic outcomes. Whether you need a single implant, All-on-4 full-arch rehabilitation, or complex multi-implant reconstruction, every case is planned with sub-millimeter digital accuracy at HS Clinic, Cairo, Egypt.',
+      'Dr. Haitham Sharshar performs digitally guided dental implant surgery using CBCT 3D imaging, computer-designed surgical guides, and clinician-reviewed prosthetic planning. Whether you need a single implant, All-on-4 full-arch rehabilitation, or complex multi-implant reconstruction, every case is planned from digital records at HS Clinic, Cairo, Egypt.',
     faqs: [
       {
         question: 'How much do dental implants cost in Cairo compared to the USA or UK?',
         answer:
-          'A single dental implant at HS Clinic costs approximately $450 USD, compared to $3,000\u2013$5,000 in the USA or \u00a32,000\u2013\u00a33,500 in the UK. Full-arch All-on-4 rehabilitation starts at $5,500 versus $20,000\u2013$30,000 in Western countries \u2014 a savings of 70\u201390%.',
+          'Implant costs are case-specific and depend on CBCT findings, bone grafting needs, implant number, prosthetic material, and visit sequence. HS Clinic provides an estimate after record review.',
       },
       {
         question: 'What makes digitally guided implant surgery safer than traditional placement?',
         answer:
-          'Dr. Haitham Sharshar uses CBCT 3D imaging to create a complete virtual model of your jaw, then digitally plans the exact implant position, angle, and depth. A 3D-printed surgical guide ensures the implant is placed with sub-millimeter accuracy, avoiding nerves and sinus cavities while maximizing bone contact for faster healing.',
+          'Dr. Haitham Sharshar uses CBCT 3D imaging to create a virtual model of your jaw, then plans implant position, angle, and depth. A 3D-printed surgical guide supports planned placement while the clinician accounts for anatomy such as nerves, sinuses, bone volume, and prosthetic needs.',
       },
       {
         question: 'Am I a candidate for dental implants if I have bone loss?',
@@ -1093,12 +1134,12 @@ const PILLAR_DEFAULTS: Record<string, ServicePillarData> = {
       {
         name: 'Surgical Guide',
         description:
-          '3D-printed guide manufactured from your digital plan for sub-millimeter accuracy.',
+          '3D-printed guide manufactured from your digital plan to support guided implant placement.',
       },
       {
         name: 'Guided Placement',
         description:
-          'Minimally invasive implant surgery using the printed guide for exact positioning.',
+          'Implant surgery using the printed guide to help transfer the planned implant position into surgery.',
       },
       {
         name: 'Prosthetic Delivery',
@@ -1106,14 +1147,14 @@ const PILLAR_DEFAULTS: Record<string, ServicePillarData> = {
           'Custom-designed crown, bridge, or full-arch prosthesis delivered after osseointegration.',
       },
     ],
-    ctaPrimary: 'Book Free Consultation',
+    ctaPrimary: 'Request Case Review',
     ctaSecondary: 'Dental Tourism Packages',
   },
   'tmj-tmd-treatment': {
-    heroTagline: "Middle East's Most Advanced TMD Center",
-    heroTitle: 'Advanced TMJ/TMD Neuromuscular Treatment',
+    heroTagline: 'TMD Records and Bite Review Center',
+    heroTitle: 'TMJ/TMD Screening and Bite Review',
     heroSubtitle:
-      'Dr. Haitham Sharshar provides the most comprehensive TMD/TMJ treatment protocol in the Middle East, combining jaw tracking (Zebris JMA-Optic+, Germany), surface EMG electromyography, TENS neuromuscular therapy, Occlusense digital pressure mapping, and custom Neurobite occlusal splint therapy.',
+      'Dr. Haitham Sharshar uses jaw tracking (Zebris JMA-Optic+, Germany), surface EMG, TENS muscle relaxation records, Occlusense pressure mapping, and Neurobite splint planning as clinician-reviewed TMD screening inputs.',
     faqs: [
       {
         question: 'What is TMD and how do I know if I have it?',
@@ -1121,14 +1162,14 @@ const PILLAR_DEFAULTS: Record<string, ServicePillarData> = {
           'Temporomandibular Disorder (TMD) is a group of conditions affecting the jaw joint (TMJ), masticatory muscles, and occlusion. Symptoms include jaw pain, clicking or popping sounds, headaches, ear pain, limited mouth opening, and teeth grinding.',
       },
       {
-        question: 'What is jaw tracking and why is it important for TMD diagnosis?',
+        question: 'What is jaw tracking and how can it support TMD review?',
         answer:
           'Jaw tracking (JT-3D by Zebris, Germany) records your mandibular movement patterns in three dimensions. It measures range of motion, velocity, trajectory deviations, and opening/closing paths.',
       },
       {
         question: 'How does Dr. Sharshar use EMG in TMD treatment?',
         answer:
-          'Surface electromyography (EMG) measures the electrical activity of your masticatory muscles. Dr. Sharshar uses EMG to identify muscle hyperactivity, asymmetry, fatigue patterns, and dysfunction.',
+          'Surface electromyography (EMG) measures electrical activity in chewing muscles. Dr. Sharshar reviews EMG records as screening information alongside symptoms, examination, and other dental records.',
       },
       {
         question: 'What is a Neurobite splint and how does it differ from a regular night guard?',
@@ -1136,9 +1177,9 @@ const PILLAR_DEFAULTS: Record<string, ServicePillarData> = {
           'A Neurobite occlusal splint is a custom-designed appliance fabricated using data from your EMG, jaw tracking, and TENS sessions. It is calibrated to your specific neuromuscular rest position.',
       },
       {
-        question: 'Is Dr. Sharshar the only dentist in the Middle East with this TMD technology?',
+        question: 'What TMD records are used at HS Clinic?',
         answer:
-          'Dr. Haitham Sharshar is the Official JMA-Optic+ Digital Occlusion System Certified Trainer for Zebris Co. (Germany) \u2014 the chosen international trainer for the entire Middle East region.',
+          'HS Clinic can combine jaw tracking, surface EMG, TENS relaxation records, Occlusense bite-force mapping, and Neurobite splint planning for clinician-reviewed TMD screening.',
       },
     ],
     benefits: [],
@@ -1191,7 +1232,7 @@ const PILLAR_DEFAULTS: Record<string, ServicePillarData> = {
       {
         question: "What makes Dr. Sharshar's approach to clear aligners unique?",
         answer:
-          'Dr. Sharshar integrates clear aligner therapy with digital occlusal analysis using T-Scan and jaw tracking. This ensures your teeth are aligned for optimal bite function, not just aesthetics.',
+          'Dr. Sharshar integrates clear aligner therapy with digital occlusal analysis using T-Scan and jaw tracking. These records support planning for both tooth position and bite function.',
       },
       {
         question: 'Can clear aligners fix bite problems (malocclusion)?',
@@ -1211,20 +1252,21 @@ const PILLAR_DEFAULTS: Record<string, ServicePillarData> = {
       },
       {
         title: 'Occlusion-Optimized',
-        description: 'Digital bite analysis ensures functional alignment, not just straight teeth.',
+        description: 'Digital bite analysis supports functional planning, not just straight teeth.',
       },
       {
         title: 'Comfortable & Removable',
         description: 'No wires or brackets. Remove for eating, brushing, and special occasions.',
       },
       {
-        title: 'Precise & Predictable',
+        title: 'Planned Tooth Movement',
         description:
-          'Computer-designed sequential trays for controlled, progressive tooth movement.',
+          'Computer-designed sequential trays support controlled, progressive tooth movement during clinician review.',
       },
       {
         title: 'Quality Controlled',
-        description: 'exocad-certified digital workflow for elite accuracy in every aligner tray.',
+        description:
+          'exocad-certified digital workflow with review checkpoints for each aligner tray.',
       },
     ],
     technologies: [],
@@ -1235,7 +1277,7 @@ const PILLAR_DEFAULTS: Record<string, ServicePillarData> = {
     heroTagline: '',
     heroTitle: 'Full-Arch Rehabilitation & All-on-4 Implants',
     heroSubtitle:
-      'Complete oral rehabilitation combining dental implants, prosthetics, and digital occlusal analysis. Dr. Haitham Sharshar delivers All-on-4 and full-mouth reconstruction with CBCT-guided precision, same-day temporary teeth, and digital occlusion verification.',
+      'Complete oral rehabilitation combining dental implants, prosthetics, and digital occlusal analysis. Dr. Haitham Sharshar plans All-on-4 and full-mouth reconstruction with CBCT-guided records, case-dependent temporary teeth, and digital occlusion review.',
     faqs: [
       {
         question: 'What is All-on-4 dental implant treatment?',
@@ -1246,17 +1288,17 @@ const PILLAR_DEFAULTS: Record<string, ServicePillarData> = {
         question:
           'How much does full-arch rehabilitation cost at HS Clinic compared to the USA/UK?',
         answer:
-          'Full-arch All-on-4 rehabilitation at HS Clinic starts at approximately $5,500 USD per arch, compared to $20,000\u2013$30,000 in the USA or \u00a315,000\u2013\u00a325,000 in the UK.',
+          'Full-arch rehabilitation pricing is case-specific and depends on implant number, bone condition, temporary teeth eligibility, prosthetic material, and whether one or more visits are needed.',
       },
       {
-        question: 'Can I get temporary teeth on the same day as implant surgery?',
+        question: 'Can I receive temporary teeth during the implant visit?',
         answer:
-          'Yes. Dr. Sharshar offers immediate loading protocols where a temporary fixed prosthesis is attached to the implants on the same day as surgery.',
+          'Some eligible cases can receive a temporary fixed prosthesis during the surgical visit. Timing depends on bone, implant stability, bite forces, healing needs, and clinician assessment.',
       },
       {
         question: 'How long do full-arch implant prosthetics last?',
         answer:
-          'With proper care and regular maintenance, implant-supported full-arch prosthetics can last 15\u201325+ years. The titanium implants themselves can last a lifetime.',
+          'With proper care and regular maintenance, implant-supported full-arch prosthetics can last for many years. Longevity depends on hygiene, bite forces, maintenance visits, materials, and general health.',
       },
     ],
     benefits: [
@@ -1266,19 +1308,19 @@ const PILLAR_DEFAULTS: Record<string, ServicePillarData> = {
           'Complete 3D jaw mapping for precise implant position, angulation, and prosthetic outcome prediction.',
       },
       {
-        title: 'Same-Day Teeth',
+        title: 'Case-Dependent Temporary Teeth',
         description:
-          'Immediate loading protocol \u2014 leave with a fixed temporary prosthesis on the day of surgery.',
+          'Eligible cases may receive a fixed temporary prosthesis during the surgical visit after clinician assessment.',
       },
       {
-        title: 'Digital Occlusion Verification',
+        title: 'Digital Occlusion Review',
         description:
-          'T-Scan and jaw tracking ensure your prosthetic bite is functionally optimized.',
+          'T-Scan and jaw tracking support prosthetic bite review during clinician-led planning.',
       },
       {
-        title: 'Minimal Bone Requirements',
+        title: 'Bone Volume Assessment',
         description:
-          'Angled posterior implants maximize bone contact, often avoiding the need for bone grafting.',
+          'Angled posterior implants may reduce grafting needs in selected cases after CBCT review.',
       },
     ],
     technologies: [],
@@ -1301,17 +1343,17 @@ export function useServicePillar(slug: string) {
   const defaults = PILLAR_DEFAULTS[slug] ?? PILLAR_DEFAULTS['dental-implants'];
 
   const pillar: ServicePillarData = {
-    heroTagline: doc?.heroTagline ?? defaults.heroTagline,
-    heroTitle: doc?.heroTitle ?? defaults.heroTitle,
-    heroSubtitle: doc?.heroSubtitle ?? defaults.heroSubtitle,
+    heroTagline: safeCmsValue(doc?.heroTagline, defaults.heroTagline),
+    heroTitle: safeCmsValue(doc?.heroTitle, defaults.heroTitle),
+    heroSubtitle: safeCmsValue(doc?.heroSubtitle, defaults.heroSubtitle),
     heroImage: doc?.heroImage,
-    faqs: doc?.faqs ?? defaults.faqs,
-    benefits: doc?.benefits ?? defaults.benefits,
-    technologies: doc?.technologies ?? defaults.technologies,
-    ctaPrimary: doc?.ctaPrimary ?? defaults.ctaPrimary,
-    ctaSecondary: doc?.ctaSecondary ?? defaults.ctaSecondary,
-    seoTitle: doc?.seoTitle,
-    seoDescription: doc?.seoDescription,
+    faqs: safeCmsValue(doc?.faqs, defaults.faqs),
+    benefits: safeCmsValue(doc?.benefits, defaults.benefits),
+    technologies: safeCmsValue(doc?.technologies, defaults.technologies),
+    ctaPrimary: safeCmsValue(doc?.ctaPrimary, defaults.ctaPrimary),
+    ctaSecondary: safeCmsValue(doc?.ctaSecondary, defaults.ctaSecondary),
+    seoTitle: safeCmsValue(doc?.seoTitle, undefined),
+    seoDescription: safeCmsValue(doc?.seoDescription, undefined),
   };
 
   return { pillar, loading, error };

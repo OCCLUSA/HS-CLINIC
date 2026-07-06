@@ -13,12 +13,12 @@ export function CookieConsent() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    // Show banner after a short delay if not yet accepted
+    // Show banner after the page has settled so it does not interrupt appointment forms.
     const timer = setTimeout(() => {
       if (!localStorage.getItem(CONSENT_KEY)) {
         setIsVisible(true);
       }
-    }, 1500);
+    }, 3000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -40,7 +40,7 @@ export function CookieConsent() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          className="bg-dark-900/95 fixed inset-x-4 bottom-4 z-[60] mx-auto max-w-lg rounded-2xl border border-white/10 p-5 shadow-2xl backdrop-blur-xl sm:inset-x-auto sm:right-6 sm:bottom-6 sm:left-auto"
+          className="bg-dark-900/95 fixed inset-x-3 bottom-3 z-40 mx-auto max-w-sm rounded-xl border border-white/10 p-4 shadow-2xl backdrop-blur-xl sm:inset-x-auto sm:right-4 sm:bottom-4 sm:left-auto"
           role="dialog"
           aria-label="Cookie consent"
           aria-describedby="cookie-desc"
@@ -56,10 +56,10 @@ export function CookieConsent() {
           <div className="flex items-start gap-3">
             <Cookie className="text-gold-400 mt-0.5 h-5 w-5 shrink-0" />
             <div>
-              <h3 className="text-sm font-semibold text-white">Cookie Notice</h3>
+              <h3 className="text-sm font-semibold text-white">Essential cookies only</h3>
               <p id="cookie-desc" className="mt-1 text-xs leading-relaxed text-gray-400">
-                This website uses essential cookies for functionality only. We do not use tracking
-                or advertising cookies. By continuing to use this site, you consent to our{' '}
+                We use essential cookies for basic site function. No tracking or advertising
+                cookies are used. See our{' '}
                 <a href="/privacy-policy" className="text-gold-400 underline underline-offset-2">
                   Privacy Policy
                 </a>

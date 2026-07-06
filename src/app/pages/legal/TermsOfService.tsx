@@ -2,7 +2,15 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FileText } from 'lucide-react';
-import { SITE_NAME, SITE_URL } from '@/lib/seo';
+import {
+  DEFAULT_OG_IMAGE,
+  DEFAULT_OG_IMAGE_ALT,
+  DEFAULT_OG_IMAGE_HEIGHT,
+  DEFAULT_OG_IMAGE_TYPE,
+  DEFAULT_OG_IMAGE_WIDTH,
+  SEO,
+  SITE_NAME,
+} from '@/lib/seo';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -18,13 +26,25 @@ export default function TermsOfService() {
       className="relative min-h-screen py-24 sm:py-32"
     >
       <Helmet>
-        <title>Terms of Service | {SITE_NAME}</title>
-        <meta
-          name="description"
-          content="Terms of Service for HS Clinic website. By using our services and website, you agree to these terms."
-        />
-        <link rel="canonical" href={SITE_URL + '/terms-of-service'} />
+        <title>{SEO.termsOfService.title}</title>
+        <meta name="description" content={SEO.termsOfService.description} />
+        <link rel="canonical" href={SEO.termsOfService.canonical} />
         <meta name="robots" content="noindex" />
+        <meta property="og:title" content={SEO.termsOfService.title} />
+        <meta property="og:description" content={SEO.termsOfService.description} />
+        <meta property="og:url" content={SEO.termsOfService.canonical} />
+        <meta property="og:image" content={DEFAULT_OG_IMAGE} />
+        <meta property="og:image:alt" content={DEFAULT_OG_IMAGE_ALT} />
+        <meta property="og:image:type" content={DEFAULT_OG_IMAGE_TYPE} />
+        <meta property="og:image:width" content={String(DEFAULT_OG_IMAGE_WIDTH)} />
+        <meta property="og:image:height" content={String(DEFAULT_OG_IMAGE_HEIGHT)} />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content={SITE_NAME} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={SEO.termsOfService.title} />
+        <meta name="twitter:description" content={SEO.termsOfService.description} />
+        <meta name="twitter:image" content={DEFAULT_OG_IMAGE} />
+        <meta name="twitter:image:alt" content={DEFAULT_OG_IMAGE_ALT} />
       </Helmet>
 
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
@@ -107,7 +127,7 @@ export default function TermsOfService() {
           <section>
             <h2 className="text-xl font-semibold text-white">8. Limitation of Liability</h2>
             <p>
-              While we strive for the best outcomes, dentistry involves inherent risks. Individual
+              While we aim for careful clinical outcomes, dentistry involves inherent risks. Individual
               results vary based on patient health, compliance, and biological factors. HS Clinic
               shall not be liable for outcomes beyond the standard of care.
             </p>

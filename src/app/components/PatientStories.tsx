@@ -14,6 +14,10 @@ const cardVariants = {
 export function PatientStories() {
   const { testimonials } = useTestimonials();
 
+  if (testimonials.length === 0) {
+    return null;
+  }
+
   return (
     <section className="relative overflow-hidden border-t border-white/5 px-4 py-32 sm:px-6 lg:px-8">
       {/* Background glow */}
@@ -46,7 +50,7 @@ export function PatientStories() {
             transition={{ delay: 0.2 }}
             className="mx-auto max-w-xl text-lg text-gray-400"
           >
-            Real patients, real results. Hear from those who trusted us with their smiles.
+            Real patient stories appear here only when reviewed clinic testimonials are available.
           </motion.p>
         </div>
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MapPin, Phone, Mail, Clock, Send, Satellite, Radio, MessageCircle } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle2, ClipboardList, MessageCircle } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { SEO, SITE_NAME, DEFAULT_OG_IMAGE, buildLocalBusinessJsonLd } from '@/lib/seo';
 import { SectionHeader } from '@/app/components/ui/SectionHeader';
@@ -46,11 +46,11 @@ export function Contact() {
         });
         setTimeout(() => setSubmitted(false), 5000);
       } else {
-        throw new Error('Transmission failed. Please try again or contact us directly.');
+        throw new Error('Booking request failed. Please try again or contact us directly.');
       }
     } catch (err) {
       console.error('Form submission error:', err);
-      setSubmitError(err instanceof Error ? err.message : 'Unknown error during transmission.');
+      setSubmitError(err instanceof Error ? err.message : 'Unknown booking error. Please contact us directly.');
     } finally {
       setIsSubmitting(false);
     }
@@ -78,24 +78,24 @@ export function Contact() {
   const contactInfo = [
     {
       icon: Phone,
-      title: 'Direct Line',
-      details: [formattedPhone, 'Priority Support'],
+      title: 'Clinic Phone',
+      details: [formattedPhone, 'Call or WhatsApp for appointment timing'],
       href: `tel:${phoneDigits}`,
     },
     {
       icon: Mail,
-      title: 'Digital Uplink',
-      details: [settings.email.replace('@', '\u200B@\u200B'), 'Encrypted Channel'],
+      title: 'Email',
+      details: [settings.email.replace('@', '\u200B@\u200B'), 'Send records or appointment questions'],
       href: `mailto:${settings.email}`,
     },
     {
       icon: MapPin,
-      title: 'Coordinates',
-      details: [settings.address, 'Medical District, Sector 7'],
+      title: 'Clinic Address',
+      details: [settings.address, 'Zahraa El Maadi, Cairo'],
     },
     {
       icon: Clock,
-      title: 'Operational Window',
+      title: 'Opening Hours',
       details: settings.workingHours.split('|').map((s: string) => s.trim()),
     },
   ];
@@ -121,7 +121,11 @@ export function Contact() {
       </Helmet>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <SectionHeader title="Initiate Contact" subtitle="SECURE TRANSMISSION" />
+        <SectionHeader title="Book a Consultation" subtitle="HS Clinic Cairo" />
+        <p className="mx-auto -mt-8 mb-12 max-w-2xl text-center text-sm leading-6 text-gray-400">
+          Tell us what you need, choose a preferred visit time, and send any dental records by
+          WhatsApp or email. Final treatment decisions require clinician review.
+        </p>
 
         <div className="mb-20 grid gap-12 lg:grid-cols-2">
           {/* Form */}
@@ -129,18 +133,20 @@ export function Contact() {
             <div className="from-gold-600 via-gold-400 to-gold-600 absolute top-0 left-0 h-1 w-full bg-gradient-to-r" />
 
             <div className="mb-8 flex items-center justify-between">
-              <h2 className="font-serif text-2xl text-white">Appointment Request</h2>
-              <div className="text-gold-400 flex items-center gap-2 font-mono text-xs">
-                <Radio className="h-3 w-3 animate-pulse" />
-                UPLINK ACTIVE
+              <h2 className="font-serif text-2xl text-white">Appointment request</h2>
+              <div className="text-gold-400 flex items-center gap-2 text-xs font-semibold">
+                <ClipboardList className="h-3.5 w-3.5" />
+                Records welcome
               </div>
             </div>
 
             {submitted ? (
               <div className="bg-gold-400/10 border-gold-400/30 text-gold-400 animate-pulse rounded-lg border px-6 py-4 text-center">
-                <Satellite className="mx-auto mb-2 h-8 w-8" />
-                <p className="font-mono">TRANSMISSION RECEIVED</p>
-                <p className="mt-1 text-xs text-gray-400">Awaiting confirmation protocol...</p>
+                <CheckCircle2 className="mx-auto mb-2 h-8 w-8" />
+                <p className="font-semibold">Request received</p>
+                <p className="mt-1 text-xs text-gray-400">
+                  The clinic team will reply with the next appointment step.
+                </p>
               </div>
             ) : (
               <form
@@ -170,7 +176,7 @@ export function Contact() {
                       aria-required="true"
                       value={formData.name}
                       onChange={handleChange}
-                      placeholder="Full Identity"
+                      placeholder="Full name"
                       className="bg-dark-950 focus:border-gold-400 focus:ring-gold-400 w-full rounded border border-white/10 px-4 py-3 text-white transition-all outline-none placeholder:text-gray-700 focus:ring-1"
                     />
                   </div>
@@ -187,7 +193,7 @@ export function Contact() {
                         aria-required="true"
                         value={formData.email}
                         onChange={handleChange}
-                        placeholder="Comm Frequency (Email)"
+                        placeholder="Email address"
                         className="bg-dark-950 focus:border-gold-400 focus:ring-gold-400 w-full rounded border border-white/10 px-4 py-3 text-white transition-all outline-none placeholder:text-gray-700 focus:ring-1"
                       />
                     </div>
@@ -203,7 +209,7 @@ export function Contact() {
                         aria-required="true"
                         value={formData.phone}
                         onChange={handleChange}
-                        placeholder="Comms (Phone)"
+                        placeholder="Phone or WhatsApp number"
                         className="bg-dark-950 focus:border-gold-400 focus:ring-gold-400 w-full rounded border border-white/10 px-4 py-3 text-white transition-all outline-none placeholder:text-gray-700 focus:ring-1"
                       />
                     </div>
@@ -237,10 +243,10 @@ export function Contact() {
                         onChange={handleChange}
                         className="bg-dark-950 focus:border-gold-400 focus:ring-gold-400 w-full rounded border border-white/10 px-4 py-3 text-white transition-all outline-none focus:ring-1"
                       >
-                        <option value="">Select Time Slot</option>
-                        <option value="09:00">09:00 - Morning Block</option>
-                        <option value="12:00">12:00 - Midday Block</option>
-                        <option value="15:00">15:00 - Afternoon Block</option>
+                        <option value="">Select preferred time</option>
+                        <option value="09:00">09:00 - Morning appointment</option>
+                        <option value="12:00">12:00 - Midday appointment</option>
+                        <option value="15:00">15:00 - Afternoon appointment</option>
                       </select>
                     </div>
                   </div>
@@ -254,7 +260,7 @@ export function Contact() {
                       rows={4}
                       value={formData.message}
                       onChange={handleChange}
-                      placeholder="Clinical Notes / Symptoms..."
+                      placeholder="What dental problem or treatment are you asking about?"
                       className="bg-dark-950 focus:border-gold-400 focus:ring-gold-400 w-full rounded border border-white/10 px-4 py-3 text-white transition-all outline-none placeholder:text-gray-700 focus:ring-1"
                     />
                   </div>
@@ -271,10 +277,10 @@ export function Contact() {
                   className="bg-gold-400 text-dark-950 flex w-full items-center justify-center gap-2 rounded py-4 font-bold transition-all hover:shadow-[0_0_20px_rgba(212,175,55,0.6)] disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {isSubmitting ? (
-                    'TRANSMITTING...'
+                    'Sending request...'
                   ) : (
                     <>
-                      TRANSMIT DATA <Send className="h-4 w-4" />
+                      Send appointment request <Send className="h-4 w-4" />
                     </>
                   )}
                 </button>
@@ -295,8 +301,8 @@ export function Contact() {
                 <MessageCircle className="h-6 w-6 text-white" />
               </div>
               <div>
-                <p className="font-bold text-white">WhatsApp Consultation</p>
-                <p className="text-sm text-[#25D366]">Tap to chat — instant response</p>
+                <p className="font-bold text-white">WhatsApp booking</p>
+                <p className="text-sm text-[#25D366]">Send records or ask for a visit time</p>
               </div>
             </a>
 

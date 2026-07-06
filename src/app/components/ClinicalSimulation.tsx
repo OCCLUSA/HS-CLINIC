@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Activity, Scan, Maximize, Database } from 'lucide-react';
+import { Activity, Scan, Maximize, ClipboardList } from 'lucide-react';
 
 // --- SUB-COMPONENTS ---
 
@@ -37,9 +37,9 @@ function FaceScanner() {
       {/* Grid Overlay */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(197,165,90,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(197,165,90,0.08)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] bg-[size:2rem_2rem]" />
 
-      <div className="bg-dark-950/80 text-gold-400 border-gold-400/30 absolute bottom-4 left-4 flex items-center gap-2 rounded border px-3 py-1 font-mono text-xs">
-        <Scan className="h-3 w-3 animate-pulse" />
-        MET-SMILE 3D ACQUISITION
+      <div className="bg-dark-950/80 text-gold-400 border-gold-400/30 absolute bottom-4 left-4 flex items-center gap-2 rounded border px-3 py-1 text-xs font-medium">
+        <Scan className="h-3 w-3" />
+        Smile scan preview
       </div>
     </div>
   );
@@ -50,9 +50,9 @@ function EmgMonitor() {
 
   return (
     <div className="bg-dark-900/50 relative flex h-64 w-full flex-col justify-end overflow-hidden rounded-xl border border-white/10 p-6">
-      <div className="text-gold-500 absolute top-4 left-4 flex items-center gap-2 font-mono text-xs">
+      <div className="text-gold-500 absolute top-4 left-4 flex items-center gap-2 text-xs font-medium">
         <Activity className="h-3 w-3" />
-        BIO-FEEDBACK // MASSETER LEFT
+        Muscle activity review
       </div>
 
       <div className="flex h-32 items-end justify-between gap-1">
@@ -84,9 +84,9 @@ function EmgMonitor() {
 function JawTracker() {
   return (
     <div className="bg-dark-900/50 relative grid h-64 w-full place-items-center overflow-hidden rounded-xl border border-white/10">
-      <div className="text-gold-300 absolute top-4 left-4 flex items-center gap-2 font-mono text-xs">
+      <div className="text-gold-300 absolute top-4 left-4 flex items-center gap-2 text-xs font-medium">
         <Maximize className="h-3 w-3" />
-        MANDIBULAR TRACKING (6DOF)
+        Jaw movement review
       </div>
 
       {/* Abstract Jaw SVG */}
@@ -130,10 +130,10 @@ function JawTracker() {
       </div>
 
       {/* Data readout */}
-      <div className="text-gold-400 absolute top-1/2 right-4 space-y-1 text-right font-mono text-[10px]">
-        <div>X: +0.02mm</div>
-        <div>Y: -1.24mm</div>
-        <div>Z: +0.00mm</div>
+      <div className="text-gold-400 absolute top-1/2 right-4 space-y-1 text-right text-[10px] font-medium">
+        <div>Photos</div>
+        <div>Scans</div>
+        <div>Bite records</div>
       </div>
     </div>
   );
@@ -147,17 +147,17 @@ export function ClinicalSimulation() {
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            className="text-gold-400 border-gold-400/20 mb-4 inline-flex items-center gap-2 rounded-full border px-3 py-1 font-mono text-sm"
+            className="text-gold-400 border-gold-400/20 mb-4 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm font-medium"
           >
-            <Database className="h-4 w-4" />
-            LIVE TELEMETRY // DEMO MODE
+            <ClipboardList className="h-4 w-4" />
+            Digital planning workflow
           </motion.div>
           <h2 className="mb-6 font-serif text-3xl text-white md:text-5xl">
-            Real-Time Clinical Precision
+            Records, scans, and bite review
           </h2>
           <p className="mx-auto max-w-2xl text-gray-400">
-            We don&apos;t guess. We measure. Our digital ecosystem captures every micron of
-            movement.
+            The clinic uses photographs, scans, bite records, and examination findings to support
+            clinician review.
           </p>
         </div>
 

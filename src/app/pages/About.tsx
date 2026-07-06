@@ -93,7 +93,7 @@ export function About() {
               ) : (
                 <>
                   <p>
-                    Leading the digital revolution in Middle Eastern dentistry, Dr. Sharshar has
+                    Working across digital dentistry in the Middle East, Dr. Sharshar has
                     discarded traditional guesswork in favor of{' '}
                     <span className="border-gold-400/30 border-b text-white">absolute data</span>.
                   </p>

@@ -163,7 +163,7 @@ export default function Gallery() {
         >
           <div className="absolute inset-0 translate-y-full bg-white/30 transition-transform duration-300 group-hover:translate-y-0" />
           <span className="relative flex items-center gap-2">
-            Book Free Consultation <ChevronRight className="h-5 w-5" />
+            Book Consultation <ChevronRight className="h-5 w-5" />
           </span>
         </Link>
       </section>

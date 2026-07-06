@@ -27,9 +27,9 @@ describe('FAQAccordion', () => {
     expect(buttons.length).toBe(5);
   });
 
-  it('renders the savings question text', () => {
+  it('renders the cost review question text', () => {
     renderFAQ();
-    expect(screen.getByText(/How much can I save on dental implants/i)).toBeInTheDocument();
+    expect(screen.getByText(/How is dental implant cost reviewed/i)).toBeInTheDocument();
   });
 
   it('renders the FAQ schema JSON-LD script', () => {
@@ -52,6 +52,6 @@ describe('FAQAccordion', () => {
     fireEvent.click(buttons[0]);
 
     // The highlight badge for the first FAQ should appear
-    expect(screen.getByText('60–70% savings')).toBeInTheDocument();
+    expect(screen.getByText('Case-by-case estimate')).toBeInTheDocument();
   });
 });

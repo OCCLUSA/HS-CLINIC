@@ -22,10 +22,10 @@ const FULL_ARCH_JSONLD = {
   name: 'Full-Arch Rehabilitation & All-on-4 Implants',
   url: SITE_URL + '/services/full-arch-rehabilitation',
   description:
-    'Complete full-arch rehabilitation at HS Clinic Cairo. All-on-4 and All-on-6 implant-supported prosthetics, CBCT-guided planning, digital occlusal optimization, and same-day temporary teeth by Dr. Haitham Sharshar.',
+    'Complete full-arch rehabilitation at HS Clinic Cairo. All-on-4 and All-on-6 implant-supported prosthetics, CBCT-guided records, digital occlusal review, and case-dependent temporary teeth by Dr. Haitham Sharshar.',
   procedureType: 'http://schema.org/SurgicalProcedure',
   howPerformed:
-    'CBCT 3D scan → digital treatment planning → guided implant placement (4-6 implants per arch) → immediate temporary prosthesis → osseointegration period → final prosthetic delivery with digital occlusal verification.',
+    'CBCT 3D scan → digital treatment planning → guided implant placement (4-6 implants per arch) → case-dependent temporary prosthesis → osseointegration period → final prosthetic delivery with digital occlusal review.',
   preparation:
     'Comprehensive digital examination, CBCT scan, diagnostic wax-up, and digital smile design preview.',
   bodyLocation: 'Full maxillary and/or mandibular arch',
@@ -33,9 +33,9 @@ const FULL_ARCH_JSONLD = {
 };
 
 const breadcrumbs = buildBreadcrumbJsonLd([
-  { name: 'Home', url: SITE_URL + '/' },
-  { name: 'Services', url: SITE_URL + '/services' },
-  { name: 'Full Arch Rehabilitation', url: SITE_URL + '/services/full-arch-rehabilitation' },
+  { name: 'Home', path: '/' },
+  { name: 'Services', path: '/services' },
+  { name: 'Full Arch Rehabilitation', path: '/services/full-arch-rehabilitation' },
 ]);
 
 export default function FullArchRehab() {
@@ -174,22 +174,20 @@ export default function FullArchRehab() {
           <p>
             Full-arch rehabilitation is ideal for patients who are fully edentulous (missing all
             teeth in one or both arches), have severely compromised remaining teeth, or are
-            currently wearing removable dentures and want a permanent, fixed solution. It is also
-            the treatment of choice for patients with terminal dentition — teeth that cannot be
-            saved due to advanced periodontal disease or extensive decay.
+            currently wearing removable dentures and want to explore a fixed prosthetic option. It
+            is also the treatment of choice for patients with terminal dentition — teeth that cannot
+            be kept due to advanced periodontal disease or extensive decay.
           </p>
           <p>
             Dr. Sharshar&apos;s digital-first approach begins with a comprehensive CBCT scan and
             digital smile design preview. Patients see their projected final result before any
             surgery begins. Implant positions are planned virtually and executed with 3D-printed
-            surgical guides, ensuring predictable outcomes and minimizing surgical time and
-            discomfort.
+            surgical guides to support planned placement and clinician review.
           </p>
           <p>
             What sets the HS Clinic apart is the integration of digital occlusal verification
-            (T-Scan and jaw tracking) into the prosthetic phase. This ensures that the final bite
-            distribution is functionally optimized — a critical factor for long-term implant and
-            prosthetic longevity that most clinics overlook.
+            (T-Scan and jaw tracking) into the prosthetic phase. These records support review of
+            final bite distribution during clinician-led prosthetic planning.
           </p>
         </div>
       </section>
@@ -227,7 +225,7 @@ export default function FullArchRehab() {
               Dental Implants
             </h3>
             <p className="mt-2 text-sm text-gray-400">
-              Individual implant placement with CBCT-guided precision
+              Individual implant placement with CBCT-guided records
             </p>
           </Link>
           <Link
@@ -249,7 +247,7 @@ export default function FullArchRehab() {
               Dental Tourism
             </h3>
             <p className="mt-2 text-sm text-gray-400">
-              VIP packages for international full-arch patients
+              Travel planning support for international full-arch patients
             </p>
           </Link>
         </div>
@@ -262,8 +260,8 @@ export default function FullArchRehab() {
             Transform Your Smile with Full-Arch Implants
           </h2>
           <p className="mx-auto mb-8 max-w-2xl text-gray-300">
-            Save 70–85% compared to USA/UK prices. Free virtual consultation available for
-            international patients.
+            International patients can request a records review to discuss full-arch options, travel
+            timing, and estimate requirements before treatment.
           </p>
           <Link
             to="/contact"

@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ChevronRight, Activity, Zap } from 'lucide-react';
+import { ChevronRight, CalendarCheck, ClipboardCheck, ScanLine, Stethoscope } from 'lucide-react';
 import { useHero, useSanityImage } from '@/hooks/useCmsData';
 
 export function CyberHero() {
@@ -35,9 +35,9 @@ export function CyberHero() {
           transition={{ duration: 0.8 }}
           className="border-gold-400/30 bg-gold-400/10 text-gold-400 mb-8 inline-flex items-center gap-2 rounded-full border px-4 py-2"
         >
-          <Activity className="h-4 w-4 animate-pulse" />
-          <span className="font-mono text-sm tracking-wider">
-            SYSTEM ONLINE // DR. SHARSHAR PROTOCOL v2.0
+          <Stethoscope className="h-4 w-4" />
+          <span className="text-sm font-medium">
+            Dental implants, smile design, and bite care in Cairo
           </span>
         </motion.div>
 
@@ -82,8 +82,8 @@ export function CyberHero() {
             to="/technology"
             className="border-gold-400/30 hover:bg-gold-400/10 group flex items-center gap-2 rounded-lg border px-8 py-4 text-white transition-all"
           >
-            <Zap className="text-gold-400 group-hover:text-gold-300 h-5 w-5 transition-colors" />
-            EXPLORE TECHNOLOGY
+            <ScanLine className="text-gold-400 group-hover:text-gold-300 h-5 w-5 transition-colors" />
+            See clinic technology
           </Link>
         </motion.div>
       </div>
@@ -95,8 +95,11 @@ export function CyberHero() {
         className="pointer-events-none absolute top-1/4 left-4 hidden scale-[0.85] md:block lg:left-10 lg:scale-100"
       >
         <div className="glass-card border-gold-400 border-l-4 p-4">
-          <div className="text-gold-400 mb-1 font-mono text-xs">DATA STREAM</div>
-          <div className="text-lg font-bold text-white">EMG: STABLE</div>
+          <div className="text-gold-400 mb-1 text-xs font-semibold">Before you travel</div>
+          <div className="flex items-center gap-2 text-lg font-bold text-white">
+            <ClipboardCheck className="h-5 w-5 text-gold-400" />
+            Records review
+          </div>
         </div>
       </motion.div>
 
@@ -106,8 +109,11 @@ export function CyberHero() {
         className="pointer-events-none absolute right-4 bottom-1/4 hidden scale-[0.85] md:block lg:right-10 lg:scale-100"
       >
         <div className="glass-card border-gold-500 border-r-4 p-4">
-          <div className="text-gold-500 mb-1 font-mono text-xs">SCAN COMPLETE</div>
-          <div className="text-lg font-bold text-white">ACCURACY: 99.9%</div>
+          <div className="text-gold-500 mb-1 text-xs font-semibold">First step</div>
+          <div className="flex items-center gap-2 text-lg font-bold text-white">
+            <CalendarCheck className="h-5 w-5 text-gold-500" />
+            Book consultation
+          </div>
         </div>
       </motion.div>
     </section>

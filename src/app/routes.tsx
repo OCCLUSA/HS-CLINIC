@@ -21,7 +21,9 @@ const DentalImplants = lazy(() => import('@/app/pages/services/DentalImplants'))
 const TmdTreatment = lazy(() => import('@/app/pages/services/TmdTreatment'));
 const ClearAligners = lazy(() => import('@/app/pages/services/ClearAligners'));
 const FullArchRehab = lazy(() => import('@/app/pages/services/FullArchRehab'));
+const ServiceDetailPage = lazy(() => import('@/app/pages/services/ServiceDetailPage'));
 const TourismProgram = lazy(() => import('@/app/pages/tourism/TourismProgram'));
+const RegionalTourismPage = lazy(() => import('@/app/pages/tourism/RegionalTourismPage'));
 const PrivacyPolicy = lazy(() => import('@/app/pages/legal/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('@/app/pages/legal/TermsOfService'));
 const MedicalDisclaimer = lazy(() => import('@/app/pages/legal/MedicalDisclaimer'));
@@ -103,6 +105,14 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: 'dental-tourism/:regionSlug',
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <RegionalTourismPage />
+          </Suspense>
+        ),
+      },
+      {
         path: 'gallery',
         element: (
           <Suspense fallback={<PageLoader />}>
@@ -139,6 +149,14 @@ export const router = createBrowserRouter([
         element: (
           <Suspense fallback={<PageLoader />}>
             <FullArchRehab />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'services/:slug',
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <ServiceDetailPage />
           </Suspense>
         ),
       },

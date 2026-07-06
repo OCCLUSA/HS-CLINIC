@@ -32,9 +32,18 @@
 - [Digital Smile Design](https://drhaithamsharshar.com/digital-smile-design): DSD workflow and preview
 - [Dental Tourism](https://drhaithamsharshar.com/dental-tourism): Program + logistics
 
+## Regional Dental Tourism Guides
+- [Gulf Patients](https://drhaithamsharshar.com/dental-tourism/gulf): Records-first Cairo dental travel planning for Gulf patients
+- [Saudi Arabia Patients](https://drhaithamsharshar.com/dental-tourism/saudi-arabia): Dental treatment planning for Saudi patients travelling to Cairo
+- [UAE Patients](https://drhaithamsharshar.com/dental-tourism/uae): Dental care planning for UAE patients considering Cairo
+- [Europe Patients](https://drhaithamsharshar.com/dental-tourism/europe): Dental tourism planning for patients from Europe
+- [UK Patients](https://drhaithamsharshar.com/dental-tourism/uk): Dental treatment planning for UK patients travelling to Cairo
+- [Germany Patients](https://drhaithamsharshar.com/dental-tourism/germany): Dental treatment planning for Germany patients considering Cairo
+
 ## Trust & Policies
-- [Guarantee](https://drhaithamsharshar.com/guarantee): What’s covered
+- [Treatment Coverage Terms](https://drhaithamsharshar.com/guarantee): Coverage conditions
 - [Privacy Policy](https://drhaithamsharshar.com/privacy-policy): Data handling
+- [Terms of Service](https://drhaithamsharshar.com/terms-of-service): Website and consultation terms
 - [Medical Disclaimer](https://drhaithamsharshar.com/medical-disclaimer): Safety disclaimer
 
 ## Optional

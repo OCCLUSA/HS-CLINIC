@@ -14,7 +14,7 @@ function renderForm() {
 describe('ConsultationForm', () => {
   it('renders the consultation heading', () => {
     renderForm();
-    expect(screen.getByText(/free virtual consultation/i)).toBeInTheDocument();
+    expect(screen.getByText(/virtual case review/i)).toBeInTheDocument();
   });
 
   it('renders name and email input fields', () => {
@@ -25,7 +25,7 @@ describe('ConsultationForm', () => {
 
   it('renders the submit button', () => {
     renderForm();
-    const button = screen.getByRole('button', { name: /free treatment plan/i });
+    const button = screen.getByRole('button', { name: /send case details/i });
     expect(button).toBeInTheDocument();
   });
 });

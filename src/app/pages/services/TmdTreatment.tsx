@@ -6,7 +6,6 @@ import { ChevronRight, ArrowRight } from 'lucide-react';
 import {
   SEO,
   SITE_NAME,
-  SITE_URL,
   DEFAULT_OG_IMAGE,
   TMD_TREATMENT_JSONLD,
   buildBreadcrumbJsonLd,
@@ -17,9 +16,9 @@ import { urlFor } from '@/lib/sanityClient';
 import { MedicallyReviewedBadge } from '@/app/components/MedicallyReviewedBadge';
 
 const breadcrumbs = buildBreadcrumbJsonLd([
-  { name: 'Home', url: SITE_URL + '/' },
-  { name: 'Services', url: SITE_URL + '/services' },
-  { name: 'TMJ/TMD Treatment', url: SITE_URL + '/services/tmj-tmd-treatment' },
+  { name: 'Home', path: '/' },
+  { name: 'Services', path: '/services' },
+  { name: 'TMJ/TMD Treatment', path: '/services/tmj-tmd-treatment' },
 ]);
 
 const diagnosticColors = [
@@ -139,28 +138,35 @@ export default function TmdTreatment() {
       {/* NLP Authority Section */}
       <section className="mx-auto mb-20 max-w-6xl px-4">
         <h2 className="mb-6 text-3xl font-bold text-white">
-          Why Dr. Sharshar Is the Leading TMD Specialist in the Middle East
+          TMD Records Reviewed by Dr. Sharshar
         </h2>
         <div className="prose prose-invert max-w-none space-y-4 leading-relaxed text-gray-300">
           <p>
             Dr. Haitham Sharshar is the Official JMA-Optic+ Digital Occlusion System Certified
-            Trainer for Zebris Co. (Germany) — the chosen international trainer for the entire
-            Middle East. He utilizes and teaches dynamic jaw tracking, ensuring that restorations,
-            splints, and occlusal treatments are designed to align perfectly with each
-            patient&apos;s natural jaw movements.
+            Trainer for{' '}
+            <a
+              href="https://www.zebris.de/en/dental"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-amber-400 hover:underline"
+            >
+              Zebris Co. (Germany)
+            </a>{' '}
+            for the Middle East. He uses and teaches dynamic jaw tracking to support review of jaw
+            movement records before splints, restorations, or occlusal treatment are planned for
+            each patient&apos;s case.
           </p>
           <p>
             Unlike traditional TMD treatment that relies on subjective clinical assessment, Dr.
             Sharshar&apos;s protocol uses five objective diagnostic instruments to measure,
-            quantify, and document jaw function. This data-driven approach eliminates guesswork,
-            ensures reproducible results, and allows precise monitoring of treatment progress over
-            time.
+            quantify, and document jaw function. These records support clinician review,
+            follow-up comparison, and treatment planning, but they do not replace examination or
+            clinical judgement.
           </p>
           <p>
-            His clinic is the only facility in the Middle East equipped with the complete
-            neuromuscular TMD diagnostic suite: Jaw Tracking + Surface EMG + TENS + Occlusense +
-            Neurobite. This combination enables diagnosis and treatment of conditions that other
-            clinics cannot objectively assess.
+            The clinic combines Jaw Tracking, Surface EMG, TENS, Occlusense, and Neurobite records
+            in one planning workflow. The findings are used as decision support for clinician-led
+            TMD screening and splint planning.
           </p>
         </div>
       </section>
@@ -278,7 +284,8 @@ export default function TmdTreatment() {
           </h2>
           <p className="mx-auto mb-8 max-w-2xl text-gray-300">
             Dr. Sharshar offers comprehensive TMD evaluations using objective diagnostic technology.
-            Get a definitive diagnosis and a data-driven treatment plan.
+            Findings are reviewed as screening information before a clinician confirms the diagnosis
+            and treatment plan.
           </p>
           <Link
             to="/contact"

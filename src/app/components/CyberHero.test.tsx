@@ -17,29 +17,33 @@ function renderHero() {
 describe('CyberHero', () => {
   it('renders the main heading text', () => {
     renderHero();
-    expect(screen.getByText('Architect Your')).toBeInTheDocument();
-    expect(screen.getByText('Perfect Occlusion')).toBeInTheDocument();
+    expect(screen.getByText('Plan Your')).toBeInTheDocument();
+    expect(screen.getByText('Confident Smile')).toBeInTheDocument();
   });
 
-  it('renders the system status badge', () => {
+  it('renders the clinic service badge', () => {
     renderHero();
-    expect(screen.getByText(/SYSTEM ONLINE/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Dental implants, smile design, and bite care in Cairo/i)
+    ).toBeInTheDocument();
   });
 
   it('renders the consultation CTA link', () => {
     renderHero();
-    const ctaLink = screen.getByText(/INITIATE CONSULTATION/i).closest('a');
+    const ctaLink = screen.getByText(/Book a Consultation/i).closest('a');
     expect(ctaLink).toHaveAttribute('href', '/contact');
   });
 
   it('renders the technology CTA link', () => {
     renderHero();
-    const techLink = screen.getByText(/EXPLORE TECHNOLOGY/i).closest('a');
+    const techLink = screen.getByText(/See clinic technology/i).closest('a');
     expect(techLink).toHaveAttribute('href', '/technology');
   });
 
-  it('renders the precision tagline', () => {
+  it('does not render unsupported system claims', () => {
     renderHero();
-    expect(screen.getByText(/0\.01mm precision/i)).toBeInTheDocument();
+    expect(screen.queryByText(/SYSTEM ONLINE/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/ACCURACY: 99\.9%/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/EMG: STABLE/i)).not.toBeInTheDocument();
   });
 });

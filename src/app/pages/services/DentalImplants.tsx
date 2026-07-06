@@ -6,7 +6,6 @@ import { ChevronRight, CheckCircle2, ArrowRight } from 'lucide-react';
 import {
   SEO,
   SITE_NAME,
-  SITE_URL,
   DEFAULT_OG_IMAGE,
   DENTAL_IMPLANTS_JSONLD,
   buildBreadcrumbJsonLd,
@@ -17,9 +16,9 @@ import { urlFor } from '@/lib/sanityClient';
 import { MedicallyReviewedBadge } from '@/app/components/MedicallyReviewedBadge';
 
 const breadcrumbs = buildBreadcrumbJsonLd([
-  { name: 'Home', url: SITE_URL + '/' },
-  { name: 'Services', url: SITE_URL + '/services' },
-  { name: 'Dental Implants', url: SITE_URL + '/services/dental-implants' },
+  { name: 'Home', path: '/' },
+  { name: 'Services', path: '/services' },
+  { name: 'Dental Implants', path: '/services/dental-implants' },
 ]);
 
 export default function DentalImplants() {
@@ -138,21 +137,20 @@ export default function DentalImplants() {
             Dr. Haitham Sharshar is a Digital Dentistry Consultant and Perio Implantologist with
             over 15 years of experience in advanced implant surgery. As the Official exocad
             Certified ICTP Trainer for the Middle East, he integrates clinical and laboratory
-            digital workflows to deliver faster, more comfortable, and more predictable implant
-            outcomes.
+            digital workflows to support implant planning, prosthetic design, and clinician-reviewed
+            treatment steps.
           </p>
           <p>
             At HS Clinic in Cairo, every implant case begins with a CBCT cone beam computed
             tomography scan, providing a complete 3D map of the patient&apos;s jaw anatomy. Dr.
             Sharshar digitally plans the implant position, angulation, and depth using specialized
-            software, then 3D-prints a surgical guide that ensures the physical surgery matches the
-            digital plan with sub-millimeter precision.
+            software, then 3D-prints a surgical guide that helps the clinician transfer the digital
+            plan into surgery.
           </p>
           <p>
-            This digital-first approach significantly reduces surgical time, minimizes tissue
-            trauma, accelerates healing, and virtually eliminates the risk of nerve damage or sinus
-            perforation — making it the safest and most predictable method of implant placement
-            available in the Middle East.
+            This digital-first approach helps the clinician plan implant position, anticipate nearby
+            anatomy, discuss risks before treatment, and transfer the digital plan into surgery.
+            Final surgical decisions still depend on examination and clinical findings.
           </p>
         </div>
       </section>
@@ -256,7 +254,7 @@ export default function DentalImplants() {
               Dental Tourism
             </h3>
             <p className="mt-2 text-sm text-gray-400">
-              VIP concierge packages for international patients
+              Travel planning support for international patients
             </p>
           </Link>
         </div>
@@ -269,14 +267,14 @@ export default function DentalImplants() {
             Ready for Your Dental Implant Consultation?
           </h2>
           <p className="mx-auto mb-8 max-w-2xl text-gray-300">
-            Whether you&apos;re in Cairo or traveling from abroad, Dr. Sharshar offers free virtual
-            consultations to discuss your implant options. Save 70–90% compared to USA/UK prices.
+            Whether you&apos;re in Cairo or travelling from abroad, Dr. Sharshar can review your
+            records and discuss implant options, timing, and estimate requirements before treatment.
           </p>
           <Link
             to="/contact"
             className="text-dark-950 inline-flex items-center gap-2 rounded-lg bg-amber-500 px-8 py-4 text-lg font-semibold transition-colors hover:bg-amber-400"
           >
-            Get Your Free Consultation <ArrowRight className="h-5 w-5" />
+            Request Implant Case Review <ArrowRight className="h-5 w-5" />
           </Link>
         </div>
       </section>

@@ -109,8 +109,8 @@ export function Home() {
               Advanced Dentistry, Simplified.
             </h3>
             <p className="mx-auto max-w-2xl text-lg font-light text-gray-400">
-              Experience precision dental care powered by AI-driven diagnostics, CBCT 3D imaging,
-              and T-Scan occlusal analysis — all under one roof in Cairo, Egypt.
+              Explore dental implant, smile design, and bite care options planned with CBCT 3D
+              imaging, digital bite records, and clinician review in Cairo, Egypt.
             </p>
           </div>
 
@@ -142,31 +142,29 @@ export function Home() {
             <div className="space-y-4">
               <p className="text-lg leading-relaxed text-gray-300">
                 Dr. Haitham Sharshar brings over 15 years of specialized experience in dental
-                implants, TMJ treatment, and digital smile design to every patient. As one of
-                Cairo&apos;s leading prosthodontists, he combines traditional clinical expertise
-                with cutting-edge digital occlusion technology to deliver results that are both
-                functionally sound and aesthetically exceptional.
+                implants, TMJ treatment, and digital smile design to every patient. As one of a
+                Cairo prosthodontist, he combines traditional clinical expertise with digital
+                occlusion records to support treatment planning for function and aesthetics.
               </p>
               <p className="leading-relaxed text-gray-400">
                 Every treatment begins with comprehensive diagnostics including CBCT 3D imaging,
-                T-Scan occlusal analysis, and EMG jaw muscle assessment. This data-driven approach
-                eliminates guesswork and ensures that dental implants, veneers, and full-arch
-                rehabilitations are planned with sub-millimeter accuracy.
+                T-Scan occlusal analysis, and jaw muscle assessment when clinically indicated. These
+                records support the examination and help the clinician plan dental implants,
+                veneers, and full-arch rehabilitations.
               </p>
             </div>
             <div className="space-y-4">
               <p className="leading-relaxed text-gray-400">
                 Whether you need a single dental implant, full mouth reconstruction, or cosmetic
                 smile design, HS Clinic offers a seamless patient experience from consultation
-                through treatment completion. Our digital workflow includes CAD/CAM same-day
-                restorations, guided implant surgery, and Digital Smile Design previews so you can
-                see your new smile before treatment even begins.
+                through treatment completion. Our digital workflow includes CAD/CAM planning, guided
+                implant surgery, and Digital Smile Design previews to support the discussion before
+                treatment begins.
               </p>
               <p className="leading-relaxed text-gray-400">
-                For international patients, our dental tourism program provides VIP concierge
-                services including airport transfers, luxury accommodation arrangements, and
-                dedicated treatment coordinators — making world-class dental care in Cairo, Egypt
-                accessible and stress-free.
+                For international patients, our dental tourism program provides coordinated travel
+                support including airport transfer planning, accommodation guidance, and dedicated
+                treatment coordinators for dental care in Cairo, Egypt.
               </p>
             </div>
           </div>

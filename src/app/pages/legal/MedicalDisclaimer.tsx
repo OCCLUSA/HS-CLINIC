@@ -2,7 +2,15 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { AlertTriangle } from 'lucide-react';
-import { SITE_NAME, SITE_URL } from '@/lib/seo';
+import {
+  DEFAULT_OG_IMAGE,
+  DEFAULT_OG_IMAGE_ALT,
+  DEFAULT_OG_IMAGE_HEIGHT,
+  DEFAULT_OG_IMAGE_TYPE,
+  DEFAULT_OG_IMAGE_WIDTH,
+  SEO,
+  SITE_NAME,
+} from '@/lib/seo';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -18,13 +26,25 @@ export default function MedicalDisclaimer() {
       className="relative min-h-screen py-24 sm:py-32"
     >
       <Helmet>
-        <title>Medical Disclaimer | {SITE_NAME}</title>
-        <meta
-          name="description"
-          content="Medical disclaimer for HS Clinic. Information on this website is for educational purposes only and is not a substitute for professional dental advice."
-        />
-        <link rel="canonical" href={SITE_URL + '/medical-disclaimer'} />
+        <title>{SEO.medicalDisclaimer.title}</title>
+        <meta name="description" content={SEO.medicalDisclaimer.description} />
+        <link rel="canonical" href={SEO.medicalDisclaimer.canonical} />
         <meta name="robots" content="noindex" />
+        <meta property="og:title" content={SEO.medicalDisclaimer.title} />
+        <meta property="og:description" content={SEO.medicalDisclaimer.description} />
+        <meta property="og:url" content={SEO.medicalDisclaimer.canonical} />
+        <meta property="og:image" content={DEFAULT_OG_IMAGE} />
+        <meta property="og:image:alt" content={DEFAULT_OG_IMAGE_ALT} />
+        <meta property="og:image:type" content={DEFAULT_OG_IMAGE_TYPE} />
+        <meta property="og:image:width" content={String(DEFAULT_OG_IMAGE_WIDTH)} />
+        <meta property="og:image:height" content={String(DEFAULT_OG_IMAGE_HEIGHT)} />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content={SITE_NAME} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={SEO.medicalDisclaimer.title} />
+        <meta name="twitter:description" content={SEO.medicalDisclaimer.description} />
+        <meta name="twitter:image" content={DEFAULT_OG_IMAGE} />
+        <meta name="twitter:image:alt" content={DEFAULT_OG_IMAGE_ALT} />
       </Helmet>
 
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">

@@ -41,9 +41,9 @@ const fadeUp = {
 const TIMELINE = [
   {
     step: '01',
-    title: 'Free Virtual Consultation',
+    title: 'Virtual Case Review',
     description:
-      'Share your dental records and photos via WhatsApp or email. Dr. Sharshar reviews your case and provides a detailed treatment plan with transparent pricing within 48 hours.',
+      'Share your dental records and photos via WhatsApp or email. Dr. Sharshar reviews your case and outlines treatment options, timing, and estimate needs after clinical review.',
     icon: MessageCircle,
     duration: '1–2 days',
   },
@@ -51,15 +51,15 @@ const TIMELINE = [
     step: '02',
     title: 'Travel Planning & Concierge',
     description:
-      'Our dedicated coordinator books your flights, arranges VIP airport transfers, and reserves luxury accommodation near the clinic. We handle every detail.',
+      'Our dedicated coordinator can help with airport transfers, accommodation options near the clinic, and appointment timing around your travel plan.',
     icon: Plane,
     duration: '1–2 weeks',
   },
   {
     step: '03',
-    title: 'VIP Arrival & Treatment',
+    title: 'Arrival & Clinic Visit',
     description:
-      'Private car collects you from Cairo International Airport. Same-day consultation, CBCT scan, and treatment begins. Most procedures completed within 5–10 days.',
+      'Airport transfer can be coordinated before your clinic visit. Consultation, CBCT records, and treatment timing are confirmed after examination.',
     icon: Heart,
     duration: '5–10 days',
   },
@@ -76,13 +76,13 @@ const TIMELINE = [
 const VIP_SERVICES = [
   {
     icon: Car,
-    title: 'VIP Airport Transfer',
+    title: 'Airport Transfer',
     description: 'Private car pickup and drop-off at Cairo International Airport',
   },
   {
     icon: Hotel,
-    title: 'Luxury Accommodation',
-    description: 'Curated 4–5 star hotels within 10 minutes of the clinic',
+    title: 'Accommodation Guidance',
+    description: 'Selected hotel options near the clinic can be discussed before travel',
   },
   {
     icon: Utensils,
@@ -111,25 +111,25 @@ const TREATMENT_PACKAGES = [
     name: 'Smile Makeover',
     treatments: ['Porcelain Veneers', 'Digital Smile Design', 'Teeth Whitening'],
     duration: '5–7 days',
-    savings: 'Save up to 80%',
+    savings: 'Case estimate',
   },
   {
     name: 'Implant Package',
     treatments: ['CBCT Scan', 'Guided Implant Surgery', 'Zirconia Crown'],
     duration: '7–10 days (2 visits)',
-    savings: 'Save up to 85%',
+    savings: 'Case estimate',
   },
   {
     name: 'Full Arch Restoration',
     treatments: ['All-on-4 Implants', 'Immediate Load Prosthesis', 'Final Zirconia Bridge'],
     duration: '7–14 days (2 visits)',
-    savings: 'Save up to 90%',
+    savings: 'Case estimate',
   },
   {
     name: 'TMD Treatment',
     treatments: ['Digital TMD Assessment', 'Jaw Tracking + EMG', 'Custom Orthotic'],
     duration: '3–5 days',
-    savings: 'Save up to 75%',
+    savings: 'Case estimate',
   },
 ];
 
@@ -137,12 +137,12 @@ const FAQS = [
   {
     question: 'How do I start the dental tourism process with HS Clinic?',
     answer:
-      'Simply send your dental records, X-rays, or photos via WhatsApp (+201101010599) or our consultation form. Dr. Sharshar will review your case and provide a detailed treatment plan with pricing within 48 hours — completely free.',
+      'Send your dental records, X-rays, or photos via WhatsApp (+201101010599) or our consultation form. Dr. Sharshar will review your case and explain the next treatment-planning steps before travel.',
   },
   {
-    question: 'What is included in the VIP dental tourism package?',
+    question: 'What can be included in the dental tourism support plan?',
     answer:
-      'Our VIP package includes private airport transfers, luxury hotel accommodation, a personal coordinator, all diagnostic scans (CBCT, digital impressions), treatment, medications, and follow-up care. Tourism excursions are available as optional add-ons.',
+      'The support plan can include private airport transfers, accommodation guidance, a personal coordinator, diagnostic records, treatment appointments, aftercare instructions, and optional tourism add-ons.',
   },
   {
     question: 'How long do I need to stay in Cairo for treatment?',
@@ -166,9 +166,9 @@ export default function TourismProgram() {
   const breadcrumbJsonLd = useMemo(
     () =>
       buildBreadcrumbJsonLd([
-        { name: 'Home', url: SITE_URL },
-        { name: 'Dental Tourism', url: SITE_URL + '/dental-tourism' },
-        { name: 'Tourism Program', url: SITE_URL + '/dental-tourism/program' },
+        { name: 'Home', path: '/' },
+        { name: 'Dental Tourism', path: '/dental-tourism' },
+        { name: 'Tourism Program', path: '/dental-tourism/program' },
       ]),
     []
   );
@@ -182,7 +182,7 @@ export default function TourismProgram() {
         '@type': 'TouristTrip',
         name: 'HS Clinic Dental Tourism Program — Cairo, Egypt',
         description:
-          'Complete VIP dental tourism program including airport transfers, luxury accommodation, advanced dental treatment, and concierge support in Cairo, Egypt.',
+          'Dental tourism program in Cairo including airport transfer coordination, accommodation guidance, records review, treatment planning, and patient coordination.',
         touristType: 'Medical Tourist',
         provider: {
           '@type': 'Dentist',
@@ -298,7 +298,7 @@ export default function TourismProgram() {
               fontWeight: 600,
             }}
           >
-            VIP Dental Tourism Experience
+            Guided Dental Travel Experience
           </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -359,7 +359,7 @@ export default function TourismProgram() {
                 fontSize: '1rem',
               }}
             >
-              <Phone size={18} /> Get Free Quote
+              <Phone size={18} /> Request Case Review
             </Link>
             <a
               href="https://api.whatsapp.com/send/?phone=201101010599"
@@ -408,7 +408,7 @@ export default function TourismProgram() {
             }}
           >
             A streamlined process designed for international patients — from virtual consultation to
-            your flight home with a perfect smile.
+            travel home after clinician-reviewed care.
           </p>
           <div
             style={{
@@ -504,7 +504,7 @@ export default function TourismProgram() {
               marginBottom: '0.75rem',
             }}
           >
-            VIP Concierge Services
+            Travel Coordination Services
           </h2>
           <p
             style={{
@@ -610,8 +610,8 @@ export default function TourismProgram() {
               margin: '0 auto 3rem',
             }}
           >
-            Popular dental tourism packages — each includes VIP concierge, accommodation assistance,
-            and all-inclusive treatment pricing.
+            Popular dental tourism paths with travel coordination, accommodation guidance, and
+            case-reviewed treatment estimates.
           </p>
           <div
             style={{
@@ -776,8 +776,8 @@ export default function TourismProgram() {
               lineHeight: 1.7,
             }}
           >
-            Send us your case today and receive a detailed treatment plan with transparent pricing
-            within 48 hours — completely free and with no obligation.
+            Send us your case records and receive clinician-reviewed next steps, timing guidance,
+            and estimate requirements before you travel.
           </p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link
@@ -795,7 +795,7 @@ export default function TourismProgram() {
                 fontSize: '1rem',
               }}
             >
-              <Phone size={18} /> Book Free Consultation
+              <Phone size={18} /> Request Case Review
             </Link>
             <Link
               to="/dental-tourism"
@@ -812,7 +812,7 @@ export default function TourismProgram() {
                 fontSize: '1rem',
               }}
             >
-              View Pricing <ChevronRight size={16} />
+              Review Planning <ChevronRight size={16} />
             </Link>
           </div>
         </div>

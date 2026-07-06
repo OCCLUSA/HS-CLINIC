@@ -32,7 +32,7 @@ export default function DentalTourism() {
     [cmsFaqs]
   );
 
-  // useTestimonials() already returns fallback data if CMS is empty
+  // Real CMS testimonials only; no fabricated fallback patient quotes.
   const reviews = testimonials.map((t) => ({
     name: t.name,
     country: `${t.countryFlag ?? ''} ${t.country ?? ''}`.trim() || '🌍',
@@ -40,7 +40,7 @@ export default function DentalTourism() {
     stars: t.stars,
   }));
 
-  // Use CMS pricing if available, otherwise hardcoded
+  // Use CMS pricing if available, otherwise safe case-review placeholders.
   const priceComparison = cmsPricing.map((p) => ({
     treatment: p.treatment,
     egypt: p.egyptPrice,
@@ -213,17 +213,23 @@ export default function DentalTourism() {
       <section className="border-t border-white/5 px-4 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-5xl">
           <div className="mb-12 text-center">
-            <h3 className="mb-4 font-serif text-4xl text-white md:text-5xl">Save Up to 90%</h3>
+            <h3 className="mb-4 font-serif text-4xl text-white md:text-5xl">
+              Compare Your Treatment Plan
+            </h3>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
                 <tr className="border-b border-white/10">
                   <th className="px-3 py-4 font-mono text-xs text-gray-500 uppercase">Treatment</th>
-                  <th className="text-gold-400 px-3 py-4 font-mono text-xs uppercase">🇪🇬 Egypt</th>
-                  <th className="px-3 py-4 font-mono text-xs text-gray-500 uppercase">🇺🇸 USA</th>
+                  <th className="text-gold-400 px-3 py-4 font-mono text-xs uppercase">
+                    Cairo Plan
+                  </th>
+                  <th className="px-3 py-4 font-mono text-xs text-gray-500 uppercase">
+                    Local Quote
+                  </th>
                   <th className="text-gold-400 px-3 py-4 font-mono text-xs tracking-wider uppercase">
-                    Save
+                    Review
                   </th>
                 </tr>
               </thead>
@@ -232,7 +238,7 @@ export default function DentalTourism() {
                   <tr key={i} className="border-b border-white/5">
                     <td className="px-3 py-4 text-sm text-white">{row.treatment}</td>
                     <td className="text-gold-400 px-3 py-4 text-sm font-bold">{row.egypt}</td>
-                    <td className="px-3 py-4 text-sm text-gray-500 line-through">{row.usa}</td>
+                    <td className="px-3 py-4 text-sm text-gray-500">{row.usa}</td>
                     <td className="px-3 py-4">
                       <span className="bg-gold-400/10 text-gold-400 rounded-full px-2 py-1 text-xs font-bold">
                         {row.saving}
@@ -245,38 +251,39 @@ export default function DentalTourism() {
           </div>
         </div>
       </section>
-
       {/* REVIEWS */}
-      <section className="overflow-hidden border-t border-white/5 py-24">
-        <div className="mx-auto mb-12 max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-          <h3 className="font-serif text-4xl text-white md:text-5xl">Amazing Reviews</h3>
-        </div>
-        <div className="relative">
-          <motion.div
-            animate={{ x: ['0%', '-50%'] }}
-            transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-            className="flex gap-6"
-          >
-            {[...reviews, ...reviews].map((review, i) => (
-              <div
-                key={i}
-                className="bg-dark-900/60 w-[280px] flex-shrink-0 rounded-2xl border border-white/5 p-6 backdrop-blur-md sm:w-[380px]"
-              >
-                <div className="mb-4 flex gap-1">
-                  {Array.from({ length: review.stars }).map((_, j) => (
-                    <Star key={j} className="fill-gold-400 text-gold-400 h-4 w-4" />
-                  ))}
+      {reviews.length > 0 && (
+        <section className="overflow-hidden border-t border-white/5 py-24">
+          <div className="mx-auto mb-12 max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+            <h3 className="font-serif text-4xl text-white md:text-5xl">Patient Reviews</h3>
+          </div>
+          <div className="relative">
+            <motion.div
+              animate={{ x: ['0%', '-50%'] }}
+              transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
+              className="flex gap-6"
+            >
+              {[...reviews, ...reviews].map((review, i) => (
+                <div
+                  key={i}
+                  className="bg-dark-900/60 w-[280px] flex-shrink-0 rounded-2xl border border-white/5 p-6 backdrop-blur-md sm:w-[380px]"
+                >
+                  <div className="mb-4 flex gap-1">
+                    {Array.from({ length: review.stars }).map((_, j) => (
+                      <Star key={j} className="fill-gold-400 text-gold-400 h-4 w-4" />
+                    ))}
+                  </div>
+                  <p className="text-sm text-gray-300 italic">{review.text}</p>
+                  <div className="mt-4 flex items-center justify-between text-sm text-white">
+                    <span>{review.name}</span>
+                    <span>{review.country}</span>
+                  </div>
                 </div>
-                <p className="text-sm text-gray-300 italic">{review.text}</p>
-                <div className="mt-4 flex items-center justify-between text-sm text-white">
-                  <span>{review.name}</span>
-                  <span>{review.country}</span>
-                </div>
-              </div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+      )}
 
       {/* TIMELINE */}
       <section className="border-t border-white/5 px-4 py-32 sm:px-6 lg:px-8">
