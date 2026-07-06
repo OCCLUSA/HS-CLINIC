@@ -52,12 +52,15 @@ export function useHero() {
     `coalesce(*[_type == "hero" && _id == "hero"][0], *[_type == "hero"][0]) { title, subtitle, ctaText, ctaLink, backgroundImage, backgroundImageAlt }`
   );
   return {
-    title: hero?.title ?? DEFAULT_HERO.title,
-    subtitle: hero?.subtitle ?? DEFAULT_HERO.subtitle,
-    ctaText: hero?.ctaText ?? DEFAULT_HERO.ctaText,
-    ctaLink: hero?.ctaLink ?? DEFAULT_HERO.ctaLink,
+    title: safeCmsValue(hero?.title, DEFAULT_HERO.title),
+    subtitle: safeCmsValue(hero?.subtitle, DEFAULT_HERO.subtitle),
+    ctaText: safeCmsValue(hero?.ctaText, DEFAULT_HERO.ctaText),
+    ctaLink: safeCmsValue(hero?.ctaLink, DEFAULT_HERO.ctaLink),
     backgroundImage: hero?.backgroundImage ?? null,
-    backgroundImageAlt: hero?.backgroundImageAlt ?? 'Digital dentistry clinic interior',
+    backgroundImageAlt: safeCmsValue(
+      hero?.backgroundImageAlt,
+      'Digital dentistry clinic interior'
+    ),
     loading,
     error,
   };
@@ -173,9 +176,10 @@ export function useTestimonials() {
       _id, name, country, countryFlag, text, stars, image, imageAlt
     }`
   );
+  const safeData = data?.filter((t) => !hasPatientUnsafeCopy(t));
   const testimonials: CmsTestimonial[] =
-    data && data.length > 0
-      ? data.map((t) => ({
+    safeData && safeData.length > 0
+      ? safeData.map((t) => ({
           _id: t._id,
           name: t.name,
           country: t.country,
@@ -300,9 +304,10 @@ export function useTourismPricing() {
       turkeyPrice, hungaryPrice, uaePrice, saving
     }`
   );
+  const safeData = data?.filter((p) => !hasPatientUnsafeCopy(p));
   const pricing: CmsPricing[] =
-    data && data.length > 0
-      ? data.map((p) => ({
+    safeData && safeData.length > 0
+      ? safeData.map((p) => ({
           _id: p._id,
           treatment: p.treatment,
           egyptPrice: p.egyptPrice,
@@ -358,9 +363,10 @@ export function useFaqs() {
   const { data, loading, error } = useSanityQuery<SanityFaq[]>(
     `*[_type == "faq"] | order(order asc) { _id, question, answer }`
   );
+  const safeData = data?.filter((f) => !hasPatientUnsafeCopy(f));
   const faqs: CmsFaq[] =
-    data && data.length > 0
-      ? data.map((f) => ({
+    safeData && safeData.length > 0
+      ? safeData.map((f) => ({
           _id: f._id,
           question: f.question,
           answer: f.answer,
@@ -928,19 +934,19 @@ export function useTourismSettings() {
   const doc = data?.[0];
   return {
     tourism: {
-      heroTagline: doc?.heroTagline ?? DEFAULT_TOURISM.heroTagline,
-      heroTitle: doc?.heroTitle ?? DEFAULT_TOURISM.heroTitle,
-      heroTitleAccent: doc?.heroTitleAccent ?? DEFAULT_TOURISM.heroTitleAccent,
-      heroSubtitle: doc?.heroSubtitle ?? DEFAULT_TOURISM.heroSubtitle,
-      heroCtaText: doc?.heroCtaText ?? DEFAULT_TOURISM.heroCtaText,
-      timelineSteps: doc?.timelineSteps ?? DEFAULT_TOURISM.timelineSteps,
-      fusionSubheading: doc?.fusionSubheading ?? DEFAULT_TOURISM.fusionSubheading,
-      fusionTitle: doc?.fusionTitle ?? DEFAULT_TOURISM.fusionTitle,
-      vipFeatures: doc?.vipFeatures ?? DEFAULT_TOURISM.vipFeatures,
-      vipStats: doc?.vipStats ?? DEFAULT_TOURISM.vipStats,
-      whyClinicReasons: doc?.whyClinicReasons ?? DEFAULT_TOURISM.whyClinicReasons,
-      residences: doc?.residences ?? DEFAULT_TOURISM.residences,
-      bottomCtaText: doc?.bottomCtaText ?? DEFAULT_TOURISM.bottomCtaText,
+      heroTagline: safeCmsValue(doc?.heroTagline, DEFAULT_TOURISM.heroTagline),
+      heroTitle: safeCmsValue(doc?.heroTitle, DEFAULT_TOURISM.heroTitle),
+      heroTitleAccent: safeCmsValue(doc?.heroTitleAccent, DEFAULT_TOURISM.heroTitleAccent),
+      heroSubtitle: safeCmsValue(doc?.heroSubtitle, DEFAULT_TOURISM.heroSubtitle),
+      heroCtaText: safeCmsValue(doc?.heroCtaText, DEFAULT_TOURISM.heroCtaText),
+      timelineSteps: safeCmsValue(doc?.timelineSteps, DEFAULT_TOURISM.timelineSteps),
+      fusionSubheading: safeCmsValue(doc?.fusionSubheading, DEFAULT_TOURISM.fusionSubheading),
+      fusionTitle: safeCmsValue(doc?.fusionTitle, DEFAULT_TOURISM.fusionTitle),
+      vipFeatures: safeCmsValue(doc?.vipFeatures, DEFAULT_TOURISM.vipFeatures),
+      vipStats: safeCmsValue(doc?.vipStats, DEFAULT_TOURISM.vipStats),
+      whyClinicReasons: safeCmsValue(doc?.whyClinicReasons, DEFAULT_TOURISM.whyClinicReasons),
+      residences: safeCmsValue(doc?.residences, DEFAULT_TOURISM.residences),
+      bottomCtaText: safeCmsValue(doc?.bottomCtaText, DEFAULT_TOURISM.bottomCtaText),
     },
     loading,
     error,
@@ -1027,11 +1033,17 @@ export interface ServicePillarData {
 
 const PATIENT_PROMISE_PATTERNS = [
   /\bworld[-\s]class\b/i,
+  /\bvip\b/i,
+  /\bluxury\b/i,
   /\bpermanent teeth\b/i,
   /\bfree consultation\b/i,
+  /\bfraction of\b/i,
+  /\bguarantee[sd]?\b/i,
+  /\bwarrant(y|ies)\b/i,
   /\bexact planned\b/i,
   /\blifetime\b/i,
   /\bzero guesswork\b/i,
+  /\bperfect\b/i,
   /\bperfectly\b/i,
   /\belite\b/i,
   /\bpremium\b/i,
@@ -1047,6 +1059,7 @@ const PATIENT_PROMISE_PATTERNS = [
   /\bsafest\b/i,
   /\bno additional cost\b/i,
   /[$€£]\s?\d/,
+  /\bup to\s?\d+\s?%/i,
   /\b\d+\s?%\s?(saving|savings|off|less|cheaper|lower)\b/i,
   /\b(60|70)[–-](70|85|90)\b/,
 ];

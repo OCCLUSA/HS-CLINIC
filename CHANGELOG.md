@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-07-06T22:25:00+03:00 — BLD
+
+- **Files changed:** `src/hooks/useCmsData.ts`, `src/hooks/useCmsData.test.ts`.
+- **Summary:** Added a broader CMS safety fallback for live homepage hero copy, testimonials, dental tourism pricing rows, tourism FAQs, and tourism page settings. This prevents old Sanity wording such as VIP, luxury, world-class, fixed prices, high savings, warranty, lifetime, and guarantee claims from hydrating onto patient-facing pages.
+- **QC status:** focused CMS guard test passed with 8 tests | full test suite passed with 10 files and 50 tests | lint passed | build/prerender passed with pre-existing `svgo` favicon optimizer warning.
 ## 2026-07-06T04:00:00+03:00 — BLD
 
 - **Files changed:** `src/app/pages/tourism/RegionalTourismPage.tsx`, `src/app/routes.tsx`, `src/lib/seo.ts`, `scripts/generate-sitemap.mjs`, `scripts/prerender.mjs`, `public/llms.txt`, `scripts/generate-tests.mjs`
