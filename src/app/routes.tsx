@@ -24,6 +24,7 @@ const FullArchRehab = lazy(() => import('@/app/pages/services/FullArchRehab'));
 const ServiceDetailPage = lazy(() => import('@/app/pages/services/ServiceDetailPage'));
 const TourismProgram = lazy(() => import('@/app/pages/tourism/TourismProgram'));
 const RegionalTourismPage = lazy(() => import('@/app/pages/tourism/RegionalTourismPage'));
+const RegionalEducationPage = lazy(() => import('@/app/pages/tourism/RegionalEducationPage'));
 const PrivacyPolicy = lazy(() => import('@/app/pages/legal/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('@/app/pages/legal/TermsOfService'));
 const MedicalDisclaimer = lazy(() => import('@/app/pages/legal/MedicalDisclaimer'));
@@ -101,6 +102,14 @@ export const router = createBrowserRouter([
         element: (
           <Suspense fallback={<PageLoader />}>
             <TourismProgram />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'dental-tourism/:regionSlug/dental-implant-travel-guide',
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <RegionalEducationPage />
           </Suspense>
         ),
       },

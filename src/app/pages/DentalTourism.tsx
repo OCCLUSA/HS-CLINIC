@@ -1,7 +1,16 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { SEO, SITE_NAME, DEFAULT_OG_IMAGE, DENTAL_TOURISM_JSONLD, buildFaqJsonLd } from '@/lib/seo';
+import {
+  SEO,
+  SITE_NAME,
+  DEFAULT_OG_IMAGE,
+  DENTAL_TOURISM_JSONLD,
+  REGIONAL_TOURISM_LINKS,
+  TOURISM_EDUCATION_LINKS,
+  buildDentalTourismHreflangTags,
+  buildFaqJsonLd,
+} from '@/lib/seo';
 import { Globe, ChevronRight, Phone, Star, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { WhyHSClinic } from '@/app/components/tourism/WhyHSClinic';
@@ -12,6 +21,7 @@ import { BeforeAfterSlider } from '@/app/components/tourism/BeforeAfterSlider';
 import { CuratedResidences } from '@/app/components/tourism/CuratedResidences';
 import { VIPWelcome } from '@/app/components/tourism/VIPWelcome';
 import { RoyalDentalJourney } from '@/app/components/tourism/RoyalDentalJourney';
+import { StyleReferenceShowcase } from '@/app/components/StyleReferenceShowcase';
 import {
   useTestimonials,
   useTourismPricing,
@@ -19,6 +29,7 @@ import {
   useTourismSettings,
 } from '@/hooks/useCmsData';
 import { getIcon } from '@/lib/iconMap';
+import { trackWhatsAppClick } from '@/lib/analytics';
 
 export default function DentalTourism() {
   const { testimonials } = useTestimonials();
@@ -78,6 +89,10 @@ export default function DentalTourism() {
         <meta name="twitter:title" content={SEO.dentalTourism.title} />
         <meta name="twitter:description" content={SEO.dentalTourism.description} />
         <meta name="twitter:image" content={DEFAULT_OG_IMAGE} />
+        <meta name="robots" content="index,follow,max-image-preview:large" />
+        {buildDentalTourismHreflangTags(SEO.dentalTourism.canonical).map((tag) => (
+          <link key={tag.hrefLang} rel={tag.rel} hrefLang={tag.hrefLang} href={tag.href} />
+        ))}
         {/* JSON-LD: Dental Tourism MedicalBusiness schema */}
         <script type="application/ld+json">{JSON.stringify(DENTAL_TOURISM_JSONLD)}</script>
         {/* JSON-LD: FAQPage schema for AI/GEO answer extraction */}
@@ -147,12 +162,54 @@ export default function DentalTourism() {
                 href="https://api.whatsapp.com/send/?phone=201101010599"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackWhatsAppClick('dental_tourism_hero')}
                 className="border-gold-400/30 text-gold-400 hover:bg-gold-400/10 flex items-center gap-2 rounded-lg border px-8 py-4 transition-all"
               >
                 <Phone className="h-5 w-5" />
                 WhatsApp Us
               </a>
             </motion.div>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-y border-white/5 px-4 py-16 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-8 max-w-3xl">
+            <p className="text-gold-400 font-mono text-sm tracking-[0.25em] uppercase">
+              Country guides
+            </p>
+            <h2 className="mt-3 font-serif text-3xl text-white md:text-5xl">
+              Find the page written for your travel route
+            </h2>
+            <p className="mt-4 text-sm leading-6 text-gray-400">
+              Each guide explains records review, visit timing, and follow up in plain language.
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {REGIONAL_TOURISM_LINKS.map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                className="hover:border-gold-400/40 rounded-xl border border-white/10 bg-white/[0.03] p-5 text-white transition hover:bg-white/[0.06]"
+              >
+                <span className="text-gold-300 text-sm font-semibold">{link.label}</span>
+                <span className="mt-2 block text-xs leading-5 text-gray-500">
+                  Records first dental travel planning in Cairo.
+                </span>
+              </Link>
+            ))}
+          </div>
+          <div className="mt-8 flex flex-wrap gap-3">
+            {TOURISM_EDUCATION_LINKS.map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                className="border-gold-400/30 text-gold-300 hover:bg-gold-400/10 rounded-full border px-4 py-2 text-sm transition"
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
         </div>
       </section>
@@ -310,6 +367,26 @@ export default function DentalTourism() {
           })}
         </div>
       </section>
+
+      <StyleReferenceShowcase
+        eyebrow="Clinic planning language"
+        title="Dental travel should feel clear before it feels luxurious"
+        intro="These visuals help international patients understand the difference between cosmetic images, real treatment planning, and clinician-reviewed dental records before choosing travel dates."
+        imageIds={[
+          'smileMakeoverBeforeAfterStyle',
+          'toothEnamelArt',
+          'toothAnatomyArt',
+          'ceramicVeneerShade',
+        ]}
+        links={[
+          { label: 'Gulf implant guide', to: '/dental-tourism/gulf/dental-implant-travel-guide' },
+          {
+            label: 'Europe implant guide',
+            to: '/dental-tourism/europe/dental-implant-travel-guide',
+          },
+          { label: 'HS Dental Cases', to: '/gallery' },
+        ]}
+      />
 
       <CuratedResidences residences={tourism.residences} />
       <FAQAccordion cmsFaqs={cmsFaqs} />

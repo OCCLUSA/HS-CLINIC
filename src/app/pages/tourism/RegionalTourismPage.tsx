@@ -19,9 +19,12 @@ import {
   SEO,
   SITE_NAME,
   SITE_URL,
+  TOURISM_EDUCATION_LINKS,
   buildBreadcrumbJsonLd,
+  buildDentalTourismHreflangTags,
   buildFaqJsonLd,
 } from '@/lib/seo';
+import { trackWhatsAppClick } from '@/lib/analytics';
 
 type RegionalPage = {
   slug: string;
@@ -308,6 +311,9 @@ export default function RegionalTourismPage() {
   );
   const faqJsonLd = useMemo(() => buildFaqJsonLd(page.patientQuestions), [page]);
   const regionalJsonLd = useMemo(() => buildRegionalJsonLd(page), [page]);
+  const educationGuide = TOURISM_EDUCATION_LINKS.find((link) =>
+    link.path.startsWith(`/dental-tourism/${page.slug}/`)
+  );
 
   if (!resolvedPage) {
     return <Navigate to="/dental-tourism" replace />;
@@ -331,6 +337,16 @@ export default function RegionalTourismPage() {
         <meta name="twitter:title" content={seo.title} />
         <meta name="twitter:description" content={seo.description} />
         <meta name="twitter:image" content={DEFAULT_OG_IMAGE} />
+        <meta name="robots" content="index,follow,max-image-preview:large" />
+        <meta name="geo.region" content="EG-C" />
+        <meta name="geo.placename" content={`Cairo dental clinic for ${page.regionName}`} />
+        <meta
+          name="keywords"
+          content={`dental treatment Cairo ${page.regionName}, dental implants Cairo ${page.regionName}, dental tourism Egypt ${page.regionName}`}
+        />
+        {buildDentalTourismHreflangTags(seo.canonical).map((tag) => (
+          <link key={tag.hrefLang} rel={tag.rel} hrefLang={tag.hrefLang} href={tag.href} />
+        ))}
         <script type="application/ld+json">{JSON.stringify(regionalJsonLd)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbJsonLd)}</script>
         <script type="application/ld+json">{JSON.stringify(faqJsonLd)}</script>
@@ -363,6 +379,7 @@ export default function RegionalTourismPage() {
                 href="https://api.whatsapp.com/send/?phone=201101010599"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackWhatsAppClick(`regional_${page.slug}_hero`)}
                 className="bg-gold-400 text-dark-950 inline-flex items-center gap-2 rounded-lg px-6 py-3 font-semibold transition hover:bg-white"
               >
                 Start with WhatsApp
@@ -470,6 +487,21 @@ export default function RegionalTourismPage() {
               ))}
             </div>
           </div>
+          {educationGuide && (
+            <Link
+              to={educationGuide.path}
+              className="border-gold-400/30 bg-gold-400/10 mt-8 block rounded-xl border p-6 transition hover:bg-gold-400/15"
+            >
+              <span className="text-gold-300 text-sm font-semibold">Education guide</span>
+              <span className="mt-2 block font-serif text-2xl text-white">
+                {educationGuide.label}
+              </span>
+              <span className="mt-2 block text-sm leading-6 text-gray-400">
+                Read the records, timing, safety, and follow up questions before choosing travel
+                dates.
+              </span>
+            </Link>
+          )}
         </div>
       </section>
 

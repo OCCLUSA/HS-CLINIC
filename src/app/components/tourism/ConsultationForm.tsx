@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { useState, useRef } from 'react';
 import { Send, Upload, CheckCircle, Loader2 } from 'lucide-react';
+import { trackFormSubmit, trackWhatsAppClick } from '@/lib/analytics';
 
 export function ConsultationForm() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
@@ -17,7 +18,11 @@ export function ConsultationForm() {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams(formDataObj as unknown as Record<string, string>).toString(),
     })
-      .then(() => setStatus('sent'))
+      .then((response) => {
+        if (!response.ok) throw new Error('Consultation request failed');
+        trackFormSubmit('tourism_consultation_form');
+        setStatus('sent');
+      })
       .catch((err) => {
         console.error('Form submission error:', err);
         setStatus('idle');
@@ -55,6 +60,7 @@ export function ConsultationForm() {
                   href="https://api.whatsapp.com/send/?phone=201101010599"
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => trackWhatsAppClick('tourism_consultation_card')}
                   className="text-gold-400 hover:text-gold-300 mt-2 inline-block text-xs"
                 >
                   +20 110 101 0599 (WhatsApp) →

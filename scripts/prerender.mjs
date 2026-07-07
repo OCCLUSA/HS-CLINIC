@@ -27,6 +27,8 @@ const staticRoutes = [
   '/dental-tourism/europe',
   '/dental-tourism/uk',
   '/dental-tourism/germany',
+  '/dental-tourism/gulf/dental-implant-travel-guide',
+  '/dental-tourism/europe/dental-implant-travel-guide',
   '/dental-tourism/program',
   '/gallery',
   '/contact',

@@ -14,6 +14,7 @@ import {
 import { useServicePillar } from '@/hooks/useCmsData';
 import { urlFor } from '@/lib/sanityClient';
 import { MedicallyReviewedBadge } from '@/app/components/MedicallyReviewedBadge';
+import { StyleReferenceShowcase } from '@/app/components/StyleReferenceShowcase';
 
 const breadcrumbs = buildBreadcrumbJsonLd([
   { name: 'Home', path: '/' },
@@ -179,6 +180,31 @@ export default function DentalImplants() {
           </div>
         </section>
       )}
+
+      <StyleReferenceShowcase
+        eyebrow="Implant planning visuals"
+        title="What patients should see before implant surgery"
+        intro="These visuals explain how implant treatment is planned around anatomy, smile support, prosthetic space, and the final bite. They are educational only; final treatment decisions require examination and clinician review."
+        imageIds={[
+          'implantSurface',
+          'laminateVeneerAnnotation',
+          'smileMakeoverBeforeAfterStyle',
+          'toothRootEndodontic',
+        ]}
+        columns="two"
+        className="mb-20"
+        links={[
+          {
+            label: 'Gulf implant travel guide',
+            to: '/dental-tourism/gulf/dental-implant-travel-guide',
+          },
+          {
+            label: 'Europe implant travel guide',
+            to: '/dental-tourism/europe/dental-implant-travel-guide',
+          },
+          { label: 'Digital Smile Design', to: '/digital-smile-design' },
+        ]}
+      />
 
       {/* Implant Types */}
       {pillar.benefits?.length > 0 && (

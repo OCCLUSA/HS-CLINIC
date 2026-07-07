@@ -79,6 +79,18 @@ export const SEO = {
       'Records-first dental tourism planning for Germany patients considering implants, crowns, veneers, full arch care, or digital bite assessment in Cairo.',
     canonical: SITE_URL + '/dental-tourism/germany',
   },
+  dentalTourismGulfGuide: {
+    title: 'Dental Implant Travel Guide for Gulf Patients | HS Clinic Cairo',
+    description:
+      'Educational guide for Gulf patients planning dental implants in Cairo with smile design, stackable guides, jaw tracking, EMG screening, and clinician review.',
+    canonical: SITE_URL + '/dental-tourism/gulf/dental-implant-travel-guide',
+  },
+  dentalTourismEuropeGuide: {
+    title: 'Dental Implant Travel Guide for Europe Patients | HS Clinic Cairo',
+    description:
+      'Educational guide for Europe patients considering dental implant travel to Cairo with guided surgery, smile design, digital occlusion, EMG, and staged follow up.',
+    canonical: SITE_URL + '/dental-tourism/europe/dental-implant-travel-guide',
+  },
   contact: {
     title: 'Contact HS Clinic | Book Your Appointment in Cairo, Egypt',
     description:
@@ -898,6 +910,26 @@ export const GALLERY_JSONLD = {
   },
 };
 
+export const REGIONAL_TOURISM_LINKS = [
+  { label: 'Gulf patients', path: '/dental-tourism/gulf', hrefLang: 'en-AE' },
+  { label: 'Saudi patients', path: '/dental-tourism/saudi-arabia', hrefLang: 'en-SA' },
+  { label: 'UAE patients', path: '/dental-tourism/uae', hrefLang: 'en-AE' },
+  { label: 'Europe patients', path: '/dental-tourism/europe', hrefLang: 'en' },
+  { label: 'UK patients', path: '/dental-tourism/uk', hrefLang: 'en-GB' },
+  { label: 'Germany patients', path: '/dental-tourism/germany', hrefLang: 'en-DE' },
+] as const;
+
+export const TOURISM_EDUCATION_LINKS = [
+  {
+    label: 'Gulf implant travel guide',
+    path: '/dental-tourism/gulf/dental-implant-travel-guide',
+  },
+  {
+    label: 'Europe implant travel guide',
+    path: '/dental-tourism/europe/dental-implant-travel-guide',
+  },
+] as const;
+
 // ═══════════════════════════════════════════════════════════════
 // UTILITY BUILDERS — Dynamic schema generation
 // ═══════════════════════════════════════════════════════════════
@@ -932,4 +964,17 @@ export function buildHreflangTags(canonicalUrl: string) {
     { rel: 'alternate', hrefLang: 'en', href: canonicalUrl },
     { rel: 'alternate', hrefLang: 'x-default', href: canonicalUrl },
   ];
+}
+
+export function buildDentalTourismHreflangTags(canonicalUrl: string) {
+  const tags = [
+    { rel: 'alternate', hrefLang: 'en', href: canonicalUrl },
+    { rel: 'alternate', hrefLang: 'en-AE', href: SEO.dentalTourismUae.canonical },
+    { rel: 'alternate', hrefLang: 'en-SA', href: SEO.dentalTourismSaudi.canonical },
+    { rel: 'alternate', hrefLang: 'en-GB', href: SEO.dentalTourismUk.canonical },
+    { rel: 'alternate', hrefLang: 'en-DE', href: SEO.dentalTourismGermany.canonical },
+    { rel: 'alternate', hrefLang: 'x-default', href: SEO.dentalTourism.canonical },
+  ];
+
+  return [...new Map(tags.map((tag) => [tag.hrefLang, tag])).values()];
 }

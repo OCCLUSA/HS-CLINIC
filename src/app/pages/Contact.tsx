@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { SEO, SITE_NAME, DEFAULT_OG_IMAGE, buildLocalBusinessJsonLd } from '@/lib/seo';
 import { SectionHeader } from '@/app/components/ui/SectionHeader';
 import { useSiteSettings, useSanityImage } from '@/hooks/useCmsData';
+import { trackFormSubmit, trackWhatsAppClick } from '@/lib/analytics';
 
 export function Contact() {
   const [formData, setFormData] = useState({
@@ -35,6 +36,7 @@ export function Contact() {
       });
 
       if (response.ok) {
+        trackFormSubmit('contact_form');
         setSubmitted(true);
         setFormData({
           name: '',
@@ -295,6 +297,7 @@ export function Contact() {
               href={`https://api.whatsapp.com/send/?phone=${waDigits}&text=Hello%20Dr.%20Haitham%2C%20I%20would%20like%20to%20book%20a%20consultation.`}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackWhatsAppClick('contact_page_booking')}
               className="group flex items-center gap-3 rounded-xl border border-[#25D366]/30 bg-[#25D366]/10 px-5 py-4 transition-all hover:border-[#25D366]/60 hover:bg-[#25D366]/20"
             >
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#25D366] shadow-lg shadow-[#25D366]/30 transition-transform group-hover:scale-110">

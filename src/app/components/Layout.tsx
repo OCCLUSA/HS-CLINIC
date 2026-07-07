@@ -19,6 +19,7 @@ import clinicLogo from '../../assets/logo.webp';
 import { FloatingCTA } from './FloatingCTA';
 import { CookieConsent } from './CookieConsent';
 import { useSiteSettings } from '@/hooks/useCmsData';
+import { REGIONAL_TOURISM_LINKS } from '@/lib/seo';
 
 /** Maps Sanity social platform strings → Lucide icons */
 const SOCIAL_ICONS: Record<string, LucideIcon> = {
@@ -251,7 +252,7 @@ export function Layout() {
       </main>
 
       <footer className="bg-dark-900 border-t border-white/5 px-4 py-12 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 md:grid-cols-4">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 md:grid-cols-5">
           <div className="col-span-1 md:col-span-2">
             <div className="mb-4 flex items-center gap-2">
               <img
@@ -309,6 +310,24 @@ export function Layout() {
                 <MapPin className="text-gold-500 mt-1 h-4 w-4" />
                 <span>{settings.address}</span>
               </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="mb-4 font-mono text-sm font-semibold tracking-wider text-white uppercase">
+              Patient Guides
+            </h3>
+            <ul className="space-y-2">
+              {REGIONAL_TOURISM_LINKS.map((item) => (
+                <li key={item.path}>
+                  <Link
+                    to={item.path}
+                    className="hover:text-gold-400 text-sm text-gray-400 transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 

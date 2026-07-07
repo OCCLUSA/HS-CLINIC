@@ -5,6 +5,7 @@ import { ArrowRight, ChevronRight } from 'lucide-react';
 import { SEO, SITE_NAME, DEFAULT_OG_IMAGE, DSD_JSONLD } from '@/lib/seo';
 import { useDsdSettings } from '@/hooks/useCmsData';
 import { getIcon } from '@/lib/iconMap';
+import { StyleReferenceShowcase } from '@/app/components/StyleReferenceShowcase';
 
 /* ────────── animation presets ────────── */
 const fadeUp = {
@@ -262,6 +263,29 @@ export default function DigitalSmileDesign() {
           </div>
         </div>
       </section>
+
+      <StyleReferenceShowcase
+        eyebrow="Smile detail records"
+        title="The small details that make a smile look natural"
+        intro="Digital Smile Design uses face photos, close dental photos, shade records, and enamel texture references to plan a smile that fits the patient instead of looking copied or artificial."
+        imageIds={[
+          'enamelCharacterization',
+          'gumLineProportion',
+          'ceramicVeneerShade',
+          'incisalEdge',
+          'enamelSurfaceTexture',
+          'naturalEnamelTexture',
+          'polarizedEnamel',
+        ]}
+        links={[
+          { label: 'Gulf patient guide', to: '/dental-tourism/gulf/dental-implant-travel-guide' },
+          {
+            label: 'Europe patient guide',
+            to: '/dental-tourism/europe/dental-implant-travel-guide',
+          },
+          { label: 'Dental implants', to: '/services/dental-implants' },
+        ]}
+      />
 
       {/* ═══════════════════════════════════════════
           SECTION 5 — THE DSD JOURNEY

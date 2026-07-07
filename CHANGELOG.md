@@ -1,5 +1,23 @@
 # Changelog
 
+## 2026-07-07T06:21:33+03:00 — BLD
+
+- **Files changed:** `public/images/style-references/*`, `src/app/components/StyleReferenceShowcase.tsx`, `src/app/pages/DigitalSmileDesign.tsx`, `src/app/pages/services/DentalImplants.tsx`, `src/app/pages/DentalTourism.tsx`, `src/app/pages/tourism/RegionalEducationPage.tsx`.
+- **Summary:** Converted 15 owner-approved style-reference images to public WebP assets with SEO/GEO file names, added a reusable visual planning section with visible captions and alt text, and embedded the images across Digital Smile Design, Dental Implants, Dental Tourism, and the Gulf/Europe implant travel guides.
+- **QC status:** baseline build passed before edits | lint passed | full test suite passed with 11 files and 54 tests | build/prerender passed with 29 sitemap URLs and 30 prerendered routes | browser proof passed on 5 pages with 21 style-reference image placements, 0 missing alt text, 0 unloaded images after scroll, and 0 mobile horizontal overflow on checked pages.
+
+## 2026-07-07T00:35:21+03:00 — BLD
+
+- **Files changed:** `src/app/pages/tourism/RegionalEducationPage.tsx`, `src/lib/seo.ts`.
+- **Summary:** Expanded the Gulf and Europe implant travel education pages with patient-readable sections on stackable digital guides, smile-design-led implant planning, CBCT guide planning, digital occlusion, jaw tracking, EMG screening, responsible travel records, and safety limits.
+- **QC status:** lint passed | focused route and analytics tests passed with 7 tests | full test suite passed with 11 files and 54 tests | build/prerender passed with 29 sitemap URLs and 30 prerendered routes | source safety wording scan passed with 0 risky hits.
+
+## 2026-07-06T23:55:00+03:00 — BLD
+
+- **Files changed:** `docs/search-console-indexing-checklist.md`, `src/app/pages/tourism/RegionalEducationPage.tsx`, `src/app/pages/DentalTourism.tsx`, `src/app/pages/tourism/RegionalTourismPage.tsx`, `src/app/components/Layout.tsx`, `src/lib/seo.ts`, `src/lib/analytics.ts`, route/sitemap/prerender files, and focused tests.
+- **Summary:** Added the first indexing and SEO batch: Search Console checklist, visible regional patient links, hreflang and regional metadata, Gulf and Europe dental implant travel guide pages, and privacy-safe WhatsApp/form conversion tracking.
+- **QC status:** focused route and analytics tests passed with 7 tests | full test suite passed with 11 files and 54 tests | lint passed | build/prerender passed with 29 sitemap URLs and 30 prerendered routes | built SEO proof scan passed with 0 risky hits on checked pages.
+
 ## 2026-07-06T22:25:00+03:00 — BLD
 
 - **Files changed:** `src/hooks/useCmsData.ts`, `src/hooks/useCmsData.test.ts`.

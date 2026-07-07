@@ -25,6 +25,8 @@ const staticRoutes = [
   { path: '/dental-tourism/europe', priority: '0.8', changefreq: 'monthly' },
   { path: '/dental-tourism/uk', priority: '0.8', changefreq: 'monthly' },
   { path: '/dental-tourism/germany', priority: '0.8', changefreq: 'monthly' },
+  { path: '/dental-tourism/gulf/dental-implant-travel-guide', priority: '0.75', changefreq: 'monthly' },
+  { path: '/dental-tourism/europe/dental-implant-travel-guide', priority: '0.75', changefreq: 'monthly' },
   { path: '/digital-smile-design', priority: '0.9', changefreq: 'monthly' },
   { path: '/gallery', priority: '0.8', changefreq: 'monthly' },
   { path: '/contact', priority: '0.7', changefreq: 'yearly' },

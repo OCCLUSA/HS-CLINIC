@@ -26,6 +26,7 @@ import {
   buildBreadcrumbJsonLd,
   buildFaqJsonLd,
 } from '@/lib/seo';
+import { trackWhatsAppClick } from '@/lib/analytics';
 
 /* ── Animation helpers ────────────────────────────── */
 const fadeUp = {
@@ -365,6 +366,7 @@ export default function TourismProgram() {
               href="https://api.whatsapp.com/send/?phone=201101010599"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackWhatsAppClick('tourism_program_hero')}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',

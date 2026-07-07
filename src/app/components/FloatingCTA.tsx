@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSiteSettings } from '@/hooks/useCmsData';
+import { trackPhoneClick, trackWhatsAppClick } from '@/lib/analytics';
 
 /**
  * FloatingCTA — Sticky mobile CTA with WhatsApp + Call buttons.
@@ -48,6 +49,7 @@ export function FloatingCTA() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Chat on WhatsApp"
+            onClick={() => trackWhatsAppClick('floating_cta')}
             className="group flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] shadow-lg shadow-[#25D366]/30 transition-all duration-300 hover:scale-110 hover:shadow-xl hover:shadow-[#25D366]/40"
           >
             <MessageCircle className="h-6 w-6 text-white transition-transform group-hover:scale-110" />
@@ -57,6 +59,7 @@ export function FloatingCTA() {
           <a
             href={`tel:${digits}`}
             aria-label="Call the clinic"
+            onClick={() => trackPhoneClick('floating_cta')}
             className="group bg-gold-500 shadow-gold-500/30 hover:shadow-gold-500/40 flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl"
           >
             <Phone className="h-6 w-6 text-slate-950 transition-transform group-hover:scale-110" />
