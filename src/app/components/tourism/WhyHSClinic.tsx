@@ -9,19 +9,19 @@ const DEFAULT_REASONS = [
   {
     title: 'Fully Digital Workflow',
     description:
-      '3D-guided surgery, digital occlusion analysis & in-house 3D printing for 0.01mm precision.',
+      '3D-guided surgery, digital bite review, in-house planning, and 3D printing support clinician-led treatment planning.',
     iconName: 'Cpu',
   },
   {
-    title: 'International Sterilization',
+    title: 'Sterilization Protocols',
     description:
-      'Strict infection control protocols exceeding WHO standards. Near-zero infection risk.',
+      'Strict infection control protocols are followed and discussed clearly before treatment.',
     iconName: 'Shield',
   },
   {
-    title: 'Lifetime Implant Warranty',
+    title: 'Written Coverage Terms',
     description:
-      'Written lifetime guarantee on all German/Swiss implant systems (Straumann, Nobel Biocare).',
+      'Written coverage conditions are reviewed for eligible implant and prosthetic components before treatment.',
     iconName: 'Award',
   },
   {
@@ -30,15 +30,15 @@ const DEFAULT_REASONS = [
     iconName: 'Globe',
   },
   {
-    title: 'Neuro-Occlusion Specialist',
+    title: 'Digital Bite Planning',
     description:
-      "Dr. Sharshar's MSc in Perio-Implantology + EMG jaw-tracking ensures functional perfection.",
+      'Bite records, muscle screening, and jaw movement review can support clinician-led planning.',
     iconName: 'HeartPulse',
   },
   {
-    title: 'VIP Travel Concierge',
+    title: 'Travel Coordination',
     description:
-      'Airport pickup, 5-star hotel booking, clinic transfers & curated Cairo sightseeing tours.',
+      'Airport transfer coordination, accommodation guidance, clinic visits, and optional Cairo sightseeing support.',
     iconName: 'Plane',
   },
 ];
@@ -58,8 +58,8 @@ export function WhyHSClinic({ reasons }: WhyHSClinicProps) {
           </h2>
           <h3 className="mb-4 font-serif text-4xl text-white md:text-5xl">Why HS Clinic Cairo?</h3>
           <p className="mx-auto max-w-2xl text-gray-400">
-            World-class technology. Unmatched hospitality. The most advanced digital dental practice
-            in Egypt.
+            Digital records, clinician-led planning, and coordinated support for patients travelling
+            to Cairo.
           </p>
         </motion.div>
 

@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { render, screen, within } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import { useEffect, useState } from 'react';
+import { Link, MemoryRouter, Route, Routes, useLocation } from 'react-router-dom';
 import { Layout } from '@/app/components/Layout';
 import { HelmetProvider } from 'react-helmet-async';
 
@@ -11,6 +12,23 @@ function renderLayout() {
         <Layout />
       </MemoryRouter>
     </HelmetProvider>
+  );
+}
+
+function DelayedRouteHeading() {
+  const location = useLocation();
+  const [visiblePath, setVisiblePath] = useState(location.pathname);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setVisiblePath(location.pathname), 25);
+    return () => window.clearTimeout(timer);
+  }, [location.pathname]);
+
+  return (
+    <div key={visiblePath}>
+      <h1>{visiblePath === '/second' ? 'Second page' : 'First page'}</h1>
+      {visiblePath === '/first' ? <Link to="/second">Go to second page</Link> : null}
+    </div>
   );
 }
 
@@ -58,6 +76,18 @@ describe('Accessibility', () => {
       const menuButton = screen.getByRole('button', { name: /open main menu/i });
       expect(menuButton).toHaveAttribute('aria-controls', 'mobile-menu');
     });
+
+    it('announces whether the mobile menu action will open or close it', () => {
+      renderLayout();
+      const openButton = screen.getByRole('button', { name: /open main menu/i });
+
+      fireEvent.click(openButton);
+
+      expect(screen.getByRole('button', { name: /close main menu/i })).toHaveAttribute(
+        'aria-expanded',
+        'true'
+      );
+    });
   });
 
   describe('Navigation aria-current', () => {
@@ -77,6 +107,25 @@ describe('Accessibility', () => {
       const activeLink = aboutLinks.find((link) => link.getAttribute('aria-current') === 'page');
       expect(activeLink).toBeDefined();
     });
+
+    it('moves keyboard focus to the new heading after delayed route content replaces the old page', async () => {
+      render(
+        <HelmetProvider>
+          <MemoryRouter initialEntries={['/first']}>
+            <Routes>
+              <Route element={<Layout />}>
+                <Route path="*" element={<DelayedRouteHeading />} />
+              </Route>
+            </Routes>
+          </MemoryRouter>
+        </HelmetProvider>
+      );
+
+      fireEvent.click(screen.getByRole('link', { name: /go to second page/i }));
+
+      const secondHeading = await screen.findByRole('heading', { name: /second page/i });
+      await waitFor(() => expect(secondHeading).toHaveFocus());
+    });
   });
 
   describe('Image alt text', () => {
@@ -87,6 +136,8 @@ describe('Accessibility', () => {
         expect(img).toHaveAttribute('alt');
         // alt should not be empty (decorative images should use aria-hidden instead)
         expect(img.getAttribute('alt')).not.toBe('');
+        expect(img).toHaveAttribute('width', '2000');
+        expect(img).toHaveAttribute('height', '2000');
       });
     });
   });

@@ -76,7 +76,7 @@ describe('${page} Page', () => {
   });
 });
 `;
-  fs.writeFileSync(path.join(basePath, \`legal/\${page}.test.tsx\`), content, 'utf-8');
+  fs.writeFileSync(path.join(basePath, `legal/${page}.test.tsx`), content, 'utf-8');
 });
 
 // 3. Service Pillar Tests
@@ -127,7 +127,7 @@ describe('${page} Page', () => {
   });
 });
 `;
-  fs.writeFileSync(path.join(basePath, \`services/\${page}.test.tsx\`), content, 'utf-8');
+  fs.writeFileSync(path.join(basePath, `services/${page}.test.tsx`), content, 'utf-8');
 });
 
 console.log('Successfully generated 9 unit test files.');

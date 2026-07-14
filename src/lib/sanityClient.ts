@@ -1,5 +1,5 @@
 import { createClient } from '@sanity/client';
-import imageUrlBuilder from '@sanity/image-url';
+import { createImageUrlBuilder } from '@sanity/image-url';
 
 /**
  * Sanity client — read-only, CDN-enabled.
@@ -17,7 +17,7 @@ export const sanityClient = createClient({
 /*  Image URL Builder                                                  */
 /* ------------------------------------------------------------------ */
 
-const builder = imageUrlBuilder(sanityClient);
+const builder = createImageUrlBuilder(sanityClient);
 
 /**
  * Build an optimised image URL from a Sanity image reference.

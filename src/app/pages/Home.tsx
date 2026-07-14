@@ -11,10 +11,9 @@ import {
   buildLocalBusinessJsonLd,
   buildFAQJsonLd,
   buildBreadcrumbJsonLd,
+  buildHreflangTags,
   HOMEPAGE_FAQS,
   BREADCRUMBS,
-  WEBSITE_JSONLD,
-  ORGANIZATION_JSONLD,
 } from '@/lib/seo';
 import {
   Activity,
@@ -28,7 +27,6 @@ import {
 import { CyberHero } from '@/app/components/CyberHero';
 import { ClinicalSimulation } from '@/app/components/ClinicalSimulation';
 import { GlowCard } from '@/app/components/ui/GlowCard';
-import { PatientStories } from '@/app/components/PatientStories';
 import { useHomepageSettings, useSiteSettings, useSanityImage } from '@/hooks/useCmsData';
 
 /** Map icon name strings from CMS to Lucide components */
@@ -60,7 +58,11 @@ export function Home() {
       <Helmet>
         <title>{SEO.home.title}</title>
         <meta name="description" content={SEO.home.description} />
+        <meta name="robots" content="index,follow,max-image-preview:large" />
         <link rel="canonical" href={SEO.home.canonical} />
+        {buildHreflangTags(SEO.home.canonical).map((tag) => (
+          <link key={tag.hrefLang} {...tag} />
+        ))}
         {/* Open Graph */}
         <meta property="og:title" content={SEO.home.title} />
         <meta property="og:description" content={SEO.home.description} />
@@ -82,10 +84,6 @@ export function Home() {
         <meta name="twitter:image:alt" content={DEFAULT_OG_IMAGE_ALT} />
         {/* JSON-LD Structured Data */}
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
-        {/* JSON-LD WebSite schema for sitelinks search box */}
-        <script type="application/ld+json">{JSON.stringify(WEBSITE_JSONLD)}</script>
-        {/* JSON-LD Organization schema for Google Knowledge Panel logo */}
-        <script type="application/ld+json">{JSON.stringify(ORGANIZATION_JSONLD)}</script>
         {/* JSON-LD FAQ schema for rich snippets in search results */}
         <script type="application/ld+json">{JSON.stringify(faqJsonLd)}</script>
         {/* JSON-LD Breadcrumb schema for navigation trails in search results */}
@@ -106,11 +104,11 @@ export function Home() {
               DENTAL IMPLANTS · SMILE DESIGN · DIGITAL OCCLUSION
             </h2>
             <h3 className="mb-6 font-serif text-4xl text-white md:text-5xl">
-              Advanced Dentistry, Simplified.
+              Dental Planning, Clearly Explained.
             </h3>
             <p className="mx-auto max-w-2xl text-lg font-light text-gray-400">
-              Experience precision dental care powered by AI-driven diagnostics, CBCT 3D imaging,
-              and T-Scan occlusal analysis — all under one roof in Cairo, Egypt.
+              Explore dental implant, smile design, and bite care questions through clinical
+              examination, appropriate records, and clinician review in Cairo, Egypt.
             </p>
           </div>
 
@@ -127,53 +125,62 @@ export function Home() {
         </div>
       </section>
 
-      {/* Expertise & Approach Section — boosts word count and keyword density */}
+      {/* Patient pathway and clinical boundaries */}
       <section className="relative border-t border-white/5 px-4 py-24 sm:px-6 lg:px-8">
         <div className="relative mx-auto max-w-5xl">
           <div className="mb-12 text-center">
             <h2 className="text-gold-400 mb-4 font-mono text-sm tracking-[0.5em]">
-              WHY CHOOSE HS CLINIC
+              A CLEAR PATIENT PATH
             </h2>
             <h3 className="mb-6 font-serif text-3xl text-white md:text-4xl">
-              Cosmetic Dentistry Meets Digital Precision
+              Digital Records Support Clinician Review
             </h3>
           </div>
           <div className="grid gap-8 md:grid-cols-2">
             <div className="space-y-4">
               <p className="text-lg leading-relaxed text-gray-300">
-                Dr. Haitham Sharshar brings over 15 years of specialized experience in dental
-                implants, TMJ treatment, and digital smile design to every patient. As one of
-                Cairo&apos;s leading prosthodontists, he combines traditional clinical expertise
-                with cutting-edge digital occlusion technology to deliver results that are both
-                functionally sound and aesthetically exceptional.
+                Digital images, bite records, and scans can support a dental examination when they
+                are clinically relevant. No device or website result makes a diagnosis by itself.
               </p>
               <p className="leading-relaxed text-gray-400">
-                Every treatment begins with comprehensive diagnostics including CBCT 3D imaging,
-                T-Scan occlusal analysis, and EMG jaw muscle assessment. This data-driven approach
-                eliminates guesswork and ensures that dental implants, veneers, and full-arch
-                rehabilitations are planned with sub-millimeter accuracy.
+                Treatment options, materials, timing, alternatives, and limitations are discussed
+                after examination and appropriate diagnostics. The final decision remains
+                clinician-led and requires patient consent.
               </p>
             </div>
             <div className="space-y-4">
               <p className="leading-relaxed text-gray-400">
-                Whether you need a single dental implant, full mouth reconstruction, or cosmetic
-                smile design, HS Clinic offers a seamless patient experience from consultation
-                through treatment completion. Our digital workflow includes CAD/CAM same-day
-                restorations, guided implant surgery, and Digital Smile Design previews so you can
-                see your new smile before treatment even begins.
+                International patients can begin by asking which existing X-rays, photographs, or
+                treatment notes are useful. The public website does not upload or store patient
+                records.
               </p>
               <p className="leading-relaxed text-gray-400">
-                For international patients, our dental tourism program provides VIP concierge
-                services including airport transfers, luxury accommodation arrangements, and
-                dedicated treatment coordinators — making world-class dental care in Cairo, Egypt
-                accessible and stress-free.
+                A preliminary records review can organise questions and possible visit stages. It
+                does not confirm suitability, a fixed visit count, a price, or a treatment outcome.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      <PatientStories />
+      <section className="border-t border-white/5 px-4 py-24 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-10 text-center">
+            <p className="text-gold-400 font-mono text-sm tracking-[0.3em] uppercase">
+              Patient questions
+            </p>
+            <h2 className="mt-4 font-serif text-4xl text-white">Answers with clear boundaries</h2>
+          </div>
+          <div className="space-y-4">
+            {HOMEPAGE_FAQS.map((item) => (
+              <article key={item.question} className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+                <h3 className="font-semibold text-white">{item.question}</h3>
+                <p className="mt-3 text-sm leading-7 text-gray-400">{item.answer}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* CTA Section */}
       <section className="relative overflow-hidden border-t border-white/5 py-32">
@@ -187,7 +194,7 @@ export function Home() {
           <p className="mb-12 text-xl font-light text-gray-300">{homepage.ctaSubtitle}</p>
 
           <Link
-            to="/contact"
+            to="/send-your-records"
             className="border-gold-400 bg-gold-400/10 text-gold-400 hover:bg-gold-400 hover:text-dark-950 focus:ring-gold-400 focus:ring-offset-dark-950 inline-flex h-12 w-full max-w-xs items-center justify-center rounded-lg border px-6 font-medium transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none"
           >
             {homepage.ctaButtonText}

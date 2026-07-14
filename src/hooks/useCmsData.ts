@@ -15,10 +15,6 @@ import type {
   SanityFaq,
   SanitySiteSettings,
   SanityAboutSettings,
-  SanityTechnologySettings,
-  SanityHomepageSettings,
-  SanityServicesPageSettings,
-  SanityDsdSettings,
   SanityTourismSettings,
   SanityBeforeAfterCase,
   SanityYoutubeVideo,
@@ -36,28 +32,67 @@ export { useSanityImage };
    ================================================================ */
 
 const DEFAULT_HERO = {
-  title: 'Architect Your Perfect Occlusion',
+  title: 'Plan Your Confident Smile',
   subtitle:
-    'Advanced bio-digital algorithms for TMJ analysis and smile reconstruction. Experience the future of dentistry with 0.01mm precision.',
-  ctaText: 'INITIATE CONSULTATION',
-  ctaLink: '/contact',
+    'Dental implants, smile design, crowns, and bite care planned with digital records, clinical examination, and clinician review.',
+  ctaText: 'Start With Your Records',
+  ctaLink: '/send-your-records',
 };
 
+const OWNER_APPROVED_HOMEPAGE_HERO_IMAGE: SanityImage = {
+  _type: 'image',
+  asset: {
+    _type: 'reference',
+    _ref: 'image-14598198071ac7b5008ac148b0226e8296b6f68a-2752x1536-webp',
+  },
+};
+
+const OWNER_APPROVED_HOMEPAGE_HERO_ALT =
+  'Dental consultation with digital jaw imaging at HS Clinic Cairo';
+
 export function useHero() {
+  type ApprovedHero = SanityHero & {
+    ownerApproved?: boolean;
+    clinicianCopyApproved?: boolean;
+    imageRightsConfirmed?: boolean;
+    publicationConsentConfirmed?: boolean;
+  };
   const {
     data: hero,
     loading,
     error,
-  } = useSanityQuery<SanityHero>(
-    `coalesce(*[_type == "hero" && _id == "hero"][0], *[_type == "hero"][0]) { title, subtitle, ctaText, ctaLink, backgroundImage, backgroundImageAlt }`
+  } = useSanityQuery<ApprovedHero>(
+    `coalesce(*[_type == "hero" && _id == "hero"][0], *[_type == "hero"][0]) {
+      title, subtitle, ctaText, ctaLink, backgroundImage, backgroundImageAlt,
+      ownerApproved, clinicianCopyApproved, imageRightsConfirmed, publicationConsentConfirmed
+    }`
   );
+  const doc =
+    hero?.ownerApproved === true &&
+    hero.clinicianCopyApproved === true &&
+    !hasPatientUnsafeCopy({
+      title: hero.title,
+      subtitle: hero.subtitle,
+      ctaText: hero.ctaText,
+      ctaLink: hero.ctaLink,
+    })
+      ? hero
+      : undefined;
+  const canPublishHeroImage =
+    doc?.imageRightsConfirmed === true && doc.publicationConsentConfirmed === true;
   return {
-    title: hero?.title ?? DEFAULT_HERO.title,
-    subtitle: hero?.subtitle ?? DEFAULT_HERO.subtitle,
-    ctaText: hero?.ctaText ?? DEFAULT_HERO.ctaText,
-    ctaLink: hero?.ctaLink ?? DEFAULT_HERO.ctaLink,
-    backgroundImage: hero?.backgroundImage ?? null,
-    backgroundImageAlt: hero?.backgroundImageAlt ?? 'Digital dentistry clinic interior',
+    title: safeCmsValue(doc?.title, DEFAULT_HERO.title),
+    subtitle: safeCmsValue(doc?.subtitle, DEFAULT_HERO.subtitle),
+    ctaText: safeCmsValue(doc?.ctaText, DEFAULT_HERO.ctaText),
+    ctaLink: safeCmsValue(doc?.ctaLink, DEFAULT_HERO.ctaLink),
+    backgroundImage:
+      canPublishHeroImage && doc?.backgroundImage
+        ? doc.backgroundImage
+        : OWNER_APPROVED_HOMEPAGE_HERO_IMAGE,
+    backgroundImageAlt:
+      canPublishHeroImage && doc?.backgroundImage
+        ? safeCmsValue(doc.backgroundImageAlt, OWNER_APPROVED_HOMEPAGE_HERO_ALT)
+        : OWNER_APPROVED_HOMEPAGE_HERO_ALT,
     loading,
     error,
   };
@@ -78,63 +113,107 @@ export interface CmsService {
 const DEFAULT_SERVICES: CmsService[] = [
   {
     _id: 'default-1',
-    title: 'Occlusal Analysis',
+    title: 'Bite Contact Records',
     description:
-      'Digital bite registration and force distribution mapping using T-Scan technology.',
+      'Digital bite records can support clinician review of contact timing and force distribution.',
     icon: 'Stethoscope',
   },
   {
     _id: 'default-2',
-    title: 'EMG Diagnostics',
+    title: 'Muscle Activity Records',
     description:
-      'Electromyography to assess muscle function and detect micro-imbalances in jaw muscles.',
+      'Surface electromyography records muscle electrical activity as an adjunct to examination.',
     icon: 'Zap',
   },
   {
     _id: 'default-3',
-    title: '4D Jaw Tracking',
-    description: 'Real-time mandibular movement analysis to identify deviations and restrictions.',
+    title: 'Jaw Movement Records',
+    description: 'Jaw tracking records movement patterns for clinician review and does not diagnose alone.',
     icon: 'Scan',
   },
   {
     _id: 'default-4',
-    title: 'Bite Optimization',
-    description: 'Data-driven equilibrium adjustments to stabilize your occlusion long-term.',
+    title: 'Occlusion Planning',
+    description: 'Bite records can support discussion of case-specific restorative or splint planning.',
     icon: 'Shield',
   },
   {
     _id: 'default-5',
-    title: 'Posture Therapy',
-    description: 'Correcting the descending chain of dysfunction from jaw to spine.',
+    title: 'Clinical Examination',
+    description: 'Symptoms, dental findings, function, and relevant records are reviewed together.',
     icon: 'Smile',
   },
   {
     _id: 'default-6',
     title: 'Digital Planning',
-    description: 'AI-assisted treatment simulation for predictable, non-invasive outcomes.',
+    description:
+      'Digital planning records can support clinician discussion before final decisions.',
     icon: 'BrainCircuit',
   },
 ];
 
 export function useServices() {
-  const { data, loading, error } = useSanityQuery<SanityService[]>(
+  type ApprovedService = SanityService & {
+    ownerApproved?: boolean;
+    clinicianCopyApproved?: boolean;
+  };
+  const { data, loading, error } = useSanityQuery<ApprovedService[]>(
     `*[_type == "service"] | order(order asc) {
       _id, title, description, icon, imageAlt,
+      ownerApproved, clinicianCopyApproved,
       "slug": slug.current,
       image
     }`
   );
+  const safeData = data?.filter(
+    (service) =>
+      service.ownerApproved === true &&
+      service.clinicianCopyApproved === true &&
+      !hasPatientUnsafeCopy(service)
+  );
   const services: CmsService[] =
-    data && data.length > 0
-      ? data.map((s) => ({
+    safeData && safeData.length > 0
+      ? safeData.map((s) => ({
           _id: s._id,
           title: s.title,
           description: s.description,
           icon: s.icon,
-          image: s.image,
+          image: undefined,
         }))
       : DEFAULT_SERVICES;
   return { services, loading, error };
+}
+
+/** Fetch a single service document by slug for the dynamic service detail page */
+export function useServiceBySlug(slug: string) {
+  type ApprovedService = SanityService & {
+    ownerApproved?: boolean;
+    clinicianCopyApproved?: boolean;
+  };
+  const { data, loading, error } = useSanityQuery<ApprovedService[]>(
+    `*[_type == "service" && slug.current == $slug][0...1] {
+      _id, title, description, icon, image, imageAlt,
+      ownerApproved, clinicianCopyApproved,
+      "slug": slug.current
+    }`,
+    { slug }
+  );
+  const candidate = data?.[0];
+  const service =
+    candidate?.ownerApproved === true &&
+    candidate.clinicianCopyApproved === true &&
+    !hasPatientUnsafeCopy(candidate)
+    ? {
+        ...candidate,
+        title: safeCmsValue(candidate.title, 'Dental Service Information'),
+        description: safeCmsValue(
+          candidate.description,
+          'This page provides general information. Suitability and treatment decisions require examination and clinician review.'
+        ),
+        image: undefined,
+      }
+    : null;
+  return { service, loading, error };
 }
 
 /* ================================================================
@@ -151,42 +230,28 @@ export interface CmsTestimonial {
   image?: SanityImage;
 }
 
-const DEFAULT_TESTIMONIALS: CmsTestimonial[] = [
-  {
-    _id: 'default-t1',
-    name: 'Sarah Jenkins',
-    country: 'United Kingdom',
-    countryFlag: '🇬🇧',
-    text: 'Dr. Sharshar transformed not just my smile, but my confidence. The entire team was professional, and the clinic feels like a 5-star hotel.',
-    stars: 5,
-  },
-  {
-    _id: 'default-t2',
-    name: 'Michael Ross',
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    text: 'The dental tourism package was seamless. I was picked up from the airport and treated like royalty. The results are beyond my expectations.',
-    stars: 5,
-  },
-  {
-    _id: 'default-t3',
-    name: 'Elena Silva',
-    country: 'Brazil',
-    countryFlag: '🇧🇷',
-    text: "Incredible attention to detail. Dr. Haitham is truly an artist. The veneers look so natural, nobody believes they aren't my real teeth.",
-    stars: 5,
-  },
-];
+const DEFAULT_TESTIMONIALS: CmsTestimonial[] = [];
 
 export function useTestimonials() {
-  const { data, loading, error } = useSanityQuery<SanityTestimonial[]>(
+  type PublishableTestimonial = SanityTestimonial & {
+    publicationConsentConfirmed?: boolean;
+    ownerApproved?: boolean;
+  };
+  const { data, loading, error } = useSanityQuery<PublishableTestimonial[]>(
     `*[_type == "testimonial"] | order(_createdAt desc) {
-      _id, name, country, countryFlag, text, stars, image, imageAlt
+      _id, name, country, countryFlag, text, stars, image, imageAlt,
+      publicationConsentConfirmed, ownerApproved
     }`
   );
+  const safeData = data?.filter(
+    (testimonial) =>
+      testimonial.publicationConsentConfirmed === true &&
+      testimonial.ownerApproved === true &&
+      !hasPatientUnsafeCopy(testimonial)
+  );
   const testimonials: CmsTestimonial[] =
-    data && data.length > 0
-      ? data.map((t) => ({
+    safeData && safeData.length > 0
+      ? safeData.map((t) => ({
           _id: t._id,
           name: t.name,
           country: t.country,
@@ -216,26 +281,38 @@ const DEFAULT_TEAM: CmsTeamMember[] = [
   {
     _id: 'default-tm1',
     name: 'Dr. Haitham Sharshar',
-    role: 'Chief Medical Officer',
+    role: 'Dentist at HS Clinic',
     bio: undefined,
     image: undefined,
   },
 ];
 
 export function useTeamMembers() {
-  const { data, loading, error } = useSanityQuery<SanityTeamMember[]>(
+  type ApprovedTeamMember = SanityTeamMember & {
+    ownerApproved?: boolean;
+    profileCopyApproved?: boolean;
+    imageRightsConfirmed?: boolean;
+  };
+  const { data, loading, error } = useSanityQuery<ApprovedTeamMember[]>(
     `*[_type == "teamMember"] | order(order asc) {
-      _id, name, role, bio, image
+      _id, name, role, bio, image,
+      ownerApproved, profileCopyApproved, imageRightsConfirmed
     }`
   );
+  const safeData = data?.filter(
+    (member) =>
+      member.ownerApproved === true &&
+      member.profileCopyApproved === true &&
+      !hasPatientUnsafeCopy(member)
+  );
   const members: CmsTeamMember[] =
-    data && data.length > 0
-      ? data.map((m) => ({
+    safeData && safeData.length > 0
+      ? safeData.map((m) => ({
           _id: m._id,
           name: m.name,
           role: m.role,
           bio: m.bio,
-          image: m.image,
+          image: m.imageRightsConfirmed === true ? m.image : undefined,
         }))
       : DEFAULT_TEAM;
   return { members, loading, error };
@@ -261,59 +338,70 @@ const DEFAULT_PRICING: CmsPricing[] = [
   {
     _id: 'dp1',
     treatment: 'Single Implant',
-    egyptPrice: '$350–600',
-    usaPrice: '$3,000–5,000',
-    ukPrice: '$2,500–4,000',
-    turkeyPrice: '$800–1,500',
-    hungaryPrice: '$900–1,800',
-    uaePrice: '$2,000–3,500',
-    saving: 'Up to 90%',
+    egyptPrice: 'Ask for a case-specific estimate',
+    usaPrice: 'Use your local quote for comparison',
+    ukPrice: 'Use your local quote for comparison',
+    turkeyPrice: 'Local quote varies',
+    hungaryPrice: 'Local quote varies',
+    uaePrice: 'Local quote varies',
+    saving: 'Case-by-case review',
   },
   {
     _id: 'dp2',
     treatment: 'All-on-4',
-    egyptPrice: '$3,500–5,000',
-    usaPrice: '$20,000–30,000',
-    ukPrice: '$15,000–25,000',
-    turkeyPrice: '$6,000–10,000',
-    hungaryPrice: '$7,000–12,000',
-    uaePrice: '$12,000–18,000',
-    saving: 'Up to 85%',
+    egyptPrice: 'Ask for a case-specific estimate',
+    usaPrice: 'Use your local quote for comparison',
+    ukPrice: 'Use your local quote for comparison',
+    turkeyPrice: 'Local quote varies',
+    hungaryPrice: 'Local quote varies',
+    uaePrice: 'Local quote varies',
+    saving: 'Case-by-case review',
   },
   {
     _id: 'dp3',
     treatment: 'Veneer (per tooth)',
-    egyptPrice: '$150–300',
-    usaPrice: '$1,000–2,500',
-    ukPrice: '$800–1,500',
-    turkeyPrice: '$250–500',
-    hungaryPrice: '$300–600',
-    uaePrice: '$600–1,200',
-    saving: 'Up to 88%',
+    egyptPrice: 'Ask for a case-specific estimate',
+    usaPrice: 'Use your local quote for comparison',
+    ukPrice: 'Use your local quote for comparison',
+    turkeyPrice: 'Local quote varies',
+    hungaryPrice: 'Local quote varies',
+    uaePrice: 'Local quote varies',
+    saving: 'Case-by-case review',
   },
   {
     _id: 'dp4',
     treatment: 'Bone Graft',
-    egyptPrice: '$200–400',
-    usaPrice: '$2,000–3,000',
-    ukPrice: '$1,500–2,500',
-    turkeyPrice: '$400–800',
-    hungaryPrice: '$500–1,000',
-    uaePrice: '$1,200–2,000',
-    saving: 'Up to 87%',
+    egyptPrice: 'Ask for a case-specific estimate',
+    usaPrice: 'Use your local quote for comparison',
+    ukPrice: 'Use your local quote for comparison',
+    turkeyPrice: 'Local quote varies',
+    hungaryPrice: 'Local quote varies',
+    uaePrice: 'Local quote varies',
+    saving: 'Case-by-case review',
   },
 ];
 
 export function useTourismPricing() {
-  const { data, loading, error } = useSanityQuery<SanityTourismPricing[]>(
+  type ApprovedTourismPricing = SanityTourismPricing & {
+    ownerApproved?: boolean;
+    clinicianCopyApproved?: boolean;
+  };
+  const { data, loading, error } = useSanityQuery<ApprovedTourismPricing[]>(
     `*[_type == "tourismPricing"] | order(order asc, treatment asc) {
       _id, treatment, egyptPrice, usaPrice, ukPrice,
-      turkeyPrice, hungaryPrice, uaePrice, saving
+      turkeyPrice, hungaryPrice, uaePrice, saving,
+      ownerApproved, clinicianCopyApproved
     }`
   );
+  const safeData = data?.filter(
+    (price) =>
+      price.ownerApproved === true &&
+      price.clinicianCopyApproved === true &&
+      !hasPatientUnsafeCopy(price)
+  );
   const pricing: CmsPricing[] =
-    data && data.length > 0
-      ? data.map((p) => ({
+    safeData && safeData.length > 0
+      ? safeData.map((p) => ({
           _id: p._id,
           treatment: p.treatment,
           egyptPrice: p.egyptPrice,
@@ -341,37 +429,49 @@ export interface CmsFaq {
 const DEFAULT_FAQS: CmsFaq[] = [
   {
     _id: 'df1',
-    question: 'Is dental treatment in Egypt safe?',
+    question: 'Is online records review a final treatment plan?',
     answer:
-      'Absolutely. Our clinic uses German and Swiss implant systems, FDA-approved materials, and follows international sterilization protocols. Dr. Sharshar is DSD-certified and has 20+ years of experience.',
+      'No. Online records review is preliminary. Diagnosis and treatment decisions require examination, appropriate diagnostic records, clinician review, and patient consent.',
   },
   {
     _id: 'df2',
-    question: 'How much can I save compared to the US or UK?',
+    question: 'How are treatment costs compared before travel?',
     answer:
-      'Patients typically save 70–90% on major procedures like implants, veneers, and full-mouth rehabilitation while receiving the same quality materials and care.',
+      'Costs are reviewed case by case after dental records, CBCT needs, materials, travel timing, and visit sequence are clear.',
   },
   {
     _id: 'df3',
-    question: 'What is included in the dental tourism package?',
+    question: 'Are travel services included in dental care?',
     answer:
-      'Our packages include airport pick-up, luxury accommodation assistance, all clinical procedures, post-operative care, and a dedicated patient coordinator throughout your stay.',
+      'Do not assume that flights, accommodation, transport, translation, or tourism activities are included. Ask the clinic to confirm current responsibilities before booking.',
   },
   {
     _id: 'df4',
     question: 'How long do I need to stay in Cairo?',
     answer:
-      'Most treatments require 5–10 days. We provide a detailed timeline during your free virtual consultation so you can plan your trip with confidence.',
+      'Visit length is case-specific and can change after examination, diagnostics, or healing review. Ask about possible stages before making non-refundable bookings.',
   },
 ];
 
 export function useFaqs() {
-  const { data, loading, error } = useSanityQuery<SanityFaq[]>(
-    `*[_type == "faq"] | order(order asc) { _id, question, answer }`
+  type ApprovedFaq = SanityFaq & {
+    ownerApproved?: boolean;
+    clinicianCopyApproved?: boolean;
+  };
+  const { data, loading, error } = useSanityQuery<ApprovedFaq[]>(
+    `*[_type == "faq"] | order(order asc) {
+      _id, question, answer, ownerApproved, clinicianCopyApproved
+    }`
+  );
+  const safeData = data?.filter(
+    (faq) =>
+      faq.ownerApproved === true &&
+      faq.clinicianCopyApproved === true &&
+      !hasPatientUnsafeCopy(faq)
   );
   const faqs: CmsFaq[] =
-    data && data.length > 0
-      ? data.map((f) => ({
+    safeData && safeData.length > 0
+      ? safeData.map((f) => ({
           _id: f._id,
           question: f.question,
           answer: f.answer,
@@ -401,7 +501,7 @@ export interface CmsSiteSettings {
 }
 
 const DEFAULT_SETTINGS: CmsSiteSettings = {
-  clinicName: 'HS Clinic — Digital Occlusion',
+  clinicName: 'HS Clinic',
   phone: '+201101010599',
   whatsapp: '+201101010599',
   email: 'clinic@drhaithamsharshar.com',
@@ -420,13 +520,22 @@ const DEFAULT_SETTINGS: CmsSiteSettings = {
 };
 
 export function useSiteSettings() {
-  const { data, loading, error } = useSanityQuery<SanitySiteSettings[]>(
+  type ApprovedSiteSettings = SanitySiteSettings & {
+    ownerApproved?: boolean;
+    ogImageRightsConfirmed?: boolean;
+    ogImagePublicationApproved?: boolean;
+  };
+  const { data, loading, error } = useSanityQuery<ApprovedSiteSettings[]>(
     `*[_type == "siteSettings"][0...1] {
       clinicName, phone, whatsapp, email, address, socialLinks, workingHours,
-      seoTitle, seoDescription, ogImage, ogImageAlt, geoLat, geoLng
+      seoTitle, seoDescription, ogImage, ogImageAlt, geoLat, geoLng,
+      ownerApproved, ogImageRightsConfirmed, ogImagePublicationApproved
     }`
   );
-  const doc = data?.[0];
+  const candidate = data?.[0];
+  const doc = candidate?.ownerApproved === true ? candidate : undefined;
+  const canPublishOgImage =
+    doc?.ogImageRightsConfirmed === true && doc.ogImagePublicationApproved === true;
   const settings: CmsSiteSettings = {
     clinicName: doc?.clinicName ?? DEFAULT_SETTINGS.clinicName,
     phone: doc?.phone ?? DEFAULT_SETTINGS.phone,
@@ -454,8 +563,8 @@ export function useSiteSettings() {
     workingHours: doc?.workingHours ?? DEFAULT_SETTINGS.workingHours,
     seoTitle: doc?.seoTitle ?? '',
     seoDescription: doc?.seoDescription ?? '',
-    ogImage: doc?.ogImage ?? null,
-    ogImageAlt: doc?.ogImageAlt ?? '',
+    ogImage: canPublishOgImage ? (doc?.ogImage ?? null) : null,
+    ogImageAlt: canPublishOgImage ? (doc?.ogImageAlt ?? '') : '',
     geoLat: doc?.geoLat ?? 30.0511,
     geoLng: doc?.geoLng ?? 31.3656,
   };
@@ -464,44 +573,55 @@ export function useSiteSettings() {
 
 // ─── About Page Settings ─────────────────────────────────────────
 const DEFAULT_ABOUT_SETTINGS = {
-  quote: 'Precision is not just a metric. It is the only acceptable standard.',
+  quote:
+    'Dental decisions start with patient concerns, clinical examination, appropriate records, and clear discussion.',
   values: [
     {
-      title: 'Empathy Engine',
-      description: 'Calibrated care protocols designed for maximum patient comfort.',
+      title: 'Patient questions',
+      description: 'Concerns, priorities, and questions are discussed before treatment decisions.',
       iconName: 'Heart',
     },
     {
-      title: 'Clinical Excellence',
-      description: 'Operating at the bleeding edge of dental science standards.',
+      title: 'Examination first',
+      description: 'Clinical examination and appropriate diagnostic records guide the discussion.',
       iconName: 'Award',
     },
     {
-      title: 'Continuous Logic',
-      description: 'Never-ending integration of new research and methodologies.',
+      title: 'Records in context',
+      description: 'No scan, device, or digital record is interpreted as a diagnosis by itself.',
       iconName: 'GraduationCap',
     },
     {
-      title: 'Holistic Sys',
-      description: 'Connecting oral occlusion to total body biomechanics.',
+      title: 'Consent and choice',
+      description: 'Options, alternatives, risks, limitations, and aftercare are discussed before consent.',
       iconName: 'Users',
     },
   ],
   stats: [
-    { value: '20+', label: 'Years R&D' },
-    { value: '5K+', label: 'Cases Logged' },
-    { value: '100%', label: 'Digital Workflow' },
+    { value: 'Clinician led', label: 'DECISIONS' },
+    { value: 'Case specific', label: 'PLANNING' },
+    { value: 'Records in context', label: 'REVIEW' },
   ],
-  certifications: ['DSD CERTIFIED', 'T-SCAN MASTER'],
+  certifications: [],
 };
 
 export function useAboutSettings() {
-  const { data, loading, error } = useSanityQuery<SanityAboutSettings[]>(
+  type ApprovedAboutSettings = SanityAboutSettings & {
+    ownerApproved?: boolean;
+    clinicianCopyApproved?: boolean;
+  };
+  const { data, loading, error } = useSanityQuery<ApprovedAboutSettings[]>(
     `*[_type == "aboutSettings"][0...1] {
-      quote, values, stats, certifications
+      quote, values, stats, certifications, ownerApproved, clinicianCopyApproved
     }`
   );
-  const doc = data?.[0];
+  const candidate = data?.[0];
+  const doc =
+    candidate?.ownerApproved === true &&
+    candidate.clinicianCopyApproved === true &&
+    !hasPatientUnsafeCopy(candidate)
+      ? candidate
+      : undefined;
   return {
     about: {
       quote: doc?.quote ?? DEFAULT_ABOUT_SETTINGS.quote,
@@ -518,59 +638,53 @@ export function useAboutSettings() {
 const DEFAULT_TECH_SETTINGS = {
   technologies: [
     {
-      title: 'Kinematic Jaw Tracking',
-      description: 'Real-time 6-DOF mandibular movement recording.',
+      title: 'Jaw Movement Records',
+      description: 'Jaw movement records can support clinician review when clinically relevant.',
       iconName: 'Activity',
     },
     {
-      title: 'Computerized EMG',
-      description: 'Micron-level detection of muscle electrical potentials.',
+      title: 'Surface Muscle Activity Records',
+      description: 'Surface EMG records muscle electrical activity as an adjunct to examination.',
       iconName: 'Cpu',
     },
     {
-      title: 'T-Scan Force Analysis',
-      description: 'Digital occlusal force distribution mapping.',
+      title: 'Bite Contact Records',
+      description: 'Digital bite records can show contact timing and force distribution.',
       iconName: 'Gauge',
     },
     {
-      title: 'Tekscan Digital Sensors',
-      description: 'High-resolution pressure sensing grid.',
+      title: 'Pressure Contact Records',
+      description: 'Pressure sensors can record contact patterns for clinician interpretation.',
       iconName: 'Eye',
     },
     {
-      title: 'CBCT 3D Evaluation',
-      description: 'Volumetric visualization of TMJ structures.',
+      title: 'Three-Dimensional Imaging',
+      description: 'Three-dimensional imaging can support anatomical review when indicated.',
       iconName: 'ScanLine',
     },
     {
-      title: 'JVA (Joint Vibration)',
-      description: 'Acoustic analysis of cartilage friction.',
+      title: 'Joint Screening Records',
+      description: 'Vibration records are adjunct information and do not diagnose a joint disorder alone.',
       iconName: 'Laptop',
     },
   ],
   stats: [
-    { value: '10μm', label: 'Precision' },
-    { value: '1M+', label: 'Data Points' },
-    { value: '<5s', label: 'Analysis Time' },
+    { value: 'Adjunct', label: 'RECORDS' },
+    { value: 'Clinician', label: 'REVIEW' },
+    { value: 'Case specific', label: 'USE' },
   ],
 };
 
 export function useTechnologySettings() {
-  const { data, loading, error } = useSanityQuery<SanityTechnologySettings[]>(
-    `*[_type == "technologySettings"][0...1] {
-      technologies, heroImage, heroImageAlt, stats
-    }`
-  );
-  const doc = data?.[0];
   return {
     tech: {
-      technologies: doc?.technologies ?? DEFAULT_TECH_SETTINGS.technologies,
-      heroImage: doc?.heroImage ?? null,
-      heroImageAlt: doc?.heroImageAlt ?? 'Advanced dental technology equipment',
-      stats: doc?.stats ?? DEFAULT_TECH_SETTINGS.stats,
+      technologies: DEFAULT_TECH_SETTINGS.technologies,
+      heroImage: null,
+      heroImageAlt: 'Dental records used during clinician review',
+      stats: DEFAULT_TECH_SETTINGS.stats,
     },
-    loading,
-    error,
+    loading: false,
+    error: null,
   };
 }
 
@@ -578,130 +692,119 @@ export function useTechnologySettings() {
 const DEFAULT_HOMEPAGE_SETTINGS = {
   features: [
     {
-      title: 'AI Diagnostics',
-      description: 'Advanced machine learning protocols to map your perfect bite pattern.',
+      title: 'Digital Records Review',
+      description: 'Photos, scans, and bite records help the clinician understand your case.',
       iconName: 'BrainCircuit',
     },
     {
-      title: '3D Jaw Tracking',
-      description: 'Real-time kinetic analysis of mandibular movement in 6 degrees of freedom.',
+      title: 'Jaw Movement Review',
+      description: 'Movement records support bite and TMJ screening during clinician review.',
       iconName: 'Orbit',
     },
     {
-      title: 'EMG Biofeedback',
-      description: 'neuromuscular monitoring to ensure muscle harmony and release tension.',
+      title: 'Muscle Activity Screening',
+      description: 'Muscle readings can support the examination when jaw tension is a concern.',
       iconName: 'Activity',
     },
     {
-      title: 'Micro-Analysis',
-      description: 'Sub-millimeter precision for occlusal contact points and force distribution.',
+      title: 'Bite Contact Review',
+      description: 'Digital bite records help review contact balance before treatment planning.',
       iconName: 'Microscope',
     },
     {
-      title: 'Total Protection',
-      description: 'Comprehensive TMJ health preservation using digital splint therapy.',
+      title: 'TMJ Screening Support',
+      description: 'TMJ findings are reviewed as screening information, not an AI-only diagnosis.',
       iconName: 'ShieldCheck',
     },
     {
-      title: 'Laser Precision',
-      description: 'Non-invasive adjustments using state-of-the-art dental laser systems.',
+      title: 'Planned Dental Visits',
+      description:
+        'Treatment timing is discussed clearly before implants, crowns, or smile design.',
       iconName: 'Zap',
     },
   ],
-  ctaTitle: 'Ready to Upgrade?',
+  ctaTitle: 'Ready to plan your visit?',
   ctaSubtitle:
-    'Your smile deserves the precision of the future. Initialize your transformation today.',
-  ctaButtonText: 'START SYSTEM ENGINE',
+    'Start with a consultation. The clinic reviews your concern, records, and timing before treatment decisions are made.',
+  ctaButtonText: 'Start records review',
 };
 
 export function useHomepageSettings() {
-  const { data, loading, error } = useSanityQuery<SanityHomepageSettings[]>(
-    `*[_type == "homepageSettings"][0...1] {
-      features, ctaTitle, ctaSubtitle, ctaButtonText
-    }`
-  );
-  const doc = data?.[0];
   return {
     homepage: {
-      features: doc?.features ?? DEFAULT_HOMEPAGE_SETTINGS.features,
-      ctaTitle: doc?.ctaTitle ?? DEFAULT_HOMEPAGE_SETTINGS.ctaTitle,
-      ctaSubtitle: doc?.ctaSubtitle ?? DEFAULT_HOMEPAGE_SETTINGS.ctaSubtitle,
-      ctaButtonText: doc?.ctaButtonText ?? DEFAULT_HOMEPAGE_SETTINGS.ctaButtonText,
+      features: DEFAULT_HOMEPAGE_SETTINGS.features,
+      ctaTitle: DEFAULT_HOMEPAGE_SETTINGS.ctaTitle,
+      ctaSubtitle: DEFAULT_HOMEPAGE_SETTINGS.ctaSubtitle,
+      ctaButtonText: DEFAULT_HOMEPAGE_SETTINGS.ctaButtonText,
     },
-    loading,
-    error,
+    loading: false,
+    error: null,
   };
 }
 
 // ─── Services Page Settings ───────────────────────────────────────
 const DEFAULT_SERVICES_PAGE = {
   conditions: [
-    'TMJ Disorders',
-    'Chronic Headaches',
+    'Jaw discomfort questions',
     'Jaw Clicking',
-    'Bruxism',
-    'Uneven Bite',
-    'Facial Neuralgia',
-    'Neck Pain',
-    'Tinnitus',
+    'Tooth wear concerns',
+    'Bite change questions',
+    'Muscle tenderness',
     'Limited Opening',
-    'Sleep Apnea',
+    'Restoration planning',
+    'Implant planning',
+    'Splint review',
+    'Second opinion questions',
   ],
   processSteps: [
-    { step: '01', title: 'Scan', description: 'Full digital topography & motion capture' },
-    { step: '02', title: 'Analyze', description: 'AI-driven data interpretation' },
-    { step: '03', title: 'Plan', description: 'Virtual treatment modeling' },
-    { step: '04', title: 'Execute', description: 'Laser-guided precision therapy' },
+    { step: '01', title: 'Listen', description: 'Review concerns, history, and patient questions' },
+    { step: '02', title: 'Examine', description: 'Complete a clinician-led dental examination' },
+    { step: '03', title: 'Record', description: 'Use appropriate images or digital records when indicated' },
+    { step: '04', title: 'Discuss', description: 'Review options, limits, alternatives, and consent' },
   ],
 };
 
 export function useServicesPageSettings() {
-  const { data, loading, error } = useSanityQuery<SanityServicesPageSettings[]>(
-    `*[_type == "servicesPageSettings"][0...1] {
-      conditions, processSteps
-    }`
-  );
-  const doc = data?.[0];
   return {
     pageSettings: {
-      conditions: doc?.conditions ?? DEFAULT_SERVICES_PAGE.conditions,
-      processSteps: doc?.processSteps ?? DEFAULT_SERVICES_PAGE.processSteps,
+      conditions: DEFAULT_SERVICES_PAGE.conditions,
+      processSteps: DEFAULT_SERVICES_PAGE.processSteps,
     },
-    loading,
-    error,
+    loading: false,
+    error: null,
   };
 }
 
 // ─── DSD Page Settings ────────────────────────────────────────────
 const DEFAULT_DSD_SETTINGS = {
-  heroImageAlt: 'Luxarian Scientific Digital Smile Design — blueprint and reveal',
-  heroCtaText: 'Book Consultation',
-  splitRealityTitle: 'The Split Reality',
+  heroImageAlt: 'Digital Smile Design planning information',
+  heroCtaText: 'Start Records Review',
+  splitRealityTitle: 'Planning Preview',
   splitRealitySubtitle:
-    'Witness the transformation — from scientific blueprint to artistic masterpiece.',
+    'A visual reference can support discussion but does not guarantee the final appearance.',
   splitRealityImageAlt:
-    'Digital Smile Design split reality — before and after transformation with golden proportion analysis',
+    'Digital smile planning reference used during clinician review',
   timeline: [
     {
       title: 'Video Analysis',
-      description: 'Comprehensive video analysis, skeletal-fascial identity.',
+      description: 'Clinical photographs can support the smile-planning discussion.',
       iconName: 'Video',
     },
-    { title: '2D Design', description: 'Design a plan and blueprint design.', iconName: 'PenTool' },
-    { title: '3D Mockup', description: 'Hyper-fashion, tooth and scanner.', iconName: 'Box' },
+    { title: '2D Reference', description: 'A visual reference supports patient questions.', iconName: 'PenTool' },
+    { title: '3D Mockup', description: 'A mockup may support discussion when appropriate.', iconName: 'Box' },
     {
       title: 'Final Try-in',
-      description: 'Perfects mirror to perfect your smile.',
+      description: 'Review the planned smile with the clinician before final treatment steps.',
       iconName: 'Smile',
     },
   ],
   goldenTitle: 'Golden\nProportion',
   goldenDescription:
-    "Every smile we design follows the timeless principles of the Golden Ratio — the same mathematical harmony found in nature's most beautiful structures. Precision down to 0.01mm.",
+    'Golden Ratio planning is used as a visual reference, then adjusted through clinician review, facial photos, bite records, and patient preferences.',
   goldenStats: [
     { value: '1.618', label: 'Ratio' },
-    { value: '0.01mm', label: 'Precision' },
-    { value: '98.7%', label: 'Symmetry' },
+    { value: 'Photo', label: 'Review' },
+    { value: 'Bite', label: 'Records' },
   ],
   goldenImageAlt: 'Golden proportion dental analysis overlay',
   goldenCtaText: 'Start Your Design',
@@ -710,21 +813,21 @@ const DEFAULT_DSD_SETTINGS = {
       number: '1',
       title: 'DIGITAL CAPTURE & ANALYSIS',
       description:
-        'We utilize advanced 3D imaging to map your unique facial structure and dental anatomy with micron-level accuracy.',
+        'We use facial photos, scans, and bite records to support clinician-led smile planning.',
       iconName: 'ScanLine',
     },
     {
       number: '2',
-      title: 'PRECISION PLANNING',
+      title: 'PLANNING DISCUSSION',
       description:
-        'A bespoke gold-standard blueprint is meticulously crafted, combining facial aesthetics with dental function.',
+        'Visual references are considered with facial context, dental findings, function, and patient preferences.',
       iconName: 'Sparkles',
     },
     {
       number: '3',
-      title: 'FINAL TRANSFORMATION',
+      title: 'CLINICIAN REVIEW',
       description:
-        'Experience the seamless realization of your dream smile, expertly crafted and delivered with exceptional artistry.',
+        'The clinician discusses options, limits, alternatives, and consent before any treatment decision.',
       iconName: 'Crown',
     },
   ],
@@ -732,220 +835,186 @@ const DEFAULT_DSD_SETTINGS = {
 };
 
 export function useDsdSettings() {
-  const { data, loading, error } = useSanityQuery<SanityDsdSettings[]>(
-    `*[_type == "dsdSettings"][0...1] {
-      heroImage, heroImageAlt, heroCtaText,
-      splitRealityTitle, splitRealitySubtitle, splitRealityImage, splitRealityImageAlt,
-      timeline, goldenTitle, goldenDescription, goldenStats,
-      goldenImage, goldenImageAlt, goldenCtaText,
-      journey, journeyCtaText
-    }`
-  );
-  const doc = data?.[0];
   return {
     dsd: {
-      heroImage: doc?.heroImage ?? null,
-      heroImageAlt: doc?.heroImageAlt ?? DEFAULT_DSD_SETTINGS.heroImageAlt,
-      heroCtaText: doc?.heroCtaText ?? DEFAULT_DSD_SETTINGS.heroCtaText,
-      splitRealityTitle: doc?.splitRealityTitle ?? DEFAULT_DSD_SETTINGS.splitRealityTitle,
-      splitRealitySubtitle: doc?.splitRealitySubtitle ?? DEFAULT_DSD_SETTINGS.splitRealitySubtitle,
-      splitRealityImage: doc?.splitRealityImage ?? null,
-      splitRealityImageAlt: doc?.splitRealityImageAlt ?? DEFAULT_DSD_SETTINGS.splitRealityImageAlt,
-      timeline: doc?.timeline ?? DEFAULT_DSD_SETTINGS.timeline,
-      goldenTitle: doc?.goldenTitle ?? DEFAULT_DSD_SETTINGS.goldenTitle,
-      goldenDescription: doc?.goldenDescription ?? DEFAULT_DSD_SETTINGS.goldenDescription,
-      goldenStats: doc?.goldenStats ?? DEFAULT_DSD_SETTINGS.goldenStats,
-      goldenImage: doc?.goldenImage ?? null,
-      goldenImageAlt: doc?.goldenImageAlt ?? DEFAULT_DSD_SETTINGS.goldenImageAlt,
-      goldenCtaText: doc?.goldenCtaText ?? DEFAULT_DSD_SETTINGS.goldenCtaText,
-      journey: doc?.journey ?? DEFAULT_DSD_SETTINGS.journey,
-      journeyCtaText: doc?.journeyCtaText ?? DEFAULT_DSD_SETTINGS.journeyCtaText,
+      ...DEFAULT_DSD_SETTINGS,
+      heroImage: null,
+      splitRealityImage: null,
+      goldenImage: null,
     },
-    loading,
-    error,
+    loading: false,
+    error: null,
   };
 }
 
 // ─── Tourism Page Settings ────────────────────────────────────────
 const DEFAULT_TOURISM = {
   heroTagline: 'DENTAL TOURISM // CAIRO, EGYPT',
-  heroTitle: 'World-Class Implants.',
-  heroTitleAccent: 'A Majestic Journey.',
+  heroTitle: 'Planned Implant Care.',
+  heroTitleAccent: 'A Records First Journey.',
   heroSubtitle:
-    'Your new smile awaits in the cradle of civilization. Premium German technology, unbeatable value, unforgettable experience.',
-  heroCtaText: 'Start Your Journey — Free Quote',
+    'Plan dental treatment in Cairo with records review, digital planning, travel coordination, and clinician-led treatment steps.',
+  heroCtaText: 'Request Case Review',
   timelineSteps: [
     {
       step: '01',
-      title: 'Virtual Consultation',
+      title: 'Preliminary Records Enquiry',
       description:
-        'Share your smile photos. Get a free personalized treatment plan and cost estimate from Dr. Sharshar — all from your home.',
+        'Ask which existing records may be useful for preliminary clinician review before travel.',
       iconName: 'Video',
     },
     {
       step: '02',
-      title: 'VIP Arrival & Tourism',
+      title: 'Arrival & Travel Coordination',
       description:
-        'We handle airport transfers, recommend 5-star hotels, and plan your Cairo experience — Pyramids, Nile cruises, Khan el-Khalili.',
+        'Confirm visit stages first, then arrange flights, accommodation, and local transport separately around the agreed clinic timing.',
       iconName: 'Plane',
     },
     {
       step: '03',
-      title: 'The Procedure at HS Clinic',
+      title: 'Examination and Clinician Review',
       description:
-        'Premium German implants placed with digital precision. Same-day results. Pain-free protocols. International safety standards.',
+        'Examination, appropriate diagnostic records, risks, alternatives, and healing needs guide any treatment discussion.',
       iconName: 'Shield',
     },
     {
       step: '04',
-      title: 'Fly Home with Confidence',
+      title: 'Follow the Agreed Aftercare',
       description:
-        'Complete aftercare guide, lifetime warranty on implants, and a video follow-up schedule. Your new smile travels with you.',
+        'Follow the case-specific instructions and review schedule provided by the treating clinician.',
       iconName: 'BookOpen',
     },
   ],
-  fusionSubheading: 'WHERE PRECISION MEETS WONDER',
-  fusionTitle: 'Precision Engineering in a Timeless City',
+  fusionSubheading: 'RECORDS BEFORE TRAVEL',
+  fusionTitle: 'Clinical Planning Before Cairo Dates',
   vipFeatures: [
     {
-      title: 'Private Terminal Access',
+      title: 'Travel Timing',
       description:
-        'Your concierge awaits tarmac-side. Skip the lines — step off the plane and into luxury.',
+        'Choose travel dates only after discussing the likely clinic stages and case-dependent timing.',
       iconName: 'Plane',
     },
     {
-      title: 'Luxury Transfer',
+      title: 'Local Transport',
       description:
-        'Chauffeured in a premium vehicle from the airport directly to your 5-star accommodation.',
+        'Confirm any transport needs and provider separately after the clinic appointment timing is clear.',
       iconName: 'Car',
     },
     {
-      title: 'Personal Concierge (24/7)',
+      title: 'Communication Needs',
       description:
-        'Dedicated multilingual coordinator handles everything — scheduling, translations, and local guidance.',
+        'Ask the clinic to confirm language, scheduling, and accompanying-family arrangements before travel.',
       iconName: 'Clock',
     },
     {
-      title: 'Digital Smile Design Ritual',
+      title: 'Clinical Examination',
       description:
-        'Your bespoke consultation: 3D facial scanning and cinematic smile photography by Dr. Sharshar.',
+        'Final decisions require examination, appropriate diagnostic records, questions, and informed consent.',
       iconName: 'Sparkles',
     },
     {
-      title: 'Curated Recovery Dining',
+      title: 'Recovery Planning',
       description:
-        'Post-procedure menus crafted for comfort and healing. Delivered to your suite or at partnered restaurants.',
+        'Ask the treating clinician about case-specific food, medication, hygiene, and activity instructions.',
       iconName: 'Utensils',
     },
     {
-      title: 'Cultural Experiences',
+      title: 'Urgent Care Boundary',
       description:
-        'Private guided tours of the Pyramids, the Egyptian Museum, and Nile-side dining — all scheduled around your treatment.',
+        'Severe pain, swelling, bleeding, breathing difficulty, or trauma needs urgent local care before travel.',
       iconName: 'Crown',
     },
   ],
   vipStats: [
-    { value: '500+', label: 'INTERNATIONAL PATIENTS' },
-    { value: '24/7', label: 'CONCIERGE ACCESS' },
-    { value: '15+', label: 'COUNTRIES SERVED' },
+    { value: 'Records first', label: 'PLANNING START' },
+    { value: 'Clinician review', label: 'DECISION BOUNDARY' },
+    { value: 'Case specific', label: 'VISIT TIMING' },
   ],
   whyClinicReasons: [
     {
-      title: 'Fully Digital Workflow',
+      title: 'Records in Context',
       description:
-        '3D-guided surgery, digital occlusion analysis & in-house 3D printing for 0.01mm precision.',
+        'Appropriate images and digital records can support clinician review when relevant to the case.',
       iconName: 'Cpu',
     },
     {
-      title: 'International Sterilization',
+      title: 'Questions Before Consent',
       description:
-        'Strict infection control protocols exceeding WHO standards. Near-zero infection risk.',
+        'Ask about materials, stages, alternatives, risks, aftercare, and case-specific limitations before consent.',
       iconName: 'Shield',
     },
     {
-      title: 'Lifetime Implant Warranty',
+      title: 'Written Terms When Applicable',
       description:
-        'Written lifetime guarantee on all German/Swiss implant systems (Straumann, Nobel Biocare).',
+        'Ask whether any case-specific coverage or follow-up terms apply and request them in writing before care.',
       iconName: 'Award',
     },
     {
-      title: 'English-Speaking Team',
-      description: 'Fluent communication in English, Arabic & French. No language barriers, ever.',
+      title: 'Communication Planning',
+      description: 'Ask the clinic to confirm language and communication arrangements before travel.',
       iconName: 'Globe',
     },
     {
-      title: 'Neuro-Occlusion Specialist',
+      title: 'Digital Bite Planning',
       description:
-        "Dr. Sharshar's MSc in Perio-Implantology + EMG jaw-tracking ensures functional perfection.",
+        'Bite records, muscle screening, and jaw movement review can support clinician-led planning.',
       iconName: 'HeartPulse',
     },
     {
-      title: 'VIP Travel Concierge',
+      title: 'Travel Coordination',
       description:
-        'Airport pickup, 5-star hotel booking, clinic transfers & curated Cairo sightseeing tours.',
+        'Travel and accommodation choices follow the preliminary clinic timing and remain separate from clinical decisions.',
       iconName: 'Plane',
     },
   ],
   residences: [
     {
-      name: 'St. Regis Cairo',
-      subtitle: 'Nile Corniche',
-      stars: 5,
-      description: 'Unrivaled Nile views with bespoke butler service. 15 minutes from the clinic.',
-      features: ['Butler Service', 'Nile Views', 'Spa & Pool'],
-    },
-    {
-      name: 'Four Seasons',
-      subtitle: 'First Residence, Giza',
-      stars: 5,
+      name: 'Choose accommodation after review',
+      subtitle: 'Independent travel decision',
+      stars: 0,
       description:
-        'Iconic luxury overlooking the Pyramids. Complimentary airport transfers for our patients.',
-      features: ['Pyramid Views', 'Private Balcony', 'Fine Dining'],
-    },
-    {
-      name: 'Kempinski Nile Hotel',
-      subtitle: 'Garden City',
-      stars: 5,
-      description:
-        'European elegance on the banks of the Nile. Walking distance to historic Cairo.',
-      features: ['Riverside Terrace', 'Heated Pool', 'Concierge'],
-    },
-    {
-      name: 'Marriott Mena House',
-      subtitle: 'Giza Plateau',
-      stars: 5,
-      description: 'Sleep at the foot of the Great Pyramids. A legendary retreat since 1886.',
-      features: ['Historic Palace', 'Garden Oasis', 'Pyramid Gate'],
+        'Compare current location, accessibility, cancellation, and transport details after the likely visit timing is discussed.',
+      features: ['Flexible booking', 'Clinic access', 'Personal needs'],
     },
   ],
-  bottomCtaText: 'Book Free Consultation',
+  bottomCtaText: 'Request Case Review',
 };
 
 export function useTourismSettings() {
-  const { data, loading, error } = useSanityQuery<SanityTourismSettings[]>(
+  type ApprovedTourismSettings = SanityTourismSettings & {
+    ownerApproved?: boolean;
+    clinicianCopyApproved?: boolean;
+  };
+  const { data, loading, error } = useSanityQuery<ApprovedTourismSettings[]>(
     `*[_type == "tourismSettings"][0...1] {
       heroTagline, heroTitle, heroTitleAccent, heroSubtitle, heroCtaText,
       timelineSteps, fusionSubheading, fusionTitle,
       vipFeatures, vipStats, whyClinicReasons, residences,
-      bottomCtaText
+      bottomCtaText, ownerApproved, clinicianCopyApproved
     }`
   );
-  const doc = data?.[0];
+  const candidate = data?.[0];
+  const doc =
+    candidate?.ownerApproved === true &&
+    candidate.clinicianCopyApproved === true &&
+    !hasPatientUnsafeCopy(candidate)
+      ? candidate
+      : undefined;
   return {
     tourism: {
-      heroTagline: doc?.heroTagline ?? DEFAULT_TOURISM.heroTagline,
-      heroTitle: doc?.heroTitle ?? DEFAULT_TOURISM.heroTitle,
-      heroTitleAccent: doc?.heroTitleAccent ?? DEFAULT_TOURISM.heroTitleAccent,
-      heroSubtitle: doc?.heroSubtitle ?? DEFAULT_TOURISM.heroSubtitle,
-      heroCtaText: doc?.heroCtaText ?? DEFAULT_TOURISM.heroCtaText,
-      timelineSteps: doc?.timelineSteps ?? DEFAULT_TOURISM.timelineSteps,
-      fusionSubheading: doc?.fusionSubheading ?? DEFAULT_TOURISM.fusionSubheading,
-      fusionTitle: doc?.fusionTitle ?? DEFAULT_TOURISM.fusionTitle,
-      vipFeatures: doc?.vipFeatures ?? DEFAULT_TOURISM.vipFeatures,
-      vipStats: doc?.vipStats ?? DEFAULT_TOURISM.vipStats,
-      whyClinicReasons: doc?.whyClinicReasons ?? DEFAULT_TOURISM.whyClinicReasons,
-      residences: doc?.residences ?? DEFAULT_TOURISM.residences,
-      bottomCtaText: doc?.bottomCtaText ?? DEFAULT_TOURISM.bottomCtaText,
+      heroTagline: safeCmsValue(doc?.heroTagline, DEFAULT_TOURISM.heroTagline),
+      heroTitle: safeCmsValue(doc?.heroTitle, DEFAULT_TOURISM.heroTitle),
+      heroTitleAccent: safeCmsValue(doc?.heroTitleAccent, DEFAULT_TOURISM.heroTitleAccent),
+      heroSubtitle: safeCmsValue(doc?.heroSubtitle, DEFAULT_TOURISM.heroSubtitle),
+      heroCtaText: safeCmsValue(doc?.heroCtaText, DEFAULT_TOURISM.heroCtaText),
+      timelineSteps: safeCmsValue(doc?.timelineSteps, DEFAULT_TOURISM.timelineSteps),
+      fusionSubheading: safeCmsValue(doc?.fusionSubheading, DEFAULT_TOURISM.fusionSubheading),
+      fusionTitle: safeCmsValue(doc?.fusionTitle, DEFAULT_TOURISM.fusionTitle),
+      vipFeatures: safeCmsValue(doc?.vipFeatures, DEFAULT_TOURISM.vipFeatures),
+      vipStats: safeCmsValue(doc?.vipStats, DEFAULT_TOURISM.vipStats),
+      whyClinicReasons: safeCmsValue(doc?.whyClinicReasons, DEFAULT_TOURISM.whyClinicReasons),
+      residences: safeCmsValue(doc?.residences, DEFAULT_TOURISM.residences),
+      bottomCtaText: safeCmsValue(doc?.bottomCtaText, DEFAULT_TOURISM.bottomCtaText),
     },
     loading,
     error,
@@ -955,40 +1024,36 @@ export function useTourismSettings() {
 /* ================================================================
    Before / After Cases — collection hook (Gallery + Slider)
    ================================================================ */
-const DEFAULT_BA_CASES = [
-  {
-    before: '/images/dental/dental-implant-dr-haitham-sharshar.webp',
-    after: '/images/dental/Full-arch-dental-implant-dr-haitham-sharshar.webp',
-    label: 'Full Arch Rehabilitation',
-    treatment: 'Dental Implants',
-  },
-  {
-    before: '/images/dental/All-on-4-Dental-Implants-dr haitham sharshar.webp',
-    after: '/images/dental/dental-implant-dr-haitham-sharshar.webp',
-    label: 'All-on-4 Dental Implants',
-    treatment: 'Dental Implants',
-  },
-];
-
 export function useBeforeAfterCases() {
-  const { data, loading, error } = useSanityQuery<SanityBeforeAfterCase[]>(
-    `*[_type == "beforeAfterCase"] | order(sortOrder asc) { _id, label, beforeImage, afterImage, treatment, sortOrder }`
+  type PublishableCase = SanityBeforeAfterCase & {
+    ownerApproved?: boolean;
+    publicationConsentConfirmed?: boolean;
+    imageAuthenticityConfirmed?: boolean;
+    clinicianCaptionApproved?: boolean;
+  };
+  const { data, loading, error } = useSanityQuery<PublishableCase[]>(
+    `*[_type == "beforeAfterCase"] | order(sortOrder asc) {
+      _id, label, beforeImage, afterImage, treatment, sortOrder,
+      ownerApproved, publicationConsentConfirmed, imageAuthenticityConfirmed, clinicianCaptionApproved
+    }`
   );
 
-  // If CMS has data, use urlFor() for proper image URLs; otherwise use hardcoded paths
-  const cases =
-    data && data.length > 0
-      ? data.map((c) => ({
-          before: c.beforeImage
-            ? urlFor(c.beforeImage).auto('format').width(800).url()
-            : '/images/dental/dental-implant-dr-haitham-sharshar.webp',
-          after: c.afterImage
-            ? urlFor(c.afterImage).auto('format').width(800).url()
-            : '/images/dental/dental-implant-dr-haitham-sharshar.webp',
-          label: c.label,
-          treatment: c.treatment ?? '',
-        }))
-      : DEFAULT_BA_CASES;
+  const cases = (data ?? [])
+    .filter(
+      (caseItem) =>
+        caseItem.ownerApproved === true &&
+        caseItem.publicationConsentConfirmed === true &&
+        caseItem.imageAuthenticityConfirmed === true &&
+        caseItem.clinicianCaptionApproved === true &&
+        Boolean(caseItem.beforeImage) &&
+        Boolean(caseItem.afterImage)
+    )
+    .map((caseItem) => ({
+      before: urlFor(caseItem.beforeImage!).auto('format').width(940).url(),
+      after: urlFor(caseItem.afterImage!).auto('format').width(940).url(),
+      label: caseItem.label,
+      treatment: caseItem.treatment ?? '',
+    }));
 
   return { cases, loading, error };
 }
@@ -997,16 +1062,32 @@ export function useBeforeAfterCases() {
    YouTube Videos — filtered by page category
    ================================================================ */
 export function useYoutubeVideos(category: string) {
-  const { data, loading, error } = useSanityQuery<SanityYoutubeVideo[]>(
-    `*[_type == "youtubeVideo" && category == $category] | order(sortOrder asc) { _id, title, videoId, description, category, sortOrder }`,
+  type ApprovedYoutubeVideo = SanityYoutubeVideo & {
+    ownerApproved?: boolean;
+    publicationRightsConfirmed?: boolean;
+    clinicianCopyApproved?: boolean;
+  };
+  const { data, loading, error } = useSanityQuery<ApprovedYoutubeVideo[]>(
+    `*[_type == "youtubeVideo" && category == $category] | order(sortOrder asc) {
+      _id, title, videoId, description, category, sortOrder,
+      ownerApproved, publicationRightsConfirmed, clinicianCopyApproved
+    }`,
     { category }
   );
 
-  const videos = (data ?? []).map((v) => ({
-    videoId: v.videoId,
-    title: v.title,
-    description: v.description ?? '',
-  }));
+  const videos = (data ?? [])
+    .filter(
+      (video) =>
+        video.ownerApproved === true &&
+        video.publicationRightsConfirmed === true &&
+        video.clinicianCopyApproved === true &&
+        !hasPatientUnsafeCopy(video)
+    )
+    .map((video) => ({
+      videoId: video.videoId,
+      title: video.title,
+      description: video.description ?? '',
+    }));
 
   return { videos, loading, error };
 }
@@ -1030,288 +1111,335 @@ export interface ServicePillarData {
   seoDescription?: string;
 }
 
+const PATIENT_PROMISE_PATTERNS = [
+  /\bworld[-\s]class\b/i,
+  /\bvip\b/i,
+  /\bluxury\b/i,
+  /\bpermanent teeth\b/i,
+  /\bfree consultation\b/i,
+  /\bfraction of\b/i,
+  /\bguarantee[sd]?\b/i,
+  /\bwarrant(y|ies)\b/i,
+  /\bexact planned\b/i,
+  /\blifetime\b/i,
+  /\bzero guesswork\b/i,
+  /\bperfect\b/i,
+  /\bperfectly\b/i,
+  /\belite\b/i,
+  /\bpremium\b/i,
+  /\bunmatched\b/i,
+  /\bhighly competitive\b/i,
+  /\bsuperior technology\b/i,
+  /\bsame[-\s]day\b/i,
+  /\bmost advanced\b/i,
+  /\bmost comprehensive\b/i,
+  /\bonly facility\b/i,
+  /\bdefinitive diagnosis\b/i,
+  /\bdiagnos(?:e[sd]?|is|tic)\b/i,
+  /\bsuccess(?:ful|fully|\s+rate)?\b/i,
+  /\b\d+(?:\.\d+)?\s?%\b/,
+  /\bai(?:[-\s]powered)?\b/i,
+  /\bpredictable results\b/i,
+  /\bsafest\b/i,
+  /\bno additional cost\b/i,
+  /[$€£]\s?\d/,
+  /\bup to\s?\d+\s?%/i,
+  /\b\d+\s?%\s?(saving|savings|off|less|cheaper|lower)\b/i,
+  /\b(60|70)[–-](70|85|90)\b/,
+];
+
+export function hasPatientUnsafeCopy(value: unknown): boolean {
+  if (typeof value === 'string') {
+    return PATIENT_PROMISE_PATTERNS.some((pattern) => pattern.test(value));
+  }
+
+  if (Array.isArray(value)) {
+    return value.some((item) => hasPatientUnsafeCopy(item));
+  }
+
+  if (value && typeof value === 'object') {
+    return Object.values(value).some((item) => hasPatientUnsafeCopy(item));
+  }
+
+  return false;
+}
+
+function safeCmsValue<T>(candidate: T | null | undefined, fallback: T): T {
+  if (candidate == null || hasPatientUnsafeCopy(candidate)) return fallback;
+  return candidate;
+}
 const PILLAR_DEFAULTS: Record<string, ServicePillarData> = {
   'dental-implants': {
-    heroTagline: '',
-    heroTitle: 'Digitally Guided Dental Implant Surgery in Cairo',
+    heroTagline: 'Records first',
+    heroTitle: 'Dental Implant Planning in Cairo',
     heroSubtitle:
-      'Dr. Haitham Sharshar performs digitally guided dental implant surgery using CBCT 3D imaging, computer-designed surgical guides, and precision-planned prosthetic outcomes. Whether you need a single implant, All-on-4 full-arch rehabilitation, or complex multi-implant reconstruction, every case is planned with sub-millimeter digital accuracy at HS Clinic, Cairo, Egypt.',
+      'Existing dental records can support a preliminary implant discussion. Final suitability, implant number, grafting questions, materials, risks, and timing require examination and clinician review.',
     faqs: [
       {
         question: 'How much do dental implants cost in Cairo compared to the USA or UK?',
         answer:
-          'A single dental implant at HS Clinic costs approximately $450 USD, compared to $3,000\u2013$5,000 in the USA or \u00a32,000\u2013\u00a33,500 in the UK. Full-arch All-on-4 rehabilitation starts at $5,500 versus $20,000\u2013$30,000 in Western countries \u2014 a savings of 70\u201390%.',
+          'Implant costs are case-specific and depend on examination findings, imaging when indicated, grafting questions, implant number, prosthetic material, and visit sequence. Ask whether a case-specific estimate can be discussed after records review.',
       },
       {
-        question: 'What makes digitally guided implant surgery safer than traditional placement?',
+        question: 'Can an online records review confirm that I am suitable for implants?',
         answer:
-          'Dr. Haitham Sharshar uses CBCT 3D imaging to create a complete virtual model of your jaw, then digitally plans the exact implant position, angle, and depth. A 3D-printed surgical guide ensures the implant is placed with sub-millimeter accuracy, avoiding nerves and sinus cavities while maximizing bone contact for faster healing.',
+          'No. A remote review can organise questions and possible stages. Suitability requires clinical examination and appropriate imaging selected by the clinician.',
       },
       {
-        question: 'Am I a candidate for dental implants if I have bone loss?',
+        question: 'Which records may be useful before an implant visit?',
         answer:
-          'Yes, in most cases. Dr. Sharshar uses CBCT 3D imaging to assess bone volume and density precisely. Bone grafting, sinus lifts, or zygomatic implants can be used to rebuild bone when needed.',
-      },
-      {
-        question: 'What is the All-on-4 technique and who is it for?',
-        answer:
-          'All-on-4 is a full-arch rehabilitation technique where 4 strategically placed dental implants support an entire arch of fixed teeth. It is ideal for patients who are fully edentulous or have severely compromised teeth.',
-      },
-      {
-        question: 'How long does the dental implant process take from start to finish?',
-        answer:
-          'The digital planning phase takes 1\u20132 visits. Implant placement surgery is completed in a single session. Healing typically takes 3\u20136 months, during which a temporary prosthesis is worn.',
+          'Ask the clinic before sending files. Existing radiographs, scans, photographs, medical information, and prior treatment notes may help, but new records may still be required after review.',
       },
     ],
     benefits: [
       {
-        title: 'Single Tooth Implants',
+        title: 'Single tooth review',
         description:
-          'Individual implant and crown to replace a single missing tooth with natural-looking aesthetics and full chewing function.',
+          'Discuss the missing tooth, adjacent teeth, available space, bone questions, and restorative options.',
       },
       {
-        title: 'All-on-4 Full Arch',
+        title: 'Multiple tooth review',
         description:
-          'Four strategically placed implants supporting a complete arch of fixed teeth.',
+          'Review how implant number, remaining teeth, prosthetic design, hygiene, and visit stages may interact.',
       },
       {
-        title: 'Full-Arch Reconstruction',
+        title: 'Bone and healing questions',
         description:
-          'Comprehensive treatment combining multiple implants, bone grafting if needed, and custom prosthetics.',
+          'Imaging and examination may identify questions about anatomy, grafting, healing, and staged care.',
       },
     ],
     technologies: [
       {
-        name: 'CBCT 3D Scan',
-        description: 'Complete three-dimensional imaging of your jaw, teeth, nerves, and sinuses.',
+        name: 'Existing records review',
+        description: 'Available records can help organise questions before travel or examination.',
       },
       {
-        name: 'Digital Planning',
+        name: 'Clinical examination',
         description:
-          'Virtual implant placement with precise angle, depth, and prosthetic outcome simulation.',
+          'The clinician reviews the mouth, symptoms, medical information, and restorative needs.',
       },
       {
-        name: 'Surgical Guide',
+        name: 'Imaging when indicated',
         description:
-          '3D-printed guide manufactured from your digital plan for sub-millimeter accuracy.',
+          'The clinician selects appropriate imaging to review anatomy and planning questions.',
       },
       {
-        name: 'Guided Placement',
+        name: 'Prosthetic planning',
         description:
-          'Minimally invasive implant surgery using the printed guide for exact positioning.',
+          'Implant and restoration questions are considered together before consent.',
       },
       {
-        name: 'Prosthetic Delivery',
+        name: 'Case-specific sequence',
         description:
-          'Custom-designed crown, bridge, or full-arch prosthesis delivered after osseointegration.',
+          'The visit and healing sequence is discussed after examination and record review.',
       },
     ],
-    ctaPrimary: 'Book Free Consultation',
-    ctaSecondary: 'Dental Tourism Packages',
+    ctaPrimary: 'Request Case Review',
+    ctaSecondary: 'Review Travel Stages',
   },
   'tmj-tmd-treatment': {
-    heroTagline: "Middle East's Most Advanced TMD Center",
-    heroTitle: 'Advanced TMJ/TMD Neuromuscular Treatment',
+    heroTagline: 'Screening information only',
+    heroTitle: 'TMJ and Bite Screening Review',
     heroSubtitle:
-      'Dr. Haitham Sharshar provides the most comprehensive TMD/TMJ treatment protocol in the Middle East, combining jaw tracking (Zebris JMA-Optic+, Germany), surface EMG electromyography, TENS neuromuscular therapy, Occlusense digital pressure mapping, and custom Neurobite occlusal splint therapy.',
+      'Jaw symptoms, patient history, examination findings, and selected movement, muscle, imaging, or bite records can be reviewed together. No single record diagnoses TMD or proves that occlusion caused symptoms.',
     faqs: [
       {
-        question: 'What is TMD and how do I know if I have it?',
+        question: 'Can jaw tracking or muscle records diagnose TMD?',
         answer:
-          'Temporomandibular Disorder (TMD) is a group of conditions affecting the jaw joint (TMJ), masticatory muscles, and occlusion. Symptoms include jaw pain, clicking or popping sounds, headaches, ear pain, limited mouth opening, and teeth grinding.',
+          'No. These are adjunct screening records. A clinician reviews them with symptoms, examination findings, relevant imaging, medical history, and other possible causes.',
       },
       {
-        question: 'What is jaw tracking and why is it important for TMD diagnosis?',
+        question: 'What can a remote records review provide?',
         answer:
-          'Jaw tracking (JT-3D by Zebris, Germany) records your mandibular movement patterns in three dimensions. It measures range of motion, velocity, trajectory deviations, and opening/closing paths.',
+          'It can help organise questions and identify which existing records may be useful. It is not a diagnosis or a final treatment plan.',
       },
       {
-        question: 'How does Dr. Sharshar use EMG in TMD treatment?',
+        question: 'What should I do for sudden severe jaw symptoms?',
         answer:
-          'Surface electromyography (EMG) measures the electrical activity of your masticatory muscles. Dr. Sharshar uses EMG to identify muscle hyperactivity, asymmetry, fatigue patterns, and dysfunction.',
-      },
-      {
-        question: 'What is a Neurobite splint and how does it differ from a regular night guard?',
-        answer:
-          'A Neurobite occlusal splint is a custom-designed appliance fabricated using data from your EMG, jaw tracking, and TENS sessions. It is calibrated to your specific neuromuscular rest position.',
-      },
-      {
-        question: 'Is Dr. Sharshar the only dentist in the Middle East with this TMD technology?',
-        answer:
-          'Dr. Haitham Sharshar is the Official JMA-Optic+ Digital Occlusion System Certified Trainer for Zebris Co. (Germany) \u2014 the chosen international trainer for the entire Middle East region.',
+          'Seek prompt local medical or dental care for trauma, swelling, fever, a locked jaw, breathing or swallowing difficulty, or rapidly worsening symptoms.',
       },
     ],
-    benefits: [],
+    benefits: [
+      {
+        title: 'Symptoms and history',
+        description: 'Timing, triggers, function, previous care, and medical context guide the review.',
+      },
+      {
+        title: 'Examination first',
+        description: 'Clinical examination is required before a diagnosis or treatment decision.',
+      },
+      {
+        title: 'Adjunct records',
+        description: 'Selected records may support screening when the clinician considers them relevant.',
+      },
+    ],
     technologies: [
       {
-        name: 'Jaw Tracking (JT-3D)',
+        name: 'Jaw movement records',
         description:
-          'Records 3D mandibular movement patterns, range of motion, velocity, and trajectory deviations.',
+          'Movement paths can be recorded as adjunct information for clinician review.',
       },
       {
-        name: 'Surface EMG',
+        name: 'Surface muscle activity records',
         description:
-          'Measures electrical activity of masseter and temporalis muscles to identify hyperactivity and dysfunction.',
+          'Electrical activity can be recorded as screening information and does not diagnose a disorder alone.',
       },
       {
-        name: 'TENS Unit',
+        name: 'Bite contact records',
         description:
-          'Relaxes masticatory muscles to find the neuromuscular rest (myocentric) jaw position.',
+          'Contact timing or pressure records can support discussion but do not prove symptom causation.',
       },
       {
-        name: 'Occlusense',
+        name: 'Imaging when indicated',
         description:
-          'Wireless real-time bite force distribution mapping for precise occlusal adjustment.',
+          'The clinician decides whether imaging is appropriate based on symptoms and examination.',
       },
       {
-        name: 'Neurobite Splint',
+        name: 'Clinician synthesis',
         description:
-          'Neuromuscular occlusal splint designed from patient-specific EMG and jaw tracking data.',
+          'Findings are considered together before any reversible or irreversible care is discussed.',
       },
     ],
-    ctaPrimary: 'Book TMD Consultation',
+    ctaPrimary: 'Request Screening Review',
     ctaSecondary: '',
   },
   'clear-aligners': {
-    heroTagline: '',
-    heroTitle: 'Digitally Integrated Clear Aligner Therapy',
+    heroTagline: 'Case-specific assessment',
+    heroTitle: 'Clear Aligner Assessment in Cairo',
     heroSubtitle:
-      'Invisible orthodontics with full digital integration at HS Clinic Cairo. Dr. Haitham Sharshar combines 3D treatment planning, digital occlusal analysis (T-Scan + Jaw Tracking), and progressive clear aligner therapy to deliver functional and aesthetic tooth alignment.',
+      'Photographs and existing records can support an early discussion. Aligner suitability, tooth movement limits, attachments, refinements, risks, alternatives, and timing require examination and clinician review.',
     faqs: [
       {
-        question: 'How do digital clear aligners differ from traditional braces?',
+        question: 'Can every orthodontic concern be treated with clear aligners?',
         answer:
-          'Clear aligners are removable, virtually invisible orthodontic trays made from medical-grade thermoplastic. Unlike metal braces, they have no wires or brackets, are more comfortable, and allow normal eating and brushing.',
+          'No. Suitability depends on the teeth, bite, periodontal health, goals, movement required, and clinician assessment. Other options may be discussed.',
       },
       {
-        question: 'How long does clear aligner treatment take?',
+        question: 'Can a digital preview promise the final result?',
         answer:
-          'Treatment duration varies based on complexity. Simple cases may take 3\u20136 months, while moderate to complex cases typically require 9\u201318 months.',
+          'No. A simulation is a planning aid. Biological response, wear, attachments, refinements, and clinical findings can change the pathway.',
       },
       {
-        question: "What makes Dr. Sharshar's approach to clear aligners unique?",
+        question: 'How is treatment duration estimated?',
         answer:
-          'Dr. Sharshar integrates clear aligner therapy with digital occlusal analysis using T-Scan and jaw tracking. This ensures your teeth are aligned for optimal bite function, not just aesthetics.',
-      },
-      {
-        question: 'Can clear aligners fix bite problems (malocclusion)?',
-        answer:
-          'Yes. Modern clear aligners can treat many types of malocclusion including overbite, underbite, crossbite, open bite, and crowding.',
+          'Timing is case-specific and may change during review. It is discussed after examination, records, goals, and likely refinement needs are considered.',
       },
     ],
     benefits: [
       {
-        title: 'Digitally Planned',
+        title: 'Digital planning aid',
         description:
-          'Full 3D treatment simulation before you start \u2014 see your results in advance.',
+          'A digital setup can support discussion of proposed tooth movements and limitations.',
       },
       {
-        title: 'Virtually Invisible',
-        description: 'Clear, removable trays that are nearly undetectable when worn.',
+        title: 'Removable appliance option',
+        description: 'Aligners are removable, and suitability depends on case needs and patient use.',
       },
       {
-        title: 'Occlusion-Optimized',
-        description: 'Digital bite analysis ensures functional alignment, not just straight teeth.',
+        title: 'Bite review',
+        description: 'Tooth position and bite relationships are reviewed together during planning.',
       },
       {
-        title: 'Comfortable & Removable',
-        description: 'No wires or brackets. Remove for eating, brushing, and special occasions.',
-      },
-      {
-        title: 'Precise & Predictable',
-        description:
-          'Computer-designed sequential trays for controlled, progressive tooth movement.',
-      },
-      {
-        title: 'Quality Controlled',
-        description: 'exocad-certified digital workflow for elite accuracy in every aligner tray.',
+        title: 'Review checkpoints',
+        description: 'Progress and fit require clinician review, and refinements may be needed.',
       },
     ],
     technologies: [],
-    ctaPrimary: 'Book Aligner Consultation',
+    ctaPrimary: 'Request Aligner Assessment',
     ctaSecondary: '',
   },
   'full-arch-rehabilitation': {
-    heroTagline: '',
-    heroTitle: 'Full-Arch Rehabilitation & All-on-4 Implants',
+    heroTagline: 'Staged planning',
+    heroTitle: 'Full-Arch Implant Assessment in Cairo',
     heroSubtitle:
-      'Complete oral rehabilitation combining dental implants, prosthetics, and digital occlusal analysis. Dr. Haitham Sharshar delivers All-on-4 and full-mouth reconstruction with CBCT-guided precision, same-day temporary teeth, and digital occlusion verification.',
+      'A full-arch review considers remaining teeth, bone and soft tissue, hygiene, bite forces, prosthetic choices, medical information, healing, maintenance, and travel stages. Final decisions require examination and clinician review.',
     faqs: [
       {
-        question: 'What is All-on-4 dental implant treatment?',
+        question: 'Can remote records confirm a full-arch treatment plan?',
         answer:
-          'All-on-4 is a clinically proven technique where 4 dental implants are strategically placed in each jaw to support a full arch of fixed prosthetic teeth.',
+          'No. Remote review can organise preliminary questions and possible stages. The final plan requires examination and appropriate imaging.',
       },
       {
-        question:
-          'How much does full-arch rehabilitation cost at HS Clinic compared to the USA/UK?',
+        question: 'Can temporary teeth be promised before examination?',
         answer:
-          'Full-arch All-on-4 rehabilitation at HS Clinic starts at approximately $5,500 USD per arch, compared to $20,000\u2013$30,000 in the USA or \u00a315,000\u2013\u00a325,000 in the UK.',
+          'No. Any provisional option and timing depend on clinical findings, stability, bite, healing needs, materials, and clinician assessment.',
       },
       {
-        question: 'Can I get temporary teeth on the same day as implant surgery?',
+        question: 'How are price and visit stages estimated?',
         answer:
-          'Yes. Dr. Sharshar offers immediate loading protocols where a temporary fixed prosthesis is attached to the implants on the same day as surgery.',
-      },
-      {
-        question: 'How long do full-arch implant prosthetics last?',
-        answer:
-          'With proper care and regular maintenance, implant-supported full-arch prosthetics can last 15\u201325+ years. The titanium implants themselves can last a lifetime.',
+          'They are case-specific. The clinic discusses an estimate and likely stages after reviewing records, examination findings, materials, healing needs, and follow-up requirements.',
       },
     ],
     benefits: [
       {
-        title: 'CBCT-Guided Planning',
+        title: 'Anatomy review',
         description:
-          'Complete 3D jaw mapping for precise implant position, angulation, and prosthetic outcome prediction.',
+          'The clinician selects appropriate imaging to review bone, anatomy, and planning questions.',
       },
       {
-        title: 'Same-Day Teeth',
+        title: 'Prosthetic discussion',
         description:
-          'Immediate loading protocol \u2014 leave with a fixed temporary prosthesis on the day of surgery.',
+          'Materials, design, hygiene access, provisional options, and maintenance are discussed case by case.',
       },
       {
-        title: 'Digital Occlusion Verification',
+        title: 'Bite and function review',
         description:
-          'T-Scan and jaw tracking ensure your prosthetic bite is functionally optimized.',
+          'Bite records may support clinician review when considered relevant to the case.',
       },
       {
-        title: 'Minimal Bone Requirements',
+        title: 'Travel and healing stages',
         description:
-          'Angled posterior implants maximize bone contact, often avoiding the need for bone grafting.',
+          'The sequence may include more than one visit and can change after examination or healing review.',
       },
     ],
     technologies: [],
-    ctaPrimary: 'Book Consultation',
-    ctaSecondary: 'International Patient? See Tourism Packages',
+    ctaPrimary: 'Request Full-Arch Review',
+    ctaSecondary: 'Review Travel Stages',
   },
 };
 
 export function useServicePillar(slug: string) {
-  const { data, loading, error } = useSanityQuery<SanityServicePillar[]>(
+  type ApprovedServicePillar = SanityServicePillar & {
+    ownerApproved?: boolean;
+    clinicianCopyApproved?: boolean;
+    heroImageRightsConfirmed?: boolean;
+    heroImagePublicationApproved?: boolean;
+  };
+  const { data, loading, error } = useSanityQuery<ApprovedServicePillar[]>(
     `*[_type == "servicePillar" && slug.current == $slug][0...1] {
       serviceTitle, seoTitle, seoDescription,
       heroTagline, heroTitle, heroSubtitle, heroImage,
       sections, technologies, benefits, faqs,
-      ctaPrimary, ctaSecondary
+      ctaPrimary, ctaSecondary,
+      ownerApproved, clinicianCopyApproved,
+      heroImageRightsConfirmed, heroImagePublicationApproved
     }`,
     { slug }
   );
-  const doc = data?.[0];
+  const candidate = data?.[0];
+  const doc =
+    candidate?.ownerApproved === true &&
+    candidate.clinicianCopyApproved === true &&
+    !hasPatientUnsafeCopy(candidate)
+      ? candidate
+      : undefined;
   const defaults = PILLAR_DEFAULTS[slug] ?? PILLAR_DEFAULTS['dental-implants'];
 
   const pillar: ServicePillarData = {
-    heroTagline: doc?.heroTagline ?? defaults.heroTagline,
-    heroTitle: doc?.heroTitle ?? defaults.heroTitle,
-    heroSubtitle: doc?.heroSubtitle ?? defaults.heroSubtitle,
-    heroImage: doc?.heroImage,
-    faqs: doc?.faqs ?? defaults.faqs,
-    benefits: doc?.benefits ?? defaults.benefits,
-    technologies: doc?.technologies ?? defaults.technologies,
-    ctaPrimary: doc?.ctaPrimary ?? defaults.ctaPrimary,
-    ctaSecondary: doc?.ctaSecondary ?? defaults.ctaSecondary,
-    seoTitle: doc?.seoTitle,
-    seoDescription: doc?.seoDescription,
+    heroTagline: safeCmsValue(doc?.heroTagline, defaults.heroTagline),
+    heroTitle: safeCmsValue(doc?.heroTitle, defaults.heroTitle),
+    heroSubtitle: safeCmsValue(doc?.heroSubtitle, defaults.heroSubtitle),
+    heroImage:
+      doc?.heroImageRightsConfirmed === true && doc.heroImagePublicationApproved === true
+        ? doc.heroImage
+        : undefined,
+    faqs: safeCmsValue(doc?.faqs, defaults.faqs),
+    benefits: safeCmsValue(doc?.benefits, defaults.benefits),
+    technologies: safeCmsValue(doc?.technologies, defaults.technologies),
+    ctaPrimary: safeCmsValue(doc?.ctaPrimary, defaults.ctaPrimary),
+    ctaSecondary: safeCmsValue(doc?.ctaSecondary, defaults.ctaSecondary),
+    seoTitle: safeCmsValue(doc?.seoTitle, undefined),
+    seoDescription: safeCmsValue(doc?.seoDescription, undefined),
   };
 
   return { pillar, loading, error };

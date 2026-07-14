@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "build": "vite build && node scripts/generate-sitemap.mjs && node scripts/prerender.mjs",
+    "build": "node scripts/generate-safe-og-card.mjs && vite build && node scripts/prune-private-public-files.mjs && node scripts/generate-sitemap.mjs && node scripts/prerender.mjs",
     "preview": "vite preview",
     "dev": "vite",
     "lint": "eslint .",

@@ -1,138 +1,76 @@
+import { FileText } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { FileText } from 'lucide-react';
-import { SITE_NAME, SITE_URL } from '@/lib/seo';
+import { DEFAULT_OG_IMAGE, DEFAULT_OG_IMAGE_ALT, SEO, SITE_NAME } from '@/lib/seo';
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-};
+const sections = [
+  {
+    title: 'General information only',
+    text: 'Website content helps visitors understand questions and contact paths. It is not dental advice, a diagnosis, a treatment plan, or an emergency service.',
+  },
+  {
+    title: 'No treatment contract online',
+    text: 'Viewing the site or starting a WhatsApp or email conversation does not create a treatment agreement. Examination, consent, written clinical documents, and case-specific terms are separate steps.',
+  },
+  {
+    title: 'Preliminary estimates and timing',
+    text: 'Any remote discussion of options, prices, or visit stages is preliminary and may change after examination, appropriate records, material choices, healing, or clinician review.',
+  },
+  {
+    title: 'Third-party services',
+    text: 'WhatsApp, email, Maps, YouTube, and external links are operated by other providers under their own privacy and service terms. Use them only if you accept that transfer.',
+  },
+  {
+    title: 'Website reuse and corrections',
+    text: 'Ask before copying website material. If you find an inaccurate statement or broken link, contact the clinic so it can be reviewed.',
+  },
+];
 
 export default function TermsOfService() {
   return (
-    <motion.section
-      initial="hidden"
-      animate="visible"
-      variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
-      className="relative min-h-screen py-24 sm:py-32"
-    >
+    <section className="relative min-h-screen py-24 sm:py-32">
       <Helmet>
-        <title>Terms of Service | {SITE_NAME}</title>
-        <meta
-          name="description"
-          content="Terms of Service for HS Clinic website. By using our services and website, you agree to these terms."
-        />
-        <link rel="canonical" href={SITE_URL + '/terms-of-service'} />
-        <meta name="robots" content="noindex" />
+        <title>{SEO.termsOfService.title}</title>
+        <meta name="description" content={SEO.termsOfService.description} />
+        <meta name="robots" content="noindex,follow" />
+        <link rel="canonical" href={SEO.termsOfService.canonical} />
+        <meta property="og:title" content={SEO.termsOfService.title} />
+        <meta property="og:description" content={SEO.termsOfService.description} />
+        <meta property="og:url" content={SEO.termsOfService.canonical} />
+        <meta property="og:image" content={DEFAULT_OG_IMAGE} />
+        <meta property="og:image:alt" content={DEFAULT_OG_IMAGE_ALT} />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content={SITE_NAME} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={SEO.termsOfService.title} />
+        <meta name="twitter:description" content={SEO.termsOfService.description} />
+        <meta name="twitter:image" content={DEFAULT_OG_IMAGE} />
       </Helmet>
 
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-        <motion.div variants={fadeUp} className="mb-12 text-center">
-          <FileText className="text-gold-400 mx-auto mb-4 h-12 w-12" />
-          <h1 className="font-mono text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            Terms of Service
-          </h1>
-          <p className="mt-4 text-gray-400">Last updated: February 2026</p>
-        </motion.div>
+        <header className="mb-12 text-center">
+          <FileText className="text-gold-400 mx-auto mb-4 h-11 w-11" aria-hidden="true" />
+          <h1 className="font-serif text-4xl font-bold text-white sm:text-5xl">Website Use Notice</h1>
+          <p className="mx-auto mt-5 max-w-2xl leading-7 text-gray-400">
+            These are narrow public website boundaries. Formal legal, payment, consent, and
+            treatment documents must be reviewed separately before care.
+          </p>
+        </header>
 
-        <motion.div
-          variants={fadeUp}
-          className="prose prose-invert prose-gold max-w-none space-y-8 text-gray-300"
-        >
-          <section>
-            <h2 className="text-xl font-semibold text-white">1. Acceptance of Terms</h2>
-            <p>
-              By accessing and using the HS Clinic website, you accept and agree to be bound by
-              these Terms of Service. If you do not agree, please do not use this website.
-            </p>
-          </section>
+        <div className="space-y-5">
+          {sections.map((section) => (
+            <section key={section.title} className="rounded-2xl border border-white/10 bg-white/[0.025] p-6">
+              <h2 className="text-xl font-semibold text-white">{section.title}</h2>
+              <p className="mt-3 leading-7 text-gray-300">{section.text}</p>
+            </section>
+          ))}
+        </div>
 
-          <section>
-            <h2 className="text-xl font-semibold text-white">2. Services Description</h2>
-            <p>
-              HS Clinic provides dental services including but not limited to dental implants,
-              TMJ/TMD treatment, cosmetic dentistry, orthodontics, and dental tourism coordination.
-              All services are provided by licensed dental professionals in Cairo, Egypt.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-semibold text-white">3. Online Consultations</h2>
-            <p>
-              Virtual consultations and assessments provided through this website are{' '}
-              <strong>preliminary only</strong> and do not constitute a formal diagnosis. A
-              definitive treatment plan requires an in-person clinical examination and appropriate
-              diagnostic imaging.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-semibold text-white">4. Treatment Consent</h2>
-            <p>
-              All dental treatments require written informed consent prior to commencement. Patients
-              will receive detailed information about procedures, risks, alternatives, and expected
-              outcomes before any treatment begins.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-semibold text-white">5. Pricing & Payment</h2>
-            <p>
-              Prices quoted on this website and in consultations are estimates based on standard
-              cases. Final pricing may vary based on clinical findings, complexity, and materials
-              required. Full cost breakdowns are provided before treatment begins.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-semibold text-white">6. Medical Tourism Packages</h2>
-            <p>
-              Tourism coordination services (airport transfers, accommodation, city tours) are
-              facilitated by HS Clinic through trusted third-party partners. HS Clinic is not
-              directly liable for third-party service quality, though we maintain standards through
-              regular partner audits.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-semibold text-white">7. Intellectual Property</h2>
-            <p>
-              All content on this website — including text, images, clinical photography, logos, and
-              design elements — is the property of HS Clinic and Dr. Haitham Sharshar. Reproduction
-              without written permission is prohibited.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-semibold text-white">8. Limitation of Liability</h2>
-            <p>
-              While we strive for the best outcomes, dentistry involves inherent risks. Individual
-              results vary based on patient health, compliance, and biological factors. HS Clinic
-              shall not be liable for outcomes beyond the standard of care.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-semibold text-white">9. Governing Law</h2>
-            <p>
-              These terms are governed by the laws of the Arab Republic of Egypt. Any disputes shall
-              be resolved under Egyptian jurisdiction.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-semibold text-white">10. Contact</h2>
-            <p>
-              For questions about these terms, please{' '}
-              <Link to="/contact" className="text-gold-400 underline">
-                contact us
-              </Link>
-              .
-            </p>
-          </section>
-        </motion.div>
+        <p className="mt-10 text-center text-sm text-gray-400">
+          Questions or correction requests can be sent through the{' '}
+          <Link to="/contact" className="text-amber-300 underline underline-offset-4">contact page</Link>.
+        </p>
       </div>
-    </motion.section>
+    </section>
   );
 }

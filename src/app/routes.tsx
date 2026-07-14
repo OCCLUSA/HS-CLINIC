@@ -15,13 +15,20 @@ const Contact = lazy(() =>
 );
 const DigitalSmileDesign = lazy(() => import('@/app/pages/DigitalSmileDesign'));
 const DentalTourism = lazy(() => import('@/app/pages/DentalTourism'));
+const SendYourRecords = lazy(() => import('@/app/pages/SendYourRecords'));
 const Gallery = lazy(() => import('@/app/pages/Gallery'));
 const SanityStudio = lazy(() => import('@/app/pages/SanityStudio'));
 const DentalImplants = lazy(() => import('@/app/pages/services/DentalImplants'));
 const TmdTreatment = lazy(() => import('@/app/pages/services/TmdTreatment'));
 const ClearAligners = lazy(() => import('@/app/pages/services/ClearAligners'));
 const FullArchRehab = lazy(() => import('@/app/pages/services/FullArchRehab'));
+const ServiceDetailPage = lazy(() => import('@/app/pages/services/ServiceDetailPage'));
 const TourismProgram = lazy(() => import('@/app/pages/tourism/TourismProgram'));
+const DentalTourismPartners = lazy(() =>
+  import('@/app/pages/tourism/DentalTourismPartners')
+);
+const RegionalTourismPage = lazy(() => import('@/app/pages/tourism/RegionalTourismPage'));
+const RegionalEducationPage = lazy(() => import('@/app/pages/tourism/RegionalEducationPage'));
 const PrivacyPolicy = lazy(() => import('@/app/pages/legal/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('@/app/pages/legal/TermsOfService'));
 const MedicalDisclaimer = lazy(() => import('@/app/pages/legal/MedicalDisclaimer'));
@@ -32,8 +39,16 @@ const NotFound = lazy(() =>
 
 // Simple loading fallback
 const PageLoader = () => (
-  <div className="flex min-h-screen items-center justify-center bg-slate-950 text-amber-400">
-    <div className="h-12 w-12 animate-spin rounded-full border-t-2 border-b-2 border-current"></div>
+  <div
+    className="flex min-h-screen items-center justify-center bg-slate-950 text-amber-400"
+    role="status"
+    aria-live="polite"
+  >
+    <span className="sr-only">Loading page</span>
+    <div
+      className="h-12 w-12 animate-spin rounded-full border-t-2 border-b-2 border-current"
+      aria-hidden="true"
+    />
   </div>
 );
 
@@ -103,10 +118,42 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: 'dental-tourism/partners',
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <DentalTourismPartners />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'dental-tourism/:regionSlug/dental-implant-travel-guide',
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <RegionalEducationPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'dental-tourism/:regionSlug',
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <RegionalTourismPage />
+          </Suspense>
+        ),
+      },
+      {
         path: 'gallery',
         element: (
           <Suspense fallback={<PageLoader />}>
             <Gallery />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'send-your-records',
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <SendYourRecords />
           </Suspense>
         ),
       },
@@ -139,6 +186,14 @@ export const router = createBrowserRouter([
         element: (
           <Suspense fallback={<PageLoader />}>
             <FullArchRehab />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'services/:slug',
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <ServiceDetailPage />
           </Suspense>
         ),
       },

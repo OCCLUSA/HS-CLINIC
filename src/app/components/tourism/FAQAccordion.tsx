@@ -19,33 +19,33 @@ interface FAQAccordionProps {
 const faqs = [
   {
     icon: DollarSign,
-    q: 'How much can I save on dental implants with Dr. Haitham Sharshar in Egypt compared to the US or UK?',
-    a: 'Patients typically save 60–70% on total treatment costs compared to US/UK averages, even including flights and 5-star accommodation. HS Clinic uses the exact same premium German and Swiss implant brands (e.g., Straumann, Nobel Biocare) used in Western clinics, but at a fraction of the price due to lower local operational costs.',
-    highlight: '60–70% savings',
+    q: 'How is dental implant cost reviewed before travelling to Egypt?',
+    a: 'Dental implant cost is reviewed after CBCT needs, bone volume, implant number, prosthetic material, travel timing, and follow-up plan are understood. HS Clinic can help patients compare the Cairo plan with their local quote before they travel.',
+    highlight: 'Case-by-case estimate',
   },
   {
     icon: ShieldCheck,
     q: 'Is dental tourism in Egypt safe, and how does HS Clinic ensure hygiene?',
-    a: 'Yes. HS Clinic operates under strict international sterilization protocols. Uniquely, Dr. Haitham Sharshar utilizes a fully digital workflow (Digital Occlusion & 3D Printing), which minimizes invasive surgery, reduces infection risk to near zero, and ensures 0.01mm precision—exceeding standard manual procedures.',
-    highlight: 'Near-zero infection risk',
+    a: 'HS Clinic follows strict sterilization and infection-control protocols. Digital planning, guided surgery, and 3D printing can help the clinician plan treatment carefully, but every case still requires examination and clinician review.',
+    highlight: 'Clinician-reviewed safety',
   },
   {
     icon: Clock,
-    q: 'Can I really get "Same-Day Teeth" while on vacation in Cairo?',
-    a: 'Yes. Using Computer-Guided Surgery and in-house 3D printing, Dr. Sharshar can often place implants and load temporary crowns in a single visit (Immediate Loading). This allows you to enjoy your tour of the Pyramids or a Nile Cruise with a restored smile immediately, returning later only for the final permanent porcelain installation.',
-    highlight: 'Same-day results',
+    q: 'Can I receive temporary teeth during my implant visit in Cairo?',
+    a: 'Some eligible implant cases can receive temporary teeth during the visit using computer-guided surgery and in-house planning. Final timing depends on bone, bite, healing, and clinician assessment.',
+    highlight: 'Case-dependent timing',
   },
   {
     icon: Package,
     q: 'What is included in the "Dental Tourism Package"?',
-    a: 'Our VIP package is "Door-to-Door." It includes private airport pickup, accommodation in a partner 5-star hotel (with Nile views), all transportation between the hotel and clinic, and a curated sightseeing tour of Cairo (Pyramids, Museum, Citadel) coordinated around your treatment schedule.',
-    highlight: 'Door-to-door VIP',
+    a: 'The travel plan can include private airport pickup, accommodation guidance, clinic transfers, and optional sightseeing coordinated around your treatment schedule.',
+    highlight: 'Coordinated travel plan',
   },
   {
     icon: UserCheck,
     q: 'What makes Dr. Haitham Sharshar different from other cosmetic dentists in Egypt?',
-    a: "Dr. Sharshar is not just a cosmetic dentist but a specialist in Neuro-Occlusion and Digital Function. He holds an MSc in Perio-Implantology and uses advanced EMG (muscle) and jaw-tracking technology to ensure your new smile doesn't just look good but functions perfectly with your jaw muscles, preventing future pain or failure.",
-    highlight: 'Neuro-Occlusion specialist',
+    a: 'Dr. Sharshar combines prosthodontic experience, perio-implantology training, digital bite records, muscle screening, and jaw movement review to support clinician-led planning for appearance and function.',
+    highlight: 'Digital bite planning',
   },
 ];
 

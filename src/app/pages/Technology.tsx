@@ -1,100 +1,142 @@
-import { Activity, Cpu, Gauge, Eye, ScanLine, Laptop, Server, type LucideIcon } from 'lucide-react';
+import { Activity, Cpu, Eye, Gauge, Laptop, ScanLine, type LucideIcon } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
-import { SEO, SITE_NAME, DEFAULT_OG_IMAGE, TECHNOLOGY_JSONLD } from '@/lib/seo';
-import { SectionHeader } from '@/app/components/ui/SectionHeader';
-import { GlowCard } from '@/app/components/ui/GlowCard';
-import { useTechnologySettings, useSanityImage } from '@/hooks/useCmsData';
+import { Link } from 'react-router-dom';
+import { useTechnologySettings } from '@/hooks/useCmsData';
+import {
+  DEFAULT_OG_IMAGE,
+  DEFAULT_OG_IMAGE_ALT,
+  SEO,
+  SITE_NAME,
+  buildBreadcrumbJsonLd,
+  buildHreflangTags,
+} from '@/lib/seo';
 
-/** Map icon name strings from CMS to Lucide components */
 const ICON_MAP: Record<string, LucideIcon> = { Activity, Cpu, Gauge, Eye, ScanLine, Laptop };
+
+const breadcrumbs = buildBreadcrumbJsonLd([
+  { name: 'Home', path: '/' },
+  { name: 'Technology', path: '/technology' },
+]);
 
 export function Technology() {
   const { tech } = useTechnologySettings();
-  const heroUrl = useSanityImage(tech.heroImage, 1920);
-
-  const technologies = tech.technologies.map(
-    (t: { iconName?: string; title: string; description: string }) => ({
-      icon: (t.iconName && ICON_MAP[t.iconName]) || Activity,
-      title: t.title,
-      description: t.description,
-    })
-  );
+  const pageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: SEO.technology.title,
+    url: SEO.technology.canonical,
+    description: SEO.technology.description,
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: tech.technologies.map((item, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: item.title,
+        description: item.description,
+      })),
+    },
+  };
 
   return (
-    <div className="bg-dark-950 min-h-screen pt-24 pb-12">
+    <div className="bg-dark-950 min-h-screen overflow-hidden pt-24 pb-16">
       <Helmet>
         <title>{SEO.technology.title}</title>
         <meta name="description" content={SEO.technology.description} />
+        <meta name="robots" content="index,follow" />
         <link rel="canonical" href={SEO.technology.canonical} />
+        {buildHreflangTags(SEO.technology.canonical).map((tag) => (
+          <link key={tag.hrefLang} rel={tag.rel} hrefLang={tag.hrefLang} href={tag.href} />
+        ))}
         <meta property="og:title" content={SEO.technology.title} />
         <meta property="og:description" content={SEO.technology.description} />
         <meta property="og:url" content={SEO.technology.canonical} />
         <meta property="og:image" content={DEFAULT_OG_IMAGE} />
-        <meta property="og:image:alt" content="Dr. Haitham Sharshar — HS Clinic Cairo" />
+        <meta property="og:image:alt" content={DEFAULT_OG_IMAGE_ALT} />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content={SITE_NAME} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={SEO.technology.title} />
         <meta name="twitter:description" content={SEO.technology.description} />
         <meta name="twitter:image" content={DEFAULT_OG_IMAGE} />
-        <script type="application/ld+json">{JSON.stringify(TECHNOLOGY_JSONLD)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumbs)}</script>
+        <script type="application/ld+json">{JSON.stringify(pageSchema)}</script>
       </Helmet>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <SectionHeader title="The Digital Arsenal" subtitle="ADVANCED DIAGNOSTICS" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[42rem] bg-[radial-gradient(circle_at_25%_12%,rgba(212,175,55,0.14),transparent_40%)]" />
 
-        {/* Hero Image */}
-        <div className="group relative mb-24 overflow-hidden rounded-2xl border border-white/10">
-          <div className="from-dark-950 absolute inset-0 z-10 bg-gradient-to-t via-transparent to-transparent" />
-          <img
-            src={
-              heroUrl ||
-              'https://images.unsplash.com/photo-1551076805-e1869033e561?q=80&w=2832&auto=format&fit=crop'
-            }
-            alt={tech.heroImageAlt || 'Advanced Dental Tech'}
-            className="h-96 w-full object-cover opacity-60 transition-transform duration-700 group-hover:scale-105"
-            loading="lazy"
-          />
-          <div className="absolute bottom-8 left-8 z-20">
-            <div className="text-gold-400 mb-2 flex items-center gap-2 font-mono text-sm">
-              <Server className="h-4 w-4 animate-pulse" />
-              SYSTEM STATUS: OPTIMAL
-            </div>
-            <h3 className="font-serif text-3xl text-white">Next-Gen Integration</h3>
-            <p className="mt-2 max-w-lg text-sm text-gray-300">
-              Powered by our{' '}
-              <a
-                href="https://exocad.com/integration/technology-partners"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gold-400 underline decoration-1 underline-offset-2"
-              >
-                certified In-House Digital Dental Lab
-              </a>
-              .
-            </p>
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <nav aria-label="Breadcrumb" className="mb-10 text-sm text-gray-400">
+          <Link to="/" className="transition-colors hover:text-amber-300">
+            Home
+          </Link>
+          <span aria-hidden="true" className="px-2">/</span>
+          <span className="text-amber-300">Technology</span>
+        </nav>
+
+        <header className="cinematic-hairline mx-auto mb-16 max-w-4xl text-center">
+          <p className="mb-4 font-mono text-sm tracking-[0.28em] text-amber-300 uppercase">
+            Records support decisions
+          </p>
+          <h1 className="font-serif text-4xl font-bold tracking-tight text-white md:text-6xl">
+            Digital Records and Planning
+          </h1>
+          <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-gray-300">
+            Digital tools can record anatomy, movement, muscle activity, or bite contact when a
+            clinician considers them relevant. Each record is interpreted with symptoms,
+            examination findings, and patient priorities.
+          </p>
+          <p className="mx-auto mt-4 max-w-3xl text-sm leading-7 text-amber-100/80">
+            No device or software result diagnoses a condition or selects treatment by itself.
+          </p>
+        </header>
+
+        <section aria-labelledby="record-types" className="mb-20">
+          <h2 id="record-types" className="mb-8 font-serif text-3xl text-white">
+            Record types that may be considered
+          </h2>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {tech.technologies.map((technology) => {
+              const Icon =
+                (technology.iconName && ICON_MAP[technology.iconName]) || Activity;
+              return (
+                <article
+                  key={technology.title}
+                  className="cinematic-card rounded-2xl border border-white/10 bg-white/[0.035] p-7"
+                >
+                  <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl border border-amber-300/30 bg-amber-300/10">
+                    <Icon className="h-6 w-6 text-amber-300" aria-hidden="true" />
+                  </div>
+                  <h3 className="mb-3 font-serif text-xl font-semibold text-white">
+                    {technology.title}
+                  </h3>
+                  <p className="leading-7 text-gray-300">{technology.description}</p>
+                </article>
+              );
+            })}
           </div>
-        </div>
+        </section>
 
-        {/* Tech Grid */}
-        <div className="mb-32 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {technologies.map(
-            (t: { icon: LucideIcon; title: string; description: string }, index: number) => (
-              <GlowCard key={index} icon={t.icon} title={t.title} description={t.description} />
-            )
-          )}
-        </div>
-
-        {/* Stats Block */}
-        <div className="grid gap-8 border-t border-white/5 pt-16 md:grid-cols-3">
-          {tech.stats.map((stat: { value: string; label: string }, i: number) => (
-            <div key={i} className="text-center">
-              <div className="mb-2 font-mono text-4xl font-bold text-white md:text-5xl">
-                {stat.value}
+        <section aria-labelledby="interpretation-boundary" className="mb-16 rounded-3xl border border-amber-300/20 bg-amber-300/[0.045] p-8 md:p-10">
+          <h2 id="interpretation-boundary" className="font-serif text-3xl text-white">
+            The clinical boundary
+          </h2>
+          <div className="mt-7 grid gap-5 md:grid-cols-3">
+            {tech.stats.map((stat) => (
+              <div key={`${stat.value}-${stat.label}`} className="rounded-2xl border border-white/10 p-5">
+                <p className="font-serif text-xl text-amber-200">{stat.value}</p>
+                <p className="mt-2 text-sm leading-6 text-gray-300">{stat.label}</p>
               </div>
-              <div className="text-gold-400 text-sm tracking-widest uppercase">{stat.label}</div>
-            </div>
-          ))}
+            ))}
+          </div>
+        </section>
+
+        <div className="text-center">
+          <Link
+            to="/send-your-records"
+            className="bg-gold-400 text-dark-950 inline-flex min-h-12 items-center rounded-xl px-8 py-4 font-bold transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-300"
+          >
+            Ask which records are useful
+          </Link>
         </div>
       </div>
     </div>

@@ -20,17 +20,17 @@ describe('WhyHSClinic', () => {
   it('renders all 6 reason card titles', () => {
     renderComponent();
     expect(screen.getByText('Fully Digital Workflow')).toBeInTheDocument();
-    expect(screen.getByText('International Sterilization')).toBeInTheDocument();
-    expect(screen.getByText('Lifetime Implant Warranty')).toBeInTheDocument();
+    expect(screen.getByText('Sterilization Protocols')).toBeInTheDocument();
+    expect(screen.getByText('Written Coverage Terms')).toBeInTheDocument();
     expect(screen.getByText('English-Speaking Team')).toBeInTheDocument();
-    expect(screen.getByText('Neuro-Occlusion Specialist')).toBeInTheDocument();
-    expect(screen.getByText('VIP Travel Concierge')).toBeInTheDocument();
+    expect(screen.getByText('Digital Bite Planning')).toBeInTheDocument();
+    expect(screen.getByText('Travel Coordination')).toBeInTheDocument();
   });
 
   it('renders description text for each reason', () => {
     renderComponent();
-    expect(screen.getByText(/0\.01mm precision/i)).toBeInTheDocument();
-    expect(screen.getByText(/Near-zero infection risk/i)).toBeInTheDocument();
-    expect(screen.getByText(/Straumann, Nobel Biocare/i)).toBeInTheDocument();
+    expect(screen.getByText(/clinician-led treatment planning/i)).toBeInTheDocument();
+    expect(screen.getByText(/infection control protocols/i)).toBeInTheDocument();
+    expect(screen.getByText(/coverage conditions/i)).toBeInTheDocument();
   });
 });

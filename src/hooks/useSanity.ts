@@ -11,6 +11,31 @@ interface SanityQueryState<T> {
   error: Error | null;
 }
 
+const queryCache = new Map<string, Promise<unknown>>();
+
+function fetchCachedQuery<T>(
+  query: string,
+  params: Record<string, unknown>,
+  paramsKey: string
+): Promise<T> {
+  const cacheKey = `${query}\u0000${paramsKey}`;
+  const cached = queryCache.get(cacheKey);
+  if (cached) return cached as Promise<T>;
+
+  const request = sanityClient.fetch<T>(query, params).catch((cause: unknown) => {
+    if (queryCache.get(cacheKey) === request) queryCache.delete(cacheKey);
+    const error = cause instanceof Error ? cause : new Error(String(cause));
+    console.error('[Sanity] Query failed:', error.message);
+    throw error;
+  });
+  queryCache.set(cacheKey, request);
+  return request;
+}
+
+export function clearSanityQueryCache() {
+  queryCache.clear();
+}
+
 /**
  * Fetch data from Sanity using a GROQ query.
  *
@@ -37,14 +62,12 @@ export function useSanityQuery<T = unknown>(
 
     const parsedParams = paramsKey ? JSON.parse(paramsKey) : {};
 
-    sanityClient
-      .fetch<T>(query, parsedParams)
+    fetchCachedQuery<T>(query, parsedParams, paramsKey)
       .then((data) => {
         if (!cancelled) setState({ data, loading: false, error: null });
       })
-      .catch((err: Error) => {
-        if (!cancelled) setState({ data: null, loading: false, error: err });
-        console.error('[Sanity] Query failed:', err.message);
+      .catch((error: Error) => {
+        if (!cancelled) setState({ data: null, loading: false, error });
       });
 
     return () => {

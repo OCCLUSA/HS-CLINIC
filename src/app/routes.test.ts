@@ -9,7 +9,7 @@ describe('Routes', () => {
     expect(routes.element).toBeDefined();
   });
 
-  it('defines all 7 public page routes', () => {
+  it('defines core public page routes', () => {
     const children = routes.children ?? [];
     const paths = children.map((r) => r.path ?? '(index)');
 
@@ -19,6 +19,7 @@ describe('Routes', () => {
     expect(paths).toContain('technology');
     expect(paths).toContain('digital-smile-design');
     expect(paths).toContain('dental-tourism');
+    expect(paths).toContain('dental-tourism/:regionSlug/dental-implant-travel-guide');
     expect(paths).toContain('contact');
   });
 

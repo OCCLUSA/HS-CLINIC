@@ -27,7 +27,7 @@ export function MedicallyReviewedBadge({
         >
           {doctorName}
         </Link>
-        {lastUpdated && <span className="ml-2 text-gray-500">| Updated: {lastUpdated}</span>}
+        {lastUpdated && <span className="ml-2 text-gray-400">| Updated: {lastUpdated}</span>}
       </span>
     </div>
   );

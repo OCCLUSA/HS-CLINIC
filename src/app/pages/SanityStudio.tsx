@@ -66,7 +66,7 @@ export default function SanityStudio() {
           </svg>
         </a>
 
-        <p className="font-mono text-xs text-gray-500">
+        <p className="font-mono text-xs text-gray-400">
           Project ID: nk38o90y &middot; Target: production
         </p>
       </div>

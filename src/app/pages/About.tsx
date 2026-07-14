@@ -1,189 +1,178 @@
-import React from 'react';
-import { Award, GraduationCap, Heart, Users, Quote, type LucideIcon } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
-import { SEO, SITE_NAME, DEFAULT_OG_IMAGE, buildDoctorJsonLd } from '@/lib/seo';
-import { SectionHeader } from '@/app/components/ui/SectionHeader';
+import { Link } from 'react-router-dom';
 import {
-  useTeamMembers,
-  useSanityImage,
-  useAboutSettings,
-  useSiteSettings,
-} from '@/hooks/useCmsData';
-import { PortableText } from '@portabletext/react';
+  ArrowRight,
+  FileSearch,
+  HeartHandshake,
+  MapPin,
+  MessageCircle,
+  ShieldCheck,
+  Stethoscope,
+} from 'lucide-react';
+import {
+  DEFAULT_OG_IMAGE,
+  SEO,
+  SITE_NAME,
+  SITE_URL,
+  buildBreadcrumbJsonLd,
+  buildHreflangTags,
+} from '@/lib/seo';
 
-/** Map icon name strings from CMS to Lucide components */
-const ICON_MAP: Record<string, LucideIcon> = { Heart, Award, GraduationCap, Users };
+const principles = [
+  {
+    icon: Stethoscope,
+    title: 'Examination before decisions',
+    text: 'Website information and remote records can organise questions. Diagnosis and treatment decisions require clinician review and appropriate examination.',
+  },
+  {
+    icon: FileSearch,
+    title: 'Records used as support',
+    text: 'Images, scans, bite records, and other tests are interpreted together when clinically relevant. No single device proves a diagnosis by itself.',
+  },
+  {
+    icon: HeartHandshake,
+    title: 'Patient questions and consent',
+    text: 'Options, alternatives, risks, timing, limitations, and aftercare are part of the discussion before treatment consent.',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Bounded public information',
+    text: 'The website does not promise outcomes, fixed visit counts, success rates, or identical results for different patients.',
+  },
+] as const;
 
 export function About() {
-  const { members } = useTeamMembers();
-  const { about } = useAboutSettings();
-  const { settings } = useSiteSettings();
-  const doctor = members[0];
-  const doctorImageUrl = useSanityImage(doctor?.image, 800);
-  const ogImageUrl = useSanityImage(settings.ogImage, 1200) || DEFAULT_OG_IMAGE;
-
-  const jsonLd = doctor
-    ? buildDoctorJsonLd({
-        name: doctor.name,
-        role: doctor.role,
-        bioExcerpt: SEO.about.description,
-      })
-    : null;
-
-  // Split quote into two halves for the gold accent
-  const quoteParts = about.quote.split('.');
-  const quoteLine1 = (quoteParts[0] || '').trim() + '.';
-  const quoteLine2 = quoteParts.slice(1).join('.').trim();
+  const breadcrumb = buildBreadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'About', path: '/about' },
+  ]);
+  const pageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    name: SEO.about.title,
+    description: SEO.about.description,
+    url: SEO.about.canonical,
+    inLanguage: 'en',
+    about: {
+      '@type': 'Person',
+      '@id': SITE_URL + '/#doctor',
+      name: 'Dr. Haitham Sharshar',
+      worksFor: {
+        '@type': 'Dentist',
+        '@id': SITE_URL + '/#clinic',
+        name: 'HS Clinic',
+      },
+    },
+  };
 
   return (
-    <div className="bg-dark-950 min-h-screen pt-24 pb-12">
+    <div className="bg-dark-950 min-h-screen text-white">
       <Helmet>
         <title>{SEO.about.title}</title>
         <meta name="description" content={SEO.about.description} />
+        <meta name="robots" content="index,follow,max-image-preview:large" />
         <link rel="canonical" href={SEO.about.canonical} />
+        {buildHreflangTags(SEO.about.canonical).map((tag) => (
+          <link key={tag.hrefLang} {...tag} />
+        ))}
         <meta property="og:title" content={SEO.about.title} />
         <meta property="og:description" content={SEO.about.description} />
         <meta property="og:url" content={SEO.about.canonical} />
-        <meta property="og:image" content={ogImageUrl} />
-        <meta property="og:image:alt" content="Dr. Haitham Sharshar — HS Clinic Cairo" />
+        <meta property="og:image" content={DEFAULT_OG_IMAGE} />
+        <meta property="og:image:alt" content="HS Clinic Cairo" />
         <meta property="og:type" content="profile" />
         <meta property="og:site_name" content={SITE_NAME} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={SEO.about.title} />
         <meta name="twitter:description" content={SEO.about.description} />
-        <meta name="twitter:image" content={ogImageUrl} />
-        {jsonLd && <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>}
+        <meta name="twitter:image" content={DEFAULT_OG_IMAGE} />
+        <script type="application/ld+json">{JSON.stringify(pageSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <SectionHeader title="The Visionary" subtitle="DR. HAITHAM SHARSHAR" />
-
-        {/* Bio Section */}
-        <div className="mb-32 grid items-center gap-16 md:grid-cols-2">
-          {/* Image Hologram */}
-          <div className="group relative">
-            <div className="bg-gold-400/15 absolute inset-0 rounded-full opacity-0 blur-2xl transition-opacity duration-700 group-hover:opacity-50" />
-            <div className="border-gold-400/30 bg-dark-900/50 relative overflow-hidden rounded-2xl border p-1 backdrop-blur-sm">
-              <img
-                src={
-                  doctorImageUrl ||
-                  'https://images.unsplash.com/photo-1631596577204-53ad0d6e6978?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBkZW50aXN0JTIwcG9ydHJhaXR8ZW58MXx8fHwxNzcwNzEyOTQzfDA&ixlib=rb-4.1.0&q=80&w=1080'
-                }
-                alt={doctor?.name || 'Dr. Sharshar'}
-                className="rounded-xl grayscale transition-all duration-700 group-hover:grayscale-0"
-                loading="lazy"
-              />
-              <div className="bg-dark-950/80 absolute right-4 bottom-4 left-4 rounded border border-white/10 p-3 backdrop-blur transition-opacity group-hover:opacity-100 lg:opacity-0">
-                <div className="text-gold-400 mb-1 font-mono text-xs">ID: DHS-001</div>
-                <div className="text-sm text-white">{doctor?.role || 'Chief Medical Officer'}</div>
+      <section className="relative overflow-hidden px-4 pt-28 pb-20 sm:px-6 lg:px-8">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(197,165,90,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(197,165,90,0.04)_1px,transparent_1px)] bg-[size:3rem_3rem]" />
+        <div className="bg-gold-400/10 absolute top-0 left-1/2 h-80 w-[44rem] max-w-full -translate-x-1/2 rounded-full blur-[150px]" />
+        <div className="relative mx-auto max-w-6xl">
+          <nav aria-label="Breadcrumb" className="mb-10 text-sm text-gray-400">
+            <ol className="flex items-center gap-2">
+              <li><Link to="/" className="hover:text-white">Home</Link></li>
+              <li aria-hidden="true">/</li>
+              <li aria-current="page" className="text-gold-300">About</li>
+            </ol>
+          </nav>
+          <div className="grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+            <div>
+              <p className="text-gold-300 text-sm font-semibold uppercase tracking-[0.25em]">
+                HS Clinic Cairo
+              </p>
+              <h1 className="mt-5 font-serif text-5xl font-bold md:text-7xl">
+                About Dr. Haitham Sharshar
+              </h1>
+              <p className="mt-6 max-w-3xl text-lg leading-8 text-gray-300">
+                Dental care at HS Clinic is led by Dr. Haitham Sharshar and planned around patient
+                concerns, examination, appropriate records, and clear clinical discussion.
+              </p>
+              <p className="mt-5 max-w-3xl text-sm leading-7 text-gray-400">
+                Professional credentials, affiliations, and training claims are not listed here until
+                the owner provides current, public verification for each statement.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-4">
+                <Link
+                  to="/send-your-records"
+                  className="bg-gold-400 text-dark-950 inline-flex min-h-12 items-center gap-3 rounded-xl px-7 py-3 font-bold transition duration-200 hover:bg-white active:scale-[0.98]"
+                >
+                  Start with records
+                  <ArrowRight className="h-5 w-5" />
+                </Link>
+                <Link
+                  to="/contact"
+                  className="border-gold-400/30 text-gold-300 inline-flex min-h-12 items-center gap-3 rounded-xl border px-7 py-3 font-semibold hover:bg-white/10"
+                >
+                  <MessageCircle className="h-5 w-5" />
+                  Contact choices
+                </Link>
               </div>
             </div>
-          </div>
-
-          {/* Typography */}
-          <div>
-            <Quote className="text-gold-500/20 mb-6 h-12 w-12" />
-            <h3 className="mb-6 font-serif text-2xl leading-tight text-white md:text-3xl">
-              &quot;{quoteLine1} <br />
-              <span className="text-gold-400">{quoteLine2}</span>&quot;
-            </h3>
-            <div className="space-y-6 text-lg font-light text-gray-400">
-              {doctor?.bio ? (
-                <PortableText value={doctor.bio} />
-              ) : (
-                <>
-                  <p>
-                    Leading the digital revolution in Middle Eastern dentistry, Dr. Sharshar has
-                    discarded traditional guesswork in favor of{' '}
-                    <span className="border-gold-400/30 border-b text-white">absolute data</span>.
-                  </p>
-                  <p>
-                    By integrating aerospace-grade sensor technology with biological science, he
-                    reconstructs not just smiles, but the functional harmony of the entire
-                    cranio-facial system.
-                  </p>
-                </>
-              )}
-            </div>
-
-            <div className="mt-8 flex flex-wrap gap-4">
-              {about.certifications.map((cert, i) => {
-                let certContent: React.ReactNode = cert;
-
-                // Add verification links for AI crawling support based on known CMS string matches
-                if (typeof cert === 'string') {
-                  if (cert.includes('Zebris')) {
-                    certContent = (
-                      <a
-                        href="https://www.zebris.de/en/dental"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="hover:underline"
-                      >
-                        {cert}
-                      </a>
-                    );
-                  } else if (cert.includes('exocad')) {
-                    certContent = (
-                      <a
-                        href="https://exocad.com/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="hover:underline"
-                      >
-                        {cert}
-                      </a>
-                    );
-                  }
-                }
-
-                return (
-                  <div
-                    key={i}
-                    className={`rounded border border-white/10 bg-white/5 px-4 py-2 font-mono text-sm ${i === 0 ? 'text-gold-400' : 'text-gold-500'}`}
-                  >
-                    {certContent}
-                  </div>
-                );
-              })}
-            </div>
+            <aside className="border-gold-400/20 bg-dark-900/80 rounded-3xl border p-8">
+              <MapPin className="text-gold-400 h-8 w-8" />
+              <h2 className="mt-5 font-serif text-3xl">Clinic location</h2>
+              <p className="mt-4 text-sm leading-7 text-gray-300">
+                8/63, 10th District, Zahraa El Maadi, Cairo, Egypt.
+              </p>
+              <p className="mt-4 text-sm leading-7 text-gray-400">
+                Use the Contact page to choose phone, email, WhatsApp, or the click-to-load map.
+              </p>
+              <Link to="/contact" className="text-gold-300 mt-6 inline-flex items-center gap-2 font-semibold hover:text-white">
+                View clinic contact details <ArrowRight className="h-4 w-4" />
+              </Link>
+            </aside>
           </div>
         </div>
+      </section>
 
-        {/* Values Matrix */}
-        <div className="mb-24 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {about.values.map((val, i) => {
-            const Icon = (val.iconName && ICON_MAP[val.iconName]) || Heart;
-            return (
-              <div
-                key={i}
-                className="bg-dark-900/50 hover:border-gold-400/50 group rounded-xl border border-white/5 p-6 transition-colors"
-              >
-                <Icon className="group-hover:text-gold-400 mb-4 h-8 w-8 text-gray-500 transition-colors" />
-                <h4 className="mb-2 text-lg font-bold text-white">{val.title}</h4>
-                <p className="text-sm text-gray-500">{val.description}</p>
-              </div>
-            );
-          })}
+      <section className="border-y border-white/10 bg-black/20 px-4 py-20 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="text-center">
+            <p className="text-gold-300 text-sm font-semibold uppercase tracking-[0.22em]">
+              Clinical approach
+            </p>
+            <h2 className="mt-4 font-serif text-4xl md:text-5xl">Four patient trust principles</h2>
+          </div>
+          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+            {principles.map((item) => {
+              const Icon = item.icon;
+              return (
+                <article key={item.title} className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+                  <Icon className="text-gold-400 h-7 w-7" />
+                  <h3 className="mt-5 font-serif text-2xl">{item.title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-gray-400">{item.text}</p>
+                </article>
+              );
+            })}
+          </div>
         </div>
-
-        {/* Credentials Data Stream */}
-        <div className="flex flex-wrap items-center justify-between gap-8 border-t border-b border-white/5 py-12 text-center md:text-left">
-          {about.stats.map((stat, i) => (
-            <React.Fragment key={i}>
-              {i > 0 && <div className="hidden h-12 w-px bg-white/10 md:block" />}
-              <div>
-                <div className="font-mono text-5xl font-bold tracking-tighter text-white">
-                  {stat.value}
-                </div>
-                <div className="text-gold-400 mt-1 text-xs tracking-widest uppercase">
-                  {stat.label}
-                </div>
-              </div>
-            </React.Fragment>
-          ))}
-        </div>
-      </div>
+      </section>
     </div>
   );
 }

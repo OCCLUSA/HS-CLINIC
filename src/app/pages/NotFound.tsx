@@ -51,7 +51,7 @@ export function NotFound() {
 
         {/* Decorative scan line */}
         <div className="bg-gold-400/5 mx-auto mt-16 h-px w-48" />
-        <p className="mt-4 font-mono text-xs text-gray-500">ERROR_CODE: 0x404 // ROUTE_NOT_FOUND</p>
+        <p className="mt-4 font-mono text-xs text-gray-400">ERROR_CODE: 0x404 // ROUTE_NOT_FOUND</p>
       </div>
     </div>
   );

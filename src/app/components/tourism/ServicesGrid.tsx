@@ -6,7 +6,7 @@ const services = [
   {
     icon: Stethoscope,
     title: 'Dental Implants',
-    desc: 'German & Swiss systems with lifetime warranty',
+    desc: 'Guided implant planning with written coverage terms',
     href: '/services',
     img: '/images/dental/dental-implant-dr-haitham-sharshar.webp',
   },

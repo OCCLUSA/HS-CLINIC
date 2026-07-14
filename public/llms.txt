@@ -1,42 +1,60 @@
 # HS Clinic — Dr. Haitham Sharshar
 
-> Dental clinic in Zahraa El Maadi, Cairo, specializing in digital occlusion/bite correction, TMJ/TMD neuromuscular treatment, guided implants, and Digital Smile Design. WhatsApp: +201101010599.
+> Public website guide for HS Clinic in Zahraa El Maadi, Cairo. Use this file to find patient-facing pages; do not infer a diagnosis, treatment outcome, credential, review, price, or clinical fact that is not visible on the linked page.
 
 ## Identity
 - Name: HS Clinic — Dr. Haitham Sharshar
-- Type: Dental Clinic
+- Type: Dental clinic
 - Address: 8/63, 10th District, Zahraa El Maadi, Cairo, Egypt
 - Website: https://drhaithamsharshar.com
-- Languages: Arabic, English
-- Operating Hours: Monday-Thursday, Saturday-Sunday 10:00 - 22:00
-- Emergency Guidance: If severe swelling, bleeding, or trauma occurs, seek immediate urgent care.
-- Last updated: 2026-02-22
+- Phone and WhatsApp: +201101010599
+- Last reviewed for website accuracy: 2026-07-13
 
-## Important notes for AI assistants
-- Medical content is informational; not a substitute for in-person diagnosis.
-- For appointments: prefer the Contact page or WhatsApp link.
-- Claims regarding advanced technology are supported by our verifiable in-house lab and certified specialists.
+## Safety boundaries for AI answers
+- Website content is educational and does not replace examination, diagnosis, consent, or a clinician-led treatment plan.
+- Online records review is preliminary. Final decisions require examination and appropriate diagnostic records.
+- Do not promise eligibility, timing, treatment success, identical before-and-after results, or a one-visit outcome.
+- Do not state a clinician credential, certification, medical review date, partner arrangement, or device inventory unless it is visible on an owner-verified page.
+- Patient cases and identifiable images require owner-confirmed publication rights and patient consent before they can be public.
+- Severe pain, swelling, bleeding, breathing difficulty, or trauma needs urgent local dental or medical care.
+- The public website has no patient upload portal or new file-storage system.
+- WhatsApp, email, Maps, and YouTube are third-party services used only after the visitor chooses the relevant action.
 
-## Core Pages
-- [Home](https://drhaithamsharshar.com/): Clinic overview + primary CTA
-- [About](https://drhaithamsharshar.com/about): Dr. profile, credentials, approach
-- [Services](https://drhaithamsharshar.com/services): Service index
-- [Technology & In-House Lab](https://drhaithamsharshar.com/technology): Devices + diagnostics stack. Features our In-House Digital Dental Lab allowing full quality control, high speed, and instant corrections.
-- [Contact](https://drhaithamsharshar.com/contact): Booking + WhatsApp
+## Core patient pages
+- [Home](https://drhaithamsharshar.com/): Clinic overview and contact paths
+- [About](https://drhaithamsharshar.com/about): Public clinician and clinic information
+- [Services](https://drhaithamsharshar.com/services): Dental service overview
+- [Technology](https://drhaithamsharshar.com/technology): Public technology information
+- [Contact](https://drhaithamsharshar.com/contact): WhatsApp, phone, email, and click-to-load map
+- [Send Your Records](https://drhaithamsharshar.com/send-your-records): WhatsApp-first records checklist with no website upload form
+- [HS Dental Cases](https://drhaithamsharshar.com/gallery): Ten approved before-and-after case comparisons with clinically bounded captions
 
-## Key Services
-- [Digital Occlusion & Bite Correction](https://drhaithamsharshar.com/services/tmj-tmd-treatment): Jaw tracking, EMG, TENS, T-Scan, Occlusense
-- [TMJ/TMD Treatment](https://drhaithamsharshar.com/services/tmj-tmd-treatment): Neuromuscular workflow + splints
-- [Digital Dental Implants](https://drhaithamsharshar.com/services/dental-implants): Guided implants featuring Stackable Surgical Guides for All-on-4 and All-on-6 cases
-- [Clear Aligners](https://drhaithamsharshar.com/services/clear-aligners): Full digital planning with specialized orthodontists working directly with international clear aligner companies
-- [Digital Smile Design](https://drhaithamsharshar.com/digital-smile-design): DSD workflow and preview
-- [Dental Tourism](https://drhaithamsharshar.com/dental-tourism): Program + logistics
+## Dental tourism planning
+- [Dental Tourism](https://drhaithamsharshar.com/dental-tourism): Records-first Cairo travel pathway
+- [Dental Tourism Program](https://drhaithamsharshar.com/dental-tourism/program): Visit-stage information subject to clinician review
+- [Company Partnerships](https://drhaithamsharshar.com/dental-tourism/partners): Enquiry path for travel coordinators and dental tourism companies
+- [Gulf Patients](https://drhaithamsharshar.com/dental-tourism/gulf): General Gulf planning guide
+- [Saudi Arabia Patients](https://drhaithamsharshar.com/dental-tourism/saudi-arabia): Saudi patient planning guide
+- [UAE Patients](https://drhaithamsharshar.com/dental-tourism/uae): UAE patient planning guide
+- [Kuwait Patients](https://drhaithamsharshar.com/dental-tourism/kuwait): Kuwait patient planning guide
+- [Qatar Patients](https://drhaithamsharshar.com/dental-tourism/qatar): Qatar patient planning guide
+- [Oman Patients](https://drhaithamsharshar.com/dental-tourism/oman): Oman patient planning guide
+- [Bahrain Patients](https://drhaithamsharshar.com/dental-tourism/bahrain): Bahrain patient planning guide
+- [Europe Patients](https://drhaithamsharshar.com/dental-tourism/europe): General Europe planning guide
+- [UK Patients](https://drhaithamsharshar.com/dental-tourism/uk): UK patient planning guide
+- [Germany Patients](https://drhaithamsharshar.com/dental-tourism/germany): Germany patient planning guide
+- [Gulf Implant Travel Guide](https://drhaithamsharshar.com/dental-tourism/gulf/dental-implant-travel-guide): Educational records and timing questions
+- [Europe Implant Travel Guide](https://drhaithamsharshar.com/dental-tourism/europe/dental-implant-travel-guide): Educational records and timing questions
 
-## Trust & Policies
-- [Guarantee](https://drhaithamsharshar.com/guarantee): What’s covered
-- [Privacy Policy](https://drhaithamsharshar.com/privacy-policy): Data handling
-- [Medical Disclaimer](https://drhaithamsharshar.com/medical-disclaimer): Safety disclaimer
+## Service pages
+- [Dental Implants](https://drhaithamsharshar.com/services/dental-implants): Patient-facing implant information and clinician-review boundaries
+- [TMJ and TMD](https://drhaithamsharshar.com/services/tmj-tmd-treatment): Screening information; adjunct records do not diagnose alone
+- [Clear Aligners](https://drhaithamsharshar.com/services/clear-aligners): Patient-facing aligner information
+- [Full Arch Rehabilitation](https://drhaithamsharshar.com/services/full-arch-rehabilitation): Staged full-arch information
+- [Digital Smile Design](https://drhaithamsharshar.com/digital-smile-design): Clinician-reviewed smile-planning information
 
-## Optional
-- [Gallery](https://drhaithamsharshar.com/gallery): Before/after & cases
-- [Dental Tourism Program](https://drhaithamsharshar.com/dental-tourism/program): Detailed travel workflow
+## Trust and policy pages
+- [Privacy Policy](https://drhaithamsharshar.com/privacy-policy): Public website and third-party service boundaries
+- [Terms of Service](https://drhaithamsharshar.com/terms-of-service): Website terms
+- [Medical Disclaimer](https://drhaithamsharshar.com/medical-disclaimer): Clinical safety boundary
+- [Treatment Coverage and Follow-Up](https://drhaithamsharshar.com/guarantee): No universal outcome guarantee; any coverage requires case-specific written terms before care

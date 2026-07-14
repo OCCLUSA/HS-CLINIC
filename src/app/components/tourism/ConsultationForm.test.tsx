@@ -12,20 +12,21 @@ function renderForm() {
 }
 
 describe('ConsultationForm', () => {
-  it('renders the consultation heading', () => {
+  it('renders a records-first screening heading', () => {
     renderForm();
-    expect(screen.getByText(/free virtual consultation/i)).toBeInTheDocument();
+    expect(screen.getByText(/send records by whatsapp/i)).toBeInTheDocument();
   });
 
-  it('renders name and email input fields', () => {
+  it('does not collect patient details or files on the website', () => {
     renderForm();
-    expect(screen.getByPlaceholderText(/full name/i)).toBeInTheDocument();
-    expect(screen.getByPlaceholderText(/email address/i)).toBeInTheDocument();
+    expect(document.querySelector('form')).toBeNull();
+    expect(document.querySelector('input[type="file"]')).toBeNull();
   });
 
-  it('renders the submit button', () => {
+  it('uses WhatsApp as the primary records action without a reply-time promise', () => {
     renderForm();
-    const button = screen.getByRole('button', { name: /free treatment plan/i });
-    expect(button).toBeInTheDocument();
+    const link = screen.getByRole('link', { name: /continue in whatsapp/i });
+    expect(link).toHaveAttribute('href', expect.stringContaining('api.whatsapp.com'));
+    expect(screen.queryByText(/24 hours/i)).not.toBeInTheDocument();
   });
 });

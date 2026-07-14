@@ -1,9 +1,9 @@
-import { motion } from 'framer-motion';
-import { Activity, Scan, Maximize, Database } from 'lucide-react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { Activity, Scan, Maximize, ClipboardList } from 'lucide-react';
 
 // --- SUB-COMPONENTS ---
 
-function FaceScanner() {
+function FaceScanner({ reduceMotion }: { reduceMotion: boolean }) {
   return (
     <div className="bg-dark-900/50 group relative h-64 w-full overflow-hidden rounded-xl border border-white/10">
       <div className="absolute inset-0 grid place-items-center opacity-30">
@@ -15,13 +15,11 @@ function FaceScanner() {
           <path d="M80,150 Q100,160 120,150" className="opacity-50" />
 
           {/* 3D Net Effect */}
-          <motion.circle
+          <circle
             cx="100"
             cy="100"
             r="80"
             strokeDasharray="4 4"
-            animate={{ rotate: 360 }}
-            transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
             className="opacity-20"
           />
         </svg>
@@ -29,50 +27,63 @@ function FaceScanner() {
 
       {/* Scanning Laser */}
       <motion.div
-        animate={{ top: ['0%', '100%', '0%'] }}
-        transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
-        className="bg-gold-400/50 absolute left-0 z-10 h-1 w-full shadow-[0_0_20px_rgba(212,175,55,0.8)]"
+        initial={{ y: 0 }}
+        whileInView={reduceMotion ? { y: 0 } : { y: [0, 252, 0] }}
+        viewport={{ amount: 0.4 }}
+        transition={{
+          duration: reduceMotion ? 0 : 5,
+          repeat: reduceMotion ? 0 : Infinity,
+          ease: 'linear',
+        }}
+        className="bg-gold-400/50 absolute top-0 left-0 z-10 h-1 w-full shadow-[0_0_20px_rgba(212,175,55,0.8)]"
       />
 
       {/* Grid Overlay */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(197,165,90,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(197,165,90,0.08)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] bg-[size:2rem_2rem]" />
 
-      <div className="bg-dark-950/80 text-gold-400 border-gold-400/30 absolute bottom-4 left-4 flex items-center gap-2 rounded border px-3 py-1 font-mono text-xs">
-        <Scan className="h-3 w-3 animate-pulse" />
-        MET-SMILE 3D ACQUISITION
+      <div className="bg-dark-950/80 text-gold-400 border-gold-400/30 absolute bottom-4 left-4 flex items-center gap-2 rounded border px-3 py-1 text-xs font-medium">
+        <Scan className="h-3 w-3" />
+        Smile scan preview
       </div>
     </div>
   );
 }
 
-function EmgMonitor() {
-  const bars = Array.from({ length: 20 });
+function EmgMonitor({ reduceMotion }: { reduceMotion: boolean }) {
+  const barHeights = [22, 38, 58, 34, 76, 48, 88, 54, 68, 42, 62, 30];
 
   return (
     <div className="bg-dark-900/50 relative flex h-64 w-full flex-col justify-end overflow-hidden rounded-xl border border-white/10 p-6">
-      <div className="text-gold-500 absolute top-4 left-4 flex items-center gap-2 font-mono text-xs">
+      <div className="text-gold-500 absolute top-4 left-4 flex items-center gap-2 text-xs font-medium">
         <Activity className="h-3 w-3" />
-        BIO-FEEDBACK // MASSETER LEFT
+        Muscle activity review
       </div>
 
-      <div className="flex h-32 items-end justify-between gap-1">
-        {bars.map((_, i) => (
-          <motion.div
-            key={i}
-            animate={{ height: ['10%', '80%', '30%', '100%', '10%'] }}
-            transition={{
-              duration: 0.5 + (i % 5) * 0.2,
-              repeat: Infinity,
-              repeatType: 'mirror',
-              delay: i * 0.05,
-            }}
+      <motion.div
+        initial={reduceMotion ? { opacity: 1, scaleY: 1 } : { opacity: 1, scaleY: 0.92 }}
+        whileInView={
+          reduceMotion
+            ? { opacity: 1, scaleY: 1 }
+            : { opacity: [0.65, 1, 0.65], scaleY: [0.92, 1, 0.92] }
+        }
+        viewport={{ amount: 0.4 }}
+        transition={{
+          duration: reduceMotion ? 0 : 4,
+          repeat: reduceMotion ? 0 : Infinity,
+          ease: 'easeInOut',
+        }}
+        className="flex h-32 origin-bottom items-end justify-between gap-1"
+      >
+        {barHeights.map((height, index) => (
+          <div
+            key={`${height}-${index}`}
             className="from-gold-600/20 to-gold-400 w-full rounded-t-sm bg-gradient-to-t"
-            style={{ opacity: 0.7 }}
+            style={{ height: `${height}%` }}
           />
         ))}
-      </div>
+      </motion.div>
       <div className="mt-2 h-px w-full bg-white/20" />
-      <div className="mt-1 flex justify-between font-mono text-[10px] text-gray-500">
+      <div className="mt-1 flex justify-between font-mono text-[10px] text-gray-400">
         <span>0ms</span>
         <span>50ms</span>
         <span>100ms</span>
@@ -81,12 +92,12 @@ function EmgMonitor() {
   );
 }
 
-function JawTracker() {
+function JawTracker({ reduceMotion }: { reduceMotion: boolean }) {
   return (
     <div className="bg-dark-900/50 relative grid h-64 w-full place-items-center overflow-hidden rounded-xl border border-white/10">
-      <div className="text-gold-300 absolute top-4 left-4 flex items-center gap-2 font-mono text-xs">
+      <div className="text-gold-300 absolute top-4 left-4 flex items-center gap-2 text-xs font-medium">
         <Maximize className="h-3 w-3" />
-        MANDIBULAR TRACKING (6DOF)
+        Jaw movement review
       </div>
 
       {/* Abstract Jaw SVG */}
@@ -102,12 +113,22 @@ function JawTracker() {
 
         {/* Lower Jaw (Animated) */}
         <motion.div
-          animate={{
-            y: [0, 15, 0],
-            rotateX: [0, 10, 0],
-            rotateZ: [0, -2, 2, 0],
+          initial={{ y: 0, rotateX: 0, rotateZ: 0 }}
+          whileInView={
+            reduceMotion
+              ? { y: 0, rotateX: 0, rotateZ: 0 }
+              : {
+                  y: [0, 15, 0],
+                  rotateX: [0, 10, 0],
+                  rotateZ: [0, -2, 2, 0],
+                }
+          }
+          viewport={{ amount: 0.4 }}
+          transition={{
+            duration: reduceMotion ? 0 : 6,
+            repeat: reduceMotion ? 0 : Infinity,
+            ease: 'easeInOut',
           }}
-          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
           className="absolute top-16 left-0 h-20 w-full"
         >
           <svg
@@ -121,50 +142,44 @@ function JawTracker() {
           </svg>
 
           {/* Tracking Dots */}
-          <motion.div
-            className="absolute bottom-0 left-1/2 h-2 w-2 rounded-full bg-white shadow-[0_0_10px_white]"
-            animate={{ scale: [1, 1.5, 1] }}
-            transition={{ duration: 1, repeat: Infinity }}
-          />
+          <div className="absolute bottom-0 left-1/2 h-2 w-2 rounded-full bg-white shadow-[0_0_10px_white]" />
         </motion.div>
       </div>
 
       {/* Data readout */}
-      <div className="text-gold-400 absolute top-1/2 right-4 space-y-1 text-right font-mono text-[10px]">
-        <div>X: +0.02mm</div>
-        <div>Y: -1.24mm</div>
-        <div>Z: +0.00mm</div>
+      <div className="text-gold-400 absolute top-1/2 right-4 space-y-1 text-right text-[10px] font-medium">
+        <div>Photos</div>
+        <div>Scans</div>
+        <div>Bite records</div>
       </div>
     </div>
   );
 }
 
 export function ClinicalSimulation() {
+  const reduceMotion = useReducedMotion() === true;
+
   return (
     <section className="bg-dark-950 relative overflow-hidden py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-16 text-center">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            className="text-gold-400 border-gold-400/20 mb-4 inline-flex items-center gap-2 rounded-full border px-3 py-1 font-mono text-sm"
-          >
-            <Database className="h-4 w-4" />
-            LIVE TELEMETRY // DEMO MODE
-          </motion.div>
+          <div className="text-gold-400 border-gold-400/20 mb-4 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm font-medium">
+            <ClipboardList className="h-4 w-4" />
+            Digital planning workflow
+          </div>
           <h2 className="mb-6 font-serif text-3xl text-white md:text-5xl">
-            Real-Time Clinical Precision
+            Records, scans, and bite review
           </h2>
           <p className="mx-auto max-w-2xl text-gray-400">
-            We don&apos;t guess. We measure. Our digital ecosystem captures every micron of
-            movement.
+            Photographs, scans, bite records, and examination findings can support clinician review
+            when they are relevant to the individual case.
           </p>
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
-          <FaceScanner />
-          <JawTracker />
-          <EmgMonitor />
+          <FaceScanner reduceMotion={reduceMotion} />
+          <JawTracker reduceMotion={reduceMotion} />
+          <EmgMonitor reduceMotion={reduceMotion} />
         </div>
       </div>
     </section>

@@ -4,100 +4,130 @@ import path from 'path';
 import 'dotenv/config';
 
 const sanityClient = createClient({
-  projectId: process.env.VITE_SANITY_PROJECT_ID || 'nk38o90y', // must match sanity.config.ts
+  projectId: process.env.VITE_SANITY_PROJECT_ID || 'nk38o90y',
   dataset: process.env.VITE_SANITY_DATASET || 'production',
   apiVersion: '2026-02-14',
   useCdn: false,
 });
 
 const SITE_URL = 'https://drhaithamsharshar.com';
+const routeManifestPath = path.resolve(process.cwd(), 'src/data/public-routes.json');
+const publicRoutes = JSON.parse(fs.readFileSync(routeManifestPath, 'utf8'));
+const allowedChangeFrequencies = new Set([
+  'always',
+  'hourly',
+  'daily',
+  'weekly',
+  'monthly',
+  'yearly',
+  'never',
+]);
 
-// Static routes with their priority and changefreq
-const staticRoutes = [
-  { path: '/', priority: '1.0', changefreq: 'weekly' },
-  { path: '/about', priority: '0.8', changefreq: 'monthly' },
-  { path: '/services', priority: '0.9', changefreq: 'monthly' },
-  { path: '/technology', priority: '0.8', changefreq: 'monthly' },
-  { path: '/dental-tourism', priority: '0.9', changefreq: 'weekly' },
-  { path: '/digital-smile-design', priority: '0.9', changefreq: 'monthly' },
-  { path: '/gallery', priority: '0.8', changefreq: 'monthly' },
-  { path: '/contact', priority: '0.7', changefreq: 'yearly' },
-  { path: '/services/dental-implants', priority: '0.9', changefreq: 'monthly' },
-  { path: '/services/tmj-tmd-treatment', priority: '0.9', changefreq: 'monthly' },
-  { path: '/services/clear-aligners', priority: '0.9', changefreq: 'monthly' },
-  { path: '/services/full-arch-rehabilitation', priority: '0.9', changefreq: 'monthly' },
-  { path: '/dental-tourism/program', priority: '0.8', changefreq: 'monthly' },
-  { path: '/guarantee', priority: '0.6', changefreq: 'yearly' },
-  { path: '/privacy-policy', priority: '0.3', changefreq: 'yearly' },
-  { path: '/medical-disclaimer', priority: '0.3', changefreq: 'yearly' },
-];
+function validateRouteManifest(routes) {
+  if (!Array.isArray(routes) || routes.length === 0) {
+    throw new Error('Public route manifest must be a non-empty array.');
+  }
 
-async function generateSitemap() {
-  console.log('🗺️  Generating dynamic sitemap...');
+  const seen = new Set();
+  for (const route of routes) {
+    const validPath = route.path === '/' || /^\/[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)*$/.test(route.path);
+    const validPriority = /^(?:0(?:\.\d+)?|1(?:\.0+)?)$/.test(route.priority);
 
-  // Fetch dynamic routes + their updatedAt from Sanity
-  let dynamicEntries = [];
+    if (!validPath || seen.has(route.path)) {
+      throw new Error(`Invalid or duplicate public route: ${route.path}`);
+    }
+    if (
+      typeof route.indexable !== 'boolean' ||
+      typeof route.sitemap !== 'boolean' ||
+      typeof route.prerender !== 'boolean' ||
+      !validPriority ||
+      !allowedChangeFrequencies.has(route.changefreq)
+    ) {
+      throw new Error(`Incomplete public route metadata: ${route.path}`);
+    }
+    if (route.sitemap && (!route.indexable || !route.prerender)) {
+      throw new Error(`Sitemap route must be indexable and prerendered: ${route.path}`);
+    }
+    seen.add(route.path);
+  }
+}
+
+function escapeXml(value) {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&apos;');
+}
+
+async function fetchDynamicServiceRoutes() {
   try {
-    const query = `*[_type in ["post", "service"] && defined(slug.current)]{
-      _type,
-      "slug": slug.current,
-      _updatedAt
-    }`;
-    const docs = await sanityClient.fetch(query);
-    dynamicEntries = docs.map((doc) => ({
-      path: doc._type === 'service' ? `/services/${doc.slug}` : `/blog/${doc.slug}`,
-      priority: doc._type === 'service' ? '0.9' : '0.7',
-      changefreq: 'monthly',
-      lastmod: doc._updatedAt
-        ? doc._updatedAt.split('T')[0]
-        : new Date().toISOString().split('T')[0],
-    }));
-    console.log(`✅ Found ${dynamicEntries.length} dynamic routes from Sanity.`);
+    const docs = await sanityClient.fetch(
+      `*[_type == "service" && defined(slug.current) && ownerApproved == true && clinicianCopyApproved == true]{
+        "slug": slug.current,
+        _updatedAt
+      }`
+    );
+
+    const entries = docs
+      .filter((doc) => /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(doc.slug))
+      .map((doc) => ({
+        path: `/services/${doc.slug}`,
+        priority: '0.9',
+        changefreq: 'monthly',
+        lastmod: doc._updatedAt ? doc._updatedAt.split('T')[0] : undefined,
+      }));
+    console.log(`✅ Found ${entries.length} dynamic service routes from Sanity.`);
+    return entries;
   } catch (error) {
-    console.error('⚠️ Warning: Could not fetch Sanity routes for sitemap:', error.message);
+    console.warn(`⚠️ Sanity service routes unavailable: ${error.message}`);
+    return [];
   }
+}
 
-  const today = new Date().toISOString().split('T')[0];
-
-  // Merge static + dynamic, deduplicating by path (dynamic wins when paths collide)
-  const entryMap = new Map();
-  for (const r of staticRoutes) {
-    entryMap.set(r.path, { ...r, lastmod: today });
-  }
-  for (const d of dynamicEntries) {
-    entryMap.set(d.path, d); // dynamic entry overrides static (has real _updatedAt)
-  }
-  const allEntries = [...entryMap.values()];
-
-  // Build XML
-  const urls = allEntries
-    .map(
-      (entry) => `  <url>
-    <loc>${SITE_URL}${entry.path}</loc>
-    <lastmod>${entry.lastmod}</lastmod>
+function renderUrl(entry) {
+  const lastmod = entry.lastmod ? `\n    <lastmod>${escapeXml(entry.lastmod)}</lastmod>` : '';
+  return `  <url>
+    <loc>${escapeXml(`${SITE_URL}${entry.path}`)}</loc>${lastmod}
     <changefreq>${entry.changefreq}</changefreq>
     <priority>${entry.priority}</priority>
-  </url>`
-    )
-    .join('\n');
+  </url>`;
+}
 
+async function generateSitemap() {
+  console.log('🗺️  Generating sitemap from the public route manifest...');
+  validateRouteManifest(publicRoutes);
+
+  const dynamicEntries = await fetchDynamicServiceRoutes();
+  const entryMap = new Map();
+  for (const route of publicRoutes.filter((entry) => entry.indexable && entry.sitemap)) {
+    entryMap.set(route.path, route);
+  }
+  for (const route of dynamicEntries) {
+    entryMap.set(route.path, route);
+  }
+
+  const entries = [...entryMap.values()].sort((a, b) => a.path.localeCompare(b.path));
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls}
+${entries.map(renderUrl).join('\n')}
 </urlset>
 `;
 
-  const distDir = path.resolve(process.cwd(), 'dist');
-  const sitemapPath = path.join(distDir, 'sitemap.xml');
-
-  // Ensure dist exists (it should after vite build)
-  if (!fs.existsSync(distDir)) {
-    console.error('❌ dist/ directory not found. Run vite build first.');
-    process.exit(1);
+  const targets = [
+    path.resolve(process.cwd(), 'dist/sitemap.xml'),
+    path.resolve(process.cwd(), 'public/sitemap.xml'),
+  ];
+  for (const target of targets) {
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    fs.writeFileSync(target, xml, 'utf8');
   }
 
-  fs.writeFileSync(sitemapPath, xml, 'utf-8');
-  console.log(`✅ Sitemap written to ${sitemapPath} with ${allEntries.length} URLs.`);
+  console.log(`✅ Sitemap written with ${entries.length} indexable URLs; noindex routes omitted.`);
 }
 
-generateSitemap();
+generateSitemap().catch((error) => {
+  console.error('❌ Sitemap generation failed:', error);
+  process.exit(1);
+});

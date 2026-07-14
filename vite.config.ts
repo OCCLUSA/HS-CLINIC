@@ -4,6 +4,9 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 
+const CASE_IMAGE_PATTERN =
+  /dr-haitham-sharshar-cairo-.*-(?:before|after)-\d+/i;
+
 export default defineConfig({
   plugins: [
     // The React and Tailwind plugins are both required for Make, even if
@@ -11,6 +14,8 @@ export default defineConfig({
     react(),
     tailwindcss(),
     ViteImageOptimizer({
+      test: /\.(jpe?g|png|gif|tiff|webp|avif)$/i,
+      exclude: CASE_IMAGE_PATTERN,
       png: { quality: 80 },
       jpeg: { quality: 80 },
       webp: { quality: 80, effort: 4 },
@@ -37,6 +42,15 @@ export default defineConfig({
   // ⚠️  DO NOT add manualChunks for lazy-loaded dependencies (e.g. three).
   //     See _AGENT_COORD/VITE_CONFIG_RULES.md for why.
   build: {
-    rollupOptions: {},
+    rollupOptions: {
+      output: {
+        assetFileNames: (assetInfo) => {
+          const sourceName = assetInfo.names?.[0] ?? assetInfo.name ?? '';
+          return CASE_IMAGE_PATTERN.test(sourceName)
+            ? 'assets/[name]-case-quality-v2-[hash][extname]'
+            : 'assets/[name]-[hash][extname]';
+        },
+      },
+    },
   },
 });

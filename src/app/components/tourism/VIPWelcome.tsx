@@ -8,19 +8,19 @@ interface VIPWelcomeProps {
 
 const DEFAULT_VIP_FEATURES = [
   {
-    title: 'Private Terminal Access',
+    title: 'Airport Greeting',
     description:
-      'Your concierge awaits tarmac-side. Skip the lines — step off the plane and into luxury.',
+      'A coordinator can meet you after arrival and guide the transfer plan to your hotel or clinic visit.',
     iconName: 'Plane',
   },
   {
-    title: 'Luxury Transfer',
+    title: 'Comfort Transfer',
     description:
-      'Chauffeured in a premium vehicle from the airport directly to your 5-star accommodation.',
+      'Coordinated vehicle transfer from the airport to your accommodation or first planned appointment.',
     iconName: 'Car',
   },
   {
-    title: 'Personal Concierge (24/7)',
+    title: 'Personal Coordinator',
     description:
       'Dedicated multilingual coordinator handles everything — scheduling, translations, and local guidance.',
     iconName: 'Clock',
@@ -47,7 +47,7 @@ const DEFAULT_VIP_FEATURES = [
 
 const DEFAULT_VIP_STATS = [
   { value: '500+', label: 'INTERNATIONAL PATIENTS' },
-  { value: '24/7', label: 'CONCIERGE ACCESS' },
+  { value: 'WhatsApp', label: 'COORDINATION CHANNEL' },
   { value: '15+', label: 'COUNTRIES SERVED' },
 ];
 
@@ -81,7 +81,7 @@ export function VIPWelcome({ features, stats }: VIPWelcomeProps) {
               viewport={{ once: true }}
               className="text-gold-400 mb-4 font-mono text-sm tracking-[0.3em] uppercase"
             >
-              THE VIP EXPERIENCE
+              TRAVEL SUPPORT
             </motion.p>
             <motion.h3
               initial={{ opacity: 0, y: 20 }}
@@ -99,10 +99,9 @@ export function VIPWelcome({ features, stats }: VIPWelcomeProps) {
               transition={{ delay: 0.2 }}
               className="mb-8 text-lg leading-relaxed text-gray-400"
             >
-              Your journey to a perfect smile begins the moment you land. Our dedicated concierge
-              team ensures every detail is curated — from airport pickup to post-procedure recovery
-              — so you experience dental artistry where modern luxury meets the timeless wonder of
-              Egypt.
+              Your planned dental visit begins the moment you land. Our dedicated concierge team
+              coordinates each detail — from airport pickup to post-procedure recovery — so your
+              care schedule and Cairo stay feel organized.
             </motion.p>
 
             {/* Accent stats */}
@@ -117,7 +116,7 @@ export function VIPWelcome({ features, stats }: VIPWelcomeProps) {
                 <div key={idx} className="flex items-center gap-6 sm:gap-8">
                   <div className="text-center sm:text-left">
                     <p className="text-gold-400 font-serif text-3xl">{stat.value}</p>
-                    <p className="mt-1 font-mono text-xs text-gray-500">{stat.label}</p>
+                    <p className="mt-1 font-mono text-xs text-gray-400">{stat.label}</p>
                   </div>
                   {idx < vipStats.length - 1 && (
                     <div
@@ -153,7 +152,7 @@ export function VIPWelcome({ features, stats }: VIPWelcomeProps) {
                     <h4 className="group-hover:text-gold-300 mb-1 text-sm font-medium text-white transition-colors">
                       {feature.title}
                     </h4>
-                    <p className="text-sm leading-relaxed text-gray-500">{feature.description}</p>
+                    <p className="text-sm leading-relaxed text-gray-400">{feature.description}</p>
                   </div>
                 </motion.div>
               );

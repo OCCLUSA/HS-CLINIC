@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
-import { useSanityQuery } from '@/hooks/useSanity';
+import { clearSanityQueryCache, useSanityQuery } from '@/hooks/useSanity';
 
 // Mock the sanity client module
 vi.mock('@/lib/sanityClient', () => ({
@@ -23,6 +23,7 @@ const mockFetch = sanityClient.fetch as ReturnType<typeof vi.fn>;
 describe('useSanityQuery', () => {
   beforeEach(() => {
     mockFetch.mockReset();
+    clearSanityQueryCache();
   });
 
   it('starts in loading state', () => {
@@ -69,5 +70,19 @@ describe('useSanityQuery', () => {
     await waitFor(() => {
       expect(mockFetch).toHaveBeenCalledWith('*[_type == $type]', { type: 'hero' });
     });
+  });
+
+  it('shares one request when the same approved content is used in several page areas', async () => {
+    mockFetch.mockResolvedValue([{ clinicName: 'HS Clinic' }]);
+
+    const first = renderHook(() => useSanityQuery('*[_type == "siteSettings"]'));
+    const second = renderHook(() => useSanityQuery('*[_type == "siteSettings"]'));
+
+    await waitFor(() => {
+      expect(first.result.current.loading).toBe(false);
+      expect(second.result.current.loading).toBe(false);
+    });
+
+    expect(mockFetch).toHaveBeenCalledTimes(1);
   });
 });

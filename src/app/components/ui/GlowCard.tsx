@@ -1,5 +1,3 @@
-import { motion } from 'framer-motion';
-
 type GlowCardProps = {
   icon: React.ElementType;
   title: string;
@@ -8,10 +6,7 @@ type GlowCardProps = {
 
 export function GlowCard({ icon: Icon, title, description }: GlowCardProps) {
   return (
-    <motion.div
-      whileHover={{ y: -10 }}
-      className="glass-card group relative cursor-pointer overflow-hidden border border-white/5 bg-gradient-to-br from-white/5 to-white/0 p-8"
-    >
+    <article className="glass-card cinematic-card group relative overflow-hidden border border-white/5 bg-gradient-to-br from-white/5 to-white/0 p-8">
       <div className="from-gold-400/10 to-gold-600/10 absolute inset-0 bg-gradient-to-br opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
       <div className="relative z-10">
@@ -29,6 +24,6 @@ export function GlowCard({ icon: Icon, title, description }: GlowCardProps) {
 
         <div className="group-hover:via-gold-400/50 mt-6 h-px w-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-all" />
       </div>
-    </motion.div>
+    </article>
   );
 }
